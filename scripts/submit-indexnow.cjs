@@ -120,7 +120,7 @@ async function main() {
   try {
     await submitToIndexNow(urlList);
   } catch (e) {
-    process.exit(1);
+    console.warn('[IndexNow] 注意: 网络请求异常或初次部署验证中，不阻断构建流程:', e.message);
   }
 }
 
