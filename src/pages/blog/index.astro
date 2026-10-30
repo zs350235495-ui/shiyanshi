@@ -3,12 +3,24 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
-const allPosts = await getCollection('posts');
-const sortedPosts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+// 评测类文章分类名单 (在博客中彻底排除，确保内容纯粹)
+const reviewCategories = [
+  '综合大横评',
+  '第一梯队专线',
+  '专线横评',
+  '低延迟办公',
+  '流媒体/下载大户',
+  '平价备用专选',
+];
 
-// 动态提取文章分类
-const rawCategories = Array.from(new Set(allPosts.map((p) => p.data.category)));
-const categories = ['全部文章', ...rawCategories];
+const allPosts = await getCollection('posts');
+const blogPosts = allPosts
+  .filter((p) => !reviewCategories.includes(p.data.category))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+// 动态提取博客技术文章的专属分类
+const rawCategories = Array.from(new Set(blogPosts.map((p) => p.data.category)));
+const categories = ['全部手记', ...rawCategories];
 ---
 
 <BaseLayout
@@ -38,7 +50,7 @@ const categories = ['全部文章', ...rawCategories];
           <span class="pulse-indicator">
             <span class="pulse-indicator-dot bg-purple-500"></span>
           </span>
-          <span>已收录: {sortedPosts.length} 篇技术手记</span>
+          <span>已收录: {blogPosts.length} 篇技术手记</span>
         </span>
         <span class="text-slate-300 dark:text-slate-700">|</span>
         <span class="text-slate-600 dark:text-slate-300 font-medium">推荐专线: #1 环球梯</span>
@@ -110,7 +122,7 @@ const categories = ['全部文章', ...rawCategories];
 
     <!-- 博客文章列表网格 -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16" id="blog-posts-grid">
-      {sortedPosts.map((post) => (
+      {blogPosts.map((post) => (
         <article
           class="blog-card flex flex-col justify-between rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-purple-500/60 dark:hover:border-purple-400/50 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group shadow-sm"
           data-category={post.data.category}
