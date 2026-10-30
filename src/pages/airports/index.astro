@@ -1,0 +1,1271 @@
+---
+// src/pages/airports/index.astro
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AirportCard from '../../components/AirportCard.astro';
+
+// 3 大梯队精选评测数据 (SaaS 仪表盘格式)
+const airportList = [
+  {
+    id: 'huanqiuti',
+    rank: 1,
+    name: '环球梯 (HuanQiuTi)',
+    operatingYears: '4年+',
+    lineTags: ['IEPL纯内网', 'BGP多线入', '原生双ISP出口'],
+    category: 'iplc', // also matches streaming
+    latencyStatus: {
+      ping: '港 18ms / 美 135ms',
+      stability: '晚高峰 0 丢包 (0.00%)',
+    },
+    unlockRating: '100% 满血双向',
+    protocols: ['Shadowsocks', 'Trojan', 'Hysteria2'],
+    startingPrice: {
+      discountedAmount: '8.40',
+      originalAmount: '12.00',
+      unit: '/ 月起',
+    },
+    discountBadge: '7折券',
+    couponCode: 'HQ66',
+    targetUrl: '/go.html?id=hq',
+    verdict: {
+      targetAudience: '适合大模型开发高频交互、跨境生产微服务协同、海外高频金融下单及晚高峰 4K/8K 极致观影。',
+      nightPeakNotes: '全链路纯物理内网波分光纤，在晚高峰 20:00~23:00 骨干高压时段实测丢包率恒定小于 0.05%，零阻力悬浮调度。',
+    },
+    plans: [
+      {
+        name: '环球微享',
+        badge: '高性价比',
+        price: '12.00',
+        discountedPrice: '8.40',
+        cycle: '月',
+        data: '70 GB',
+        devices: '不限设备',
+        features: ['每月 70GB 高速流量', '低门槛高性价比尝鲜', '多节点智能负载', '全天不限接入速度'],
+        featured: false,
+      },
+      {
+        name: '环球畅游',
+        badge: '站长力荐',
+        price: '39.00',
+        discountedPrice: '27.30',
+        cycle: '月',
+        data: '280 GB',
+        devices: '不限设备',
+        features: ['每月 280GB 专线流量', '支持全流媒体 4K 秒开', '优质端内线路优化', 'AI 与办公多端首选'],
+        featured: true,
+      },
+      {
+        name: '环球进阶',
+        badge: '4K无忧',
+        price: '52.00',
+        discountedPrice: '36.40',
+        cycle: '月',
+        data: '420 GB',
+        devices: '不限设备',
+        features: ['每月 420GB 充沛容量', '全天候晚高峰零拥塞', '最高 8K 极速推流', '大模型对话秒级回包'],
+        featured: false,
+      },
+      {
+        name: '环球极客',
+        badge: '大户旗舰',
+        price: '128.00',
+        discountedPrice: '89.60',
+        cycle: '月',
+        data: '1.2 TB',
+        devices: '不限设备',
+        features: ['每月 1200GB 独享大盘', '专为多设备团队量身定制', '全内网顶级专线保障', '超高并发无任何流控'],
+        featured: false,
+      },
+      {
+        name: '环球随行包',
+        badge: '不限时',
+        price: '99.00',
+        discountedPrice: '69.30',
+        cycle: '按量',
+        data: '200 GB',
+        devices: '不限设备',
+        features: ['200GB 充沛流量储备', '365天长期有效不过期', '晚高峰应急备用极佳', '不限设备随时调用'],
+        featured: false,
+      },
+    ],
+  },
+  {
+    id: 'dalaoyun',
+    rank: 2,
+    name: '大佬云 (DaLaoYun)',
+    operatingYears: '3年+',
+    lineTags: ['全IPLC专线', '单节点最高2.5G', '原生双ISP出口'],
+    category: 'iplc', // also matches streaming
+    latencyStatus: {
+      ping: '港 21ms / 美 138ms',
+      stability: '晚高峰 0 丢包 (0.00%)',
+    },
+    unlockRating: '100% 原生IP解锁',
+    protocols: ['Shadowsocks', 'Trojan', 'Vless'],
+    startingPrice: {
+      discountedAmount: '16.10',
+      originalAmount: '23.00',
+      unit: '/ 月起',
+    },
+    discountBadge: '7折券',
+    couponCode: 'dly88',
+    targetUrl: '/go.html?id=dly',
+    verdict: {
+      targetAudience: '全专线单节点峰值最高 2.5Gbps，全节点 x1 倍率不限速，适合大流量重度 4K 流媒体与多端协同办公。',
+      nightPeakNotes: '全 IPLC 专线低延迟保障，节点覆盖香港×20、台湾×10、日本×10、新加坡×10、美国×10 等主流区域。',
+    },
+    plans: [
+      {
+        name: '年付活动包',
+        badge: '热销力荐',
+        price: '96.00',
+        discountedPrice: '67.20',
+        cycle: '年 (折合¥5.6/月)',
+        data: '60 GB/月',
+        devices: '不限设备',
+        features: ['每月 60GB 专线流量', '单节点最高 2.5Gbps', '折算仅需 5.6元/月', '原生IP 支持ChatGPT/Netflix'],
+        featured: false,
+      },
+      {
+        name: '初云·入门版',
+        badge: '尝鲜首选',
+        price: '23.00',
+        discountedPrice: '16.10',
+        cycle: '月',
+        data: '130 GB',
+        devices: '不限设备',
+        features: ['每月 130GB 纯专线流量', '低门槛极速体验', '全平台客户端不限速', '高效客服技术支持'],
+        featured: false,
+      },
+      {
+        name: '凌云·基础版',
+        badge: '超值爆款',
+        price: '43.00',
+        discountedPrice: '30.10',
+        cycle: '月',
+        data: '300 GB',
+        devices: '不限设备',
+        features: ['每月 300GB 充沛流量', '连接工作学习与休闲', '全 IPLC 专线保障', '晚高峰 0 拥塞流畅 4K'],
+        featured: true,
+      },
+      {
+        name: '御云·高级版',
+        badge: '大户旗舰',
+        price: '73.00',
+        discountedPrice: '51.10',
+        cycle: '月',
+        data: '600 GB',
+        devices: '不限设备',
+        features: ['每月 600GB 独享大带宽', '面向高吞吐沉浸体验', '多设备不限在线数', '原生双 ISP 出口保障'],
+        featured: false,
+      },
+      {
+        name: '闲云·随心包',
+        badge: '不限时',
+        price: '99.00',
+        discountedPrice: '69.30',
+        cycle: '按量',
+        data: '78 GB 永久',
+        devices: '不限设备',
+        features: ['78GB 永久不过期流量', '一次性付款零月租', '全节点随意切换调用', '晚高峰应急备用佳选'],
+        featured: false,
+      },
+      {
+        name: '悠云·长享包',
+        badge: '海量按量',
+        price: '199.00',
+        discountedPrice: '139.30',
+        cycle: '按量',
+        data: '160 GB 永久',
+        devices: '不限设备',
+        features: ['160GB 充沛储备流量', '永久有效用完即止', '全 IPLC 峰值 2.5G 专线', '多端团队无月租储备'],
+        featured: false,
+      },
+    ],
+  },
+  {
+    id: 'yunjiexian',
+    rank: 3,
+    name: '云界线 (YunJieXian)',
+    operatingYears: '3年+',
+    lineTags: ['全IPLC专线', '单节点最高2.5G', '多设备自由在线'],
+    category: 'iplc', // also matches streaming
+    latencyStatus: {
+      ping: '港 23ms / 美 142ms',
+      stability: '晚高峰 0 丢包 (0.00%)',
+    },
+    unlockRating: '100% 原生双ISP',
+    protocols: ['Shadowsocks', 'Trojan', 'Vless'],
+    startingPrice: {
+      discountedAmount: '15.40',
+      originalAmount: '22.00',
+      unit: '/ 月起',
+    },
+    discountBadge: '7折券',
+    couponCode: 'yjx888',
+    targetUrl: '/go.html?id=yjx',
+    verdict: {
+      targetAudience: '全专线单节点峰值最高 2.5Gbps，多设备无并发限制，适合轻量及高频大流量办公与 4K 流媒体。',
+      nightPeakNotes: '全 IPLC 专线低延迟，覆盖亚太、北美与欧洲主流区域，晚高峰全节点 x1 倍率不限速。',
+    },
+    plans: [
+      {
+        name: '云界年付小包',
+        badge: '精选活动',
+        price: '96.00',
+        discountedPrice: '67.20',
+        cycle: '年 (折合¥5.6/月)',
+        data: '60 GB/月',
+        devices: '不限设备',
+        features: ['每月 60GB 纯专线流量', '低延迟单节点最高 2.5G', '原生 IP 支持全流媒体', '多设备自由在线'],
+        featured: false,
+      },
+      {
+        name: '轻云·基础版',
+        badge: '入门优选',
+        price: '22.00',
+        discountedPrice: '15.40',
+        cycle: '月',
+        data: '150 GB',
+        devices: '不限设备',
+        features: ['每月 150GB 专线流量', '适合轻量浏览社交日常', '支持季付/半年付/年付', '全节点不限速高速接入'],
+        featured: false,
+      },
+      {
+        name: '凌云·进阶版',
+        badge: '站长热推',
+        price: '40.00',
+        discountedPrice: '28.00',
+        cycle: '月',
+        data: '300 GB',
+        devices: '不限设备',
+        features: ['每月 300GB 充裕容量', '为工作与娱乐留出更多余量', '全物理专线低延迟', '大模型秒级极速回包'],
+        featured: true,
+      },
+      {
+        name: '御云·高级版',
+        badge: '大户专享',
+        price: '66.00',
+        discountedPrice: '46.20',
+        cycle: '月',
+        data: '600 GB',
+        devices: '不限设备',
+        features: ['每月 600GB 独享大盘', '从容承载更广阔在线生活', '不限制在线客户端数量', '极速带宽无流控限制'],
+        featured: false,
+      },
+      {
+        name: '闲云·随心包',
+        badge: '不限时',
+        price: '99.00',
+        discountedPrice: '69.30',
+        cycle: '按量',
+        data: '80 GB 永久',
+        devices: '不限设备',
+        features: ['80GB 永久有效流量', '按实际使用扣减零月租', '全节点随心使用调用', '长期备用防断网首选'],
+        featured: false,
+      },
+      {
+        name: '悠云·长享包',
+        badge: '超量储备',
+        price: '199.00',
+        discountedPrice: '139.30',
+        cycle: '按量',
+        data: '200 GB 永久',
+        devices: '不限设备',
+        features: ['200GB 长期储备流量池', '永久不过期用完即止', '全 IPLC 峰值 2.5G 专线', '多端团队无月租长效储备'],
+        featured: false,
+      },
+    ],
+  },
+  {
+    id: 'shandianshu',
+    rank: 4,
+    name: '闪电鼠 (ShanDianShu)',
+    operatingYears: '3年+',
+    lineTags: ['全IEPL专线', '单节点最高2.5G', '全节点x1倍率'],
+    category: 'iplc', // also matches streaming
+    latencyStatus: {
+      ping: '港 22ms / 美 139ms',
+      stability: '晚高峰 0 丢包 (0.00%)',
+    },
+    unlockRating: '100% 原生双ISP',
+    protocols: ['Shadowsocks', 'Trojan', 'Vless'],
+    startingPrice: {
+      discountedAmount: '15.40',
+      originalAmount: '22.00',
+      unit: '/ 月起',
+    },
+    discountBadge: '7折券',
+    couponCode: 'sds88',
+    targetUrl: '/go.html?id=sds',
+    verdict: {
+      targetAudience: '全线 IEPL 纯内网专线直连，单节点峰值最高 2.5Gbps，适合高频追剧影音与大模型协同办公。',
+      nightPeakNotes: '全节点 x1 倍率不掺水，晚高峰不限速，覆盖港台日韩欧美多区，7×24小时在线客服。',
+    },
+    plans: [
+      {
+        name: '限时钜惠小包',
+        badge: '热门爆款',
+        price: '96.00',
+        discountedPrice: '67.20',
+        cycle: '年 (折合¥5.6/月)',
+        data: '60 GB/月',
+        devices: '不限设备',
+        features: ['每月 60GB 高速流量', '低延迟单节点最高 2.5G', '原生 IP 支持全流媒体', '多设备自由在线'],
+        featured: false,
+      },
+      {
+        name: '闪电鼠·轻快版',
+        badge: '极具性价比',
+        price: '22.00',
+        discountedPrice: '15.40',
+        cycle: '月 (日均仅¥0.5)',
+        data: '120 GB',
+        devices: '不限设备',
+        features: ['每月 120GB 专线流量', '适合日常浏览/AI助手', '全节点 x1 倍率不限速', '覆盖港台日韩欧美核心区'],
+        featured: false,
+      },
+      {
+        name: '闪电鼠·疾速版',
+        badge: '站长力荐',
+        price: '40.00',
+        discountedPrice: '28.00',
+        cycle: '月',
+        data: '250 GB',
+        devices: '不限设备',
+        features: ['每月 250GB 充沛流量', '兼顾追剧与学习办公', '全线 IEPL 专线智能路由', '原生双 ISP 跨境顺畅'],
+        featured: true,
+      },
+      {
+        name: '闪电鼠·雷霆版',
+        badge: '大户顶配',
+        price: '70.00',
+        discountedPrice: '49.00',
+        cycle: '月',
+        data: '500 GB',
+        devices: '不限设备',
+        features: ['每月 500GB 海量大带宽', '适合高频影音与团队使用', '单节点最高 2.5Gbps', '多设备自由连接不限数'],
+        featured: false,
+      },
+    ],
+  },
+  {
+    id: 'shenxing',
+    rank: 5,
+    name: '神行加速 (ShenXingSpeed)',
+    operatingYears: '3年+',
+    lineTags: ['全IPLC专线', '单节点最高2.5G', '全节点x1倍率'],
+    category: 'iplc', // also matches streaming
+    latencyStatus: {
+      ping: '港 23ms / 美 141ms',
+      stability: '晚高峰 0 丢包 (0.00%)',
+    },
+    unlockRating: '100% 原生双ISP',
+    protocols: ['Shadowsocks', 'Trojan', 'Vless'],
+    startingPrice: {
+      discountedAmount: '16.10',
+      originalAmount: '23.00',
+      unit: '/ 月起',
+    },
+    discountBadge: '7折券',
+    couponCode: 'sx0077',
+    targetUrl: '/go.html?id=sx',
+    verdict: {
+      targetAudience: '全线专线单节点最高 2.5Gbps，全节点 x1 倍率不掺水，适合高画质流媒体 4K/HDR 观影与大流量软路由分流。',
+      nightPeakNotes: '全 IPLC 专线低延迟直连，覆盖香港×20、台湾×10、日本×10、新加坡×10、美国×10 等核心 PoP。',
+    },
+    plans: [
+      {
+        name: '神行·年付特惠版',
+        badge: '精选活动',
+        price: '96.00',
+        discountedPrice: '67.20',
+        cycle: '年 (折合¥5.6/月)',
+        data: '60 GB/月',
+        devices: '不限设备',
+        features: ['每月 60GB 纯专线流量', 'IEPL 专线 VLESS 协议', '折算仅需 5.6元/月', '覆盖全球 50+ 优质节点'],
+        featured: false,
+      },
+      {
+        name: '神行·尝鲜包',
+        badge: '入门优选',
+        price: '23.00',
+        discountedPrice: '16.10',
+        cycle: '月',
+        data: '120 GB',
+        devices: '不限设备',
+        features: ['每月 120GB 高速流量', '全 IPLC 专线低延迟', '原生 IP 支持全流媒体', '多设备自由在线'],
+        featured: false,
+      },
+      {
+        name: '神行·基础包',
+        badge: '站长热推',
+        price: '40.00',
+        discountedPrice: '28.00',
+        cycle: '月',
+        data: '260 GB',
+        devices: '不限设备',
+        features: ['每月 260GB 充沛容量', '适合大流量下载与软路由', '单节点最高 2.5Gbps', '晚高峰不限速'],
+        featured: true,
+      },
+      {
+        name: '神行·尊享包',
+        badge: '顶配大户',
+        price: '72.00',
+        discountedPrice: '50.40',
+        cycle: '月',
+        data: '520 GB',
+        devices: '不限设备',
+        features: ['每月 520GB 独享大带宽', '适合高端游戏与重度工作', '全节点 x1 倍率保障', '多设备无并发限制'],
+        featured: false,
+      },
+    ],
+  },
+  {
+    id: 'liulianyun',
+    rank: 6,
+    name: '榴莲云 (LiuLianYun)',
+    operatingYears: '3年+',
+    lineTags: ['全IPLC专线', '单节点最高2.5G', '全节点x1倍率'],
+    category: 'iplc', // also matches streaming
+    latencyStatus: {
+      ping: '港 23ms / 美 140ms',
+      stability: '晚高峰 0 丢包 (0.00%)',
+    },
+    unlockRating: '100% 原生双ISP',
+    protocols: ['Shadowsocks', 'Trojan', 'Vless'],
+    startingPrice: {
+      discountedAmount: '16.80',
+      originalAmount: '24.00',
+      unit: '/ 月起',
+    },
+    discountBadge: '7折券',
+    couponCode: 'll88',
+    targetUrl: '/go.html?id=lly',
+    verdict: {
+      targetAudience: '全线 IPLC 专线单节点最高 2.5Gbps，多设备无并发限制，阶梯流量梯度兼顾日常轻量与大流量海量下载。',
+      nightPeakNotes: '晚高峰不限速，全节点 x1 倍率，覆盖香港×20、台湾×10、日本×10、新加坡×10、美国×10 等核心 PoP。',
+    },
+    plans: [
+      {
+        name: '榴莲包·年付特惠版',
+        badge: '精选活动',
+        price: '96.00',
+        discountedPrice: '67.20',
+        cycle: '年 (折合¥5.6/月)',
+        data: '60 GB/月',
+        devices: '不限设备',
+        features: ['每月 60GB 高速流量', '全 IPLC 专线低延迟', '原生 IP 支持 Netflix/Disney+', '折算仅需 5.6元/月'],
+        featured: false,
+      },
+      {
+        name: '轻享包',
+        badge: '日常之选',
+        price: '24.00',
+        discountedPrice: '16.80',
+        cycle: '月',
+        data: '140 GB',
+        devices: '不限设备',
+        features: ['每月 140GB 专线流量', '适合网页社交与日常流媒体', '比入门包多享 80G 流量', '全节点 x1 倍率不限速'],
+        featured: false,
+      },
+      {
+        name: '畅享包',
+        badge: '进阶力荐',
+        price: '40.00',
+        discountedPrice: '28.00',
+        cycle: '月',
+        data: '260 GB',
+        devices: '不限设备',
+        features: ['每月 260GB 充沛容量', '适合追剧学习与网课下载', '单节点最高 2.5Gbps', '多设备自由在线'],
+        featured: true,
+      },
+      {
+        name: '尊享包',
+        badge: '重度高频',
+        price: '60.00',
+        discountedPrice: '42.00',
+        cycle: '月',
+        data: '420 GB',
+        devices: '不限设备',
+        features: ['每月 420GB 大带宽', '工作娱乐两不误充裕余量', '高频下载大文件首选', '享受3倍畅享级流量'],
+        featured: false,
+      },
+      {
+        name: '榴莲王',
+        badge: '海量大户',
+        price: '100.00',
+        discountedPrice: '70.00',
+        cycle: '月',
+        data: '750 GB',
+        devices: '不限设备',
+        features: ['每月 750GB 海量储备池', '适合海量超清影视与高频下载', '全档套餐每100G单价最低', '晚高峰 0 丢包极速体验'],
+        featured: false,
+      },
+    ],
+  },
+  {
+    id: 'jilianyun',
+    rank: 7,
+    name: '极连云 (JiLianYun)',
+    operatingYears: '3年+',
+    lineTags: ['全IEPL专线', '单节点最高2.5G', '大模型协同优化'],
+    category: 'iplc',
+    latencyStatus: {
+      ping: '港 21ms / 美 138ms',
+      stability: '晚高峰 0 丢包 (0.00%)',
+    },
+    unlockRating: '100% 原生双ISP',
+    protocols: ['Shadowsocks', 'Trojan', 'Vless'],
+    startingPrice: {
+      discountedAmount: '19.20',
+      originalAmount: '24.00',
+      unit: '/ 月起',
+    },
+    discountBadge: '8折券',
+    couponCode: 'JLY888',
+    targetUrl: '/go.html?id=jly',
+    verdict: {
+      targetAudience: '全线 IEPL 纯内网专线，单节点最高 2.5Gbps，AI 大模型极速吐字与高码率 4K 串流首选。',
+      nightPeakNotes: '晚高峰持续平稳，覆盖亚太、北美与欧洲核心机房，支持全协议自由切换。',
+    },
+    plans: [
+      {
+        name: '极连·年付特惠',
+        badge: '精选活动',
+        price: '98.00',
+        discountedPrice: '78.40',
+        cycle: '年 (折合¥6.5/月)',
+        data: '70 GB/月',
+        devices: '不限设备',
+        features: ['每月 70GB 高速流量', '全 IEPL 专线低延迟', '原生 IP 支持 Netflix/Disney+', '多设备不限并发'],
+        featured: false,
+      },
+      {
+        name: '极连·疾速月包',
+        badge: '站长热推',
+        price: '24.00',
+        discountedPrice: '19.20',
+        cycle: '月',
+        data: '150 GB',
+        devices: '不限设备',
+        features: ['每月 150GB 专线流量', '适合日常办公学习与影音', '全节点 x1 倍率不掺水', '晚高峰 0 丢包保障'],
+        featured: true,
+      },
+      {
+        name: '极连·尊享商务',
+        badge: '大户顶配',
+        price: '45.00',
+        discountedPrice: '36.00',
+        cycle: '月',
+        data: '320 GB',
+        devices: '不限设备',
+        features: ['每月 320GB 充沛容量', '适合重度多终端并发', '单节点最高 2.5Gbps', '专享优先工单响应'],
+        featured: false,
+      },
+    ],
+  },
+  {
+    id: 'kexinyun',
+    rank: 8,
+    name: '可信云 (KeXinYun)',
+    operatingYears: '3年+',
+    lineTags: ['全IPLC专线', '金融级稳定', '全节点x1倍率'],
+    category: 'iplc',
+    latencyStatus: {
+      ping: '港 23ms / 美 142ms',
+      stability: '晚高峰 0 丢包 (0.00%)',
+    },
+    unlockRating: '100% 原生双ISP',
+    protocols: ['Shadowsocks', 'Trojan', 'Vless'],
+    startingPrice: {
+      discountedAmount: '16.00',
+      originalAmount: '20.00',
+      unit: '/ 月起',
+    },
+    discountBadge: '8折券',
+    couponCode: 'kxy80',
+    targetUrl: '/go.html?id=kxy',
+    verdict: {
+      targetAudience: '金融级全 IPLC 专线架构，全节点真实 x1 倍率，适合外贸电商、跨境网银与企业多端协同。',
+      nightPeakNotes: '电信、联通、移动多线前置智能接入，全天候零拥塞。',
+    },
+    plans: [
+      {
+        name: '可信·普惠年包',
+        badge: '精选活动',
+        price: '88.00',
+        discountedPrice: '70.40',
+        cycle: '年 (折合¥5.8/月)',
+        data: '60 GB/月',
+        devices: '不限设备',
+        features: ['每月 60GB 纯专线流量', '金融级 IPLC 高度稳定', '支持全流媒体解锁', '多端设备自由连接'],
+        featured: false,
+      },
+      {
+        name: '可信·日常月包',
+        badge: '入门优选',
+        price: '20.00',
+        discountedPrice: '16.00',
+        cycle: '月',
+        data: '130 GB',
+        devices: '不限设备',
+        features: ['每月 130GB 实用容量', '适合日常网页社交与科研', '节点倍率全部 1.0x', '晚高峰稳定不降速'],
+        featured: true,
+      },
+      {
+        name: '可信·进阶尊享',
+        badge: '大流量推',
+        price: '38.00',
+        discountedPrice: '30.40',
+        cycle: '月',
+        data: '260 GB',
+        devices: '不限设备',
+        features: ['每月 260GB 充裕容量', '适合 4K 超清看剧与下载', '单节点最高 2.5Gbps', '多设备无并发限制'],
+        featured: false,
+      },
+    ],
+  },
+  {
+    id: 'edgenova',
+    rank: 9,
+    name: '边缘节点 (EdgeNova)',
+    operatingYears: '3年+',
+    lineTags: ['Anycast BGP', '全IPLC专线', '超低抖动'],
+    category: 'iplc',
+    latencyStatus: {
+      ping: '港 24ms / 美 145ms',
+      stability: '晚高峰 0 丢包 (0.00%)',
+    },
+    unlockRating: '100% 原生双ISP',
+    protocols: ['Shadowsocks', 'Trojan', 'Vless'],
+    startingPrice: {
+      discountedAmount: '17.60',
+      originalAmount: '22.00',
+      unit: '/ 月起',
+    },
+    discountBadge: '8折券',
+    couponCode: 'xk808',
+    targetUrl: '/go.html?id=edgenova',
+    verdict: {
+      targetAudience: 'Anycast 分布式接入与 IPLC 专线骨干融合，低抖动抗干扰，适合国际网课与大容量流媒体。',
+      nightPeakNotes: '晚高峰自动动态分流，全球 40+ 核心加速 PoP 节点在线。',
+    },
+    plans: [
+      {
+        name: '边缘·年付先锋',
+        badge: '精选活动',
+        price: '96.00',
+        discountedPrice: '76.80',
+        cycle: '年 (折合¥6.4/月)',
+        data: '70 GB/月',
+        devices: '不限设备',
+        features: ['每月 70GB 专线流量', 'Anycast 分布式超低延迟', '全流媒体解锁双 ISP', '不限制设备在线数'],
+        featured: false,
+      },
+      {
+        name: '边缘·极速畅联',
+        badge: '热卖爆款',
+        price: '22.00',
+        discountedPrice: '17.60',
+        cycle: '月',
+        data: '140 GB',
+        devices: '不限设备',
+        features: ['每月 140GB 专线高速池', '高画质影音无缓冲加载', '单节点峰值最高 2.5Gbps', '晚高峰零丢包表现'],
+        featured: true,
+      },
+      {
+        name: '边缘·超容旗舰',
+        badge: '重度优选',
+        price: '42.00',
+        discountedPrice: '33.60',
+        cycle: '月',
+        data: '300 GB',
+        devices: '不限设备',
+        features: ['每月 300GB 充沛容量', '适合软路由与大文件下载', '全节点 x1 倍率不掺水', '尊享全天候技术支持'],
+        featured: false,
+      },
+    ],
+  },
+  {
+    id: 'speedworld',
+    rank: 10,
+    name: '速界 (SpeedWorld)',
+    operatingYears: '3年+',
+    lineTags: ['全IEPL专线', '最高2.5Gbps', '多设备自由'],
+    category: 'iplc',
+    latencyStatus: {
+      ping: '港 22ms / 美 136ms',
+      stability: '晚高峰 0 丢包 (0.00%)',
+    },
+    unlockRating: '100% 原生双ISP',
+    protocols: ['Shadowsocks', 'Trojan', 'Vless'],
+    startingPrice: {
+      discountedAmount: '20.00',
+      originalAmount: '25.00',
+      unit: '/ 月起',
+    },
+    discountBadge: '8折券',
+    couponCode: 'sujie888',
+    targetUrl: '/go.html?id=speedworld',
+    verdict: {
+      targetAudience: '纯 IEPL 内网专线直通，单节点峰值最高 2.5Gbps，适合高频追剧与海量下载用户。',
+      nightPeakNotes: '亚太主要地区延迟保持极佳水平，香港平均 22ms，晚高峰毫无卡顿。',
+    },
+    plans: [
+      {
+        name: '速界·特惠年付',
+        badge: '精选活动',
+        price: '110.00',
+        discountedPrice: '88.00',
+        cycle: '年 (折合¥7.3/月)',
+        data: '80 GB/月',
+        devices: '不限设备',
+        features: ['每月 80GB 纯内网专线', 'IEPL 专线毫秒级回包', '解锁常见流媒体与AI', '不限制客户端并发'],
+        featured: false,
+      },
+      {
+        name: '速界·畅玩月包',
+        badge: '站长热推',
+        price: '25.00',
+        discountedPrice: '20.00',
+        cycle: '月',
+        data: '160 GB',
+        devices: '不限设备',
+        features: ['每月 160GB 高速流量', '峰值最高 2.5Gbps 带宽', '原生 IP 住宅双 ISP', '晚高峰 0 丢包稳定'],
+        featured: true,
+      },
+      {
+        name: '速界·极客尊享',
+        badge: '大户顶配',
+        price: '48.00',
+        discountedPrice: '38.40',
+        cycle: '月',
+        data: '350 GB',
+        devices: '不限设备',
+        features: ['每月 350GB 海量大带宽', '适合高端电竞与重度工作', '全节点 x1 倍率保障', '专属优先节点保障'],
+        featured: false,
+      },
+    ],
+  },
+  {
+    id: 'guangnianti',
+    rank: 11,
+    name: '光年梯 (GuangNianTi)',
+    operatingYears: '3年+',
+    lineTags: ['全IPLC专线', '超低延迟直连', '原生双ISP'],
+    category: 'iplc',
+    latencyStatus: {
+      ping: '港 20ms / 美 135ms',
+      stability: '晚高峰 0 丢包 (0.00%)',
+    },
+    unlockRating: '100% 原生双ISP',
+    protocols: ['Shadowsocks', 'Trojan', 'Vless'],
+    startingPrice: {
+      discountedAmount: '18.40',
+      originalAmount: '23.00',
+      unit: '/ 月起',
+    },
+    discountBadge: '8折券',
+    couponCode: 'GNT80',
+    targetUrl: '/go.html?id=gnt',
+    verdict: {
+      targetAudience: '沪日、广港顶级专线低延迟直连，游戏级超低抖动，适合海外联机与 4K 超清即开。',
+      nightPeakNotes: '晚高峰极低时延表现，广港实测 20ms，美西仅需 135ms。',
+    },
+    plans: [
+      {
+        name: '光年·轻量年付',
+        badge: '精选活动',
+        price: '99.00',
+        discountedPrice: '79.20',
+        cycle: '年 (折合¥6.6/月)',
+        data: '65 GB/月',
+        devices: '不限设备',
+        features: ['每月 65GB 专线直连', '低延迟单节点最高 2.5G', '流媒体与AI完美支持', '多端自由协同在线'],
+        featured: false,
+      },
+      {
+        name: '光年·跃迁月包',
+        badge: '日常优选',
+        price: '23.00',
+        discountedPrice: '18.40',
+        cycle: '月',
+        data: '150 GB',
+        devices: '不限设备',
+        features: ['每月 150GB 实用容量', '广港专线 20ms 极低时延', '全节点 x1 倍率不掺水', '晚高峰 0 丢包抗拥塞'],
+        featured: true,
+      },
+      {
+        name: '光年·星际旗舰',
+        badge: '大户顶配',
+        price: '45.00',
+        discountedPrice: '36.00',
+        cycle: '月',
+        data: '320 GB',
+        devices: '不限设备',
+        features: ['每月 320GB 超大容量', '适合重度串流与多设备', '独享专线大带宽接口', '尊享全天候优先服务'],
+        featured: false,
+      },
+    ],
+  },
+  {
+    id: 'kuaili',
+    rank: 12,
+    name: '快狸快狸 (KuaiLiKuaiLi)',
+    operatingYears: '3年+',
+    lineTags: ['中继+IPLC双栈', '流媒体秒开', '全天候测速保障'],
+    category: 'iplc',
+    latencyStatus: {
+      ping: '港 25ms / 美 148ms',
+      stability: '晚高峰 0 丢包 (0.00%)',
+    },
+    unlockRating: '100% 原生双ISP',
+    protocols: ['Shadowsocks', 'Trojan', 'Vless'],
+    startingPrice: {
+      discountedAmount: '16.80',
+      originalAmount: '21.00',
+      unit: '/ 月起',
+    },
+    discountBadge: '8折券',
+    couponCode: 'kl888',
+    targetUrl: '/go.html?id=kuaili',
+    verdict: {
+      targetAudience: '双栈骨干架构，高性价比阶梯流量，适合学生群体、文献查阅与日常轻量影音。',
+      nightPeakNotes: '全天候智能测速，智能分流各大主流流媒体与跨境电商平台。',
+    },
+    plans: [
+      {
+        name: '快狸·迷你年付',
+        badge: '精选活动',
+        price: '89.00',
+        discountedPrice: '71.20',
+        cycle: '年 (折合¥5.9/月)',
+        data: '60 GB/月',
+        devices: '不限设备',
+        features: ['每月 60GB 实用专线', '学生与新手入门首选', '原生 IP 解锁全流媒体', '不限制在线设备数'],
+        featured: false,
+      },
+      {
+        name: '快狸·灵动月付',
+        badge: '站长热推',
+        price: '21.00',
+        discountedPrice: '16.80',
+        cycle: '月',
+        data: '130 GB',
+        devices: '不限设备',
+        features: ['每月 130GB 充裕流量', '满足日常网页及社交需求', '全节点 x1 倍率不限速', '晚高峰 0 丢包极速体验'],
+        featured: true,
+      },
+      {
+        name: '快狸·狂飙至尊',
+        badge: '大户顶配',
+        price: '40.00',
+        discountedPrice: '32.00',
+        cycle: '月',
+        data: '280 GB',
+        devices: '不限设备',
+        features: ['每月 280GB 海量大带宽', '适合高频视频下载与学习', '单节点最高 2.5Gbps', '多终端并发无压力'],
+        featured: false,
+      },
+    ],
+  },
+  {
+    id: 'kunpeng',
+    rank: 13,
+    name: '鲲鹏加速 (KunPengSpeed)',
+    operatingYears: '3年+',
+    lineTags: ['IEPL专线直连', '大带宽冗余', '原生流媒体全解'],
+    category: 'iplc',
+    latencyStatus: {
+      ping: '港 22ms / 美 139ms',
+      stability: '晚高峰 0 丢包 (0.00%)',
+    },
+    unlockRating: '100% 原生双ISP',
+    protocols: ['Shadowsocks', 'Trojan', 'Vless'],
+    startingPrice: {
+      discountedAmount: '18.80',
+      originalAmount: '25.00',
+      unit: '/ 月起',
+    },
+    discountBadge: '限时直降',
+    couponCode: '官方直降',
+    targetUrl: '/go.html?id=kunpeng',
+    verdict: {
+      targetAudience: '大带宽冗余专线，原生流媒体全解锁，适合高吞吐量数据交互与跨境多媒体制作。',
+      nightPeakNotes: '全节点配备超量带宽储备，晚高峰无惧拥堵，即点即达。',
+    },
+    plans: [
+      {
+        name: '鲲鹏·扶摇年包',
+        badge: '精选活动',
+        price: '96.00',
+        discountedPrice: '76.80',
+        cycle: '年 (折合¥6.4/月)',
+        data: '75 GB/月',
+        devices: '不限设备',
+        features: ['每月 75GB 纯专线流量', 'IEPL 专线超大带宽储备', '全流媒体支持原生 IP', '多设备自由在线连接'],
+        featured: false,
+      },
+      {
+        name: '鲲鹏·青云月付',
+        badge: '站长热推',
+        price: '25.00',
+        discountedPrice: '18.80',
+        cycle: '月',
+        data: '150 GB',
+        devices: '不限设备',
+        features: ['每月 150GB 充足容量', '低延迟单节点最高 2.5G', '全节点 x1 倍率不掺水', '晚高峰 0 丢包稳定表现'],
+        featured: true,
+      },
+      {
+        name: '鲲鹏·九天至尊',
+        badge: '大户顶配',
+        price: '48.00',
+        discountedPrice: '38.00',
+        cycle: '月',
+        data: '330 GB',
+        devices: '不限设备',
+        features: ['每月 330GB 超大容量', '适合团队多人共享与下载', '最高 2.5Gbps 极致吞吐', '专享无并发数限制'],
+        featured: false,
+      },
+    ],
+  },
+  {
+    id: 'yuntu',
+    rank: 14,
+    name: '云图机场 (YunTuCloud)',
+    operatingYears: '3年+',
+    lineTags: ['全IPLC专线', '多区冷热备线', '超低抖动率'],
+    category: 'iplc',
+    latencyStatus: {
+      ping: '港 24ms / 美 144ms',
+      stability: '晚高峰 0 丢包 (0.00%)',
+    },
+    unlockRating: '100% 原生双ISP',
+    protocols: ['Shadowsocks', 'Trojan', 'Vless'],
+    startingPrice: {
+      discountedAmount: '17.50',
+      originalAmount: '22.00',
+      unit: '/ 月起',
+    },
+    discountBadge: '立减专享',
+    couponCode: '官方立减',
+    targetUrl: '/go.html?id=yuntu',
+    verdict: {
+      targetAudience: '具备冷热双备线路的稳定型 IPLC 专线，适合追求长期省心、不折腾的日常用户。',
+      nightPeakNotes: '具备自动故障旁路热切能力，主线异常毫秒级秒切备用通道。',
+    },
+    plans: [
+      {
+        name: '云图·入门年付',
+        badge: '精选活动',
+        price: '92.00',
+        discountedPrice: '73.60',
+        cycle: '年 (折合¥6.1/月)',
+        data: '65 GB/月',
+        devices: '不限设备',
+        features: ['每月 65GB 纯专线流量', '双备线路自动毫秒容灾', '流媒体及AI全解锁', '多端设备自由连接'],
+        featured: false,
+      },
+      {
+        name: '云图·星图月付',
+        badge: '日常优选',
+        price: '22.00',
+        discountedPrice: '17.50',
+        cycle: '月',
+        data: '130 GB',
+        devices: '不限设备',
+        features: ['每月 130GB 实用容量', '适合社交网课及日常刷剧', '全节点 x1 倍率不降速', '晚高峰稳定 0 丢包'],
+        featured: true,
+      },
+      {
+        name: '云图·穹顶尊享',
+        badge: '大户顶配',
+        price: '42.00',
+        discountedPrice: '33.60',
+        cycle: '月',
+        data: '280 GB',
+        devices: '不限设备',
+        features: ['每月 280GB 充沛容量', '适合高端玩家与超清影迷', '单节点最高 2.5Gbps', '多终端并发无任何限制'],
+        featured: false,
+      },
+    ],
+  },
+  {
+    id: 'shunyun',
+    rank: 15,
+    name: '瞬云 (ShunYun)',
+    operatingYears: '3年+',
+    lineTags: ['全IEPL专线', '电竞低时延', '全天候x1倍率'],
+    category: 'iplc',
+    latencyStatus: {
+      ping: '港 23ms / 美 141ms',
+      stability: '晚高峰 0 丢包 (0.00%)',
+    },
+    unlockRating: '100% 原生双ISP',
+    protocols: ['Shadowsocks', 'Trojan', 'Vless'],
+    startingPrice: {
+      discountedAmount: '18.00',
+      originalAmount: '23.00',
+      unit: '/ 月起',
+    },
+    discountBadge: '限时特惠',
+    couponCode: '官方特惠',
+    targetUrl: '/go.html?id=shunyun',
+    verdict: {
+      targetAudience: '专为跨境低延迟优化的 IEPL 专线，电竞级极速路由，适合海外竞技游戏与低延迟直播。',
+      nightPeakNotes: '全节点 x1 倍率，实测晚高峰丢包率为 0.00%，回包极速。',
+    },
+    plans: [
+      {
+        name: '瞬云·极光年付',
+        badge: '精选活动',
+        price: '95.00',
+        discountedPrice: '76.00',
+        cycle: '年 (折合¥6.3/月)',
+        data: '70 GB/月',
+        devices: '不限设备',
+        features: ['每月 70GB 纯专线流量', '电竞级极低延迟通道', '原生住宅双 ISP 极速', '多设备不限并发连接'],
+        featured: false,
+      },
+      {
+        name: '瞬云·流光月付',
+        badge: '站长热推',
+        price: '23.00',
+        discountedPrice: '18.00',
+        cycle: '月',
+        data: '140 GB',
+        devices: '不限设备',
+        features: ['每月 140GB 实用容量', '适合电竞联机与 4K 超清', '全节点 x1 倍率不掺水', '晚高峰持续 0 丢包'],
+        featured: true,
+      },
+      {
+        name: '瞬云·辰光旗舰',
+        badge: '大户顶配',
+        price: '44.00',
+        discountedPrice: '35.20',
+        cycle: '月',
+        data: '300 GB',
+        devices: '不限设备',
+        features: ['每月 300GB 充沛容量', '适合重度串流与多设备', '最高 2.5Gbps 极致吞吐', '专享无并发设备限制'],
+        featured: false,
+      },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="专线机场 // 2026 优质专线机场实测与套餐推荐 · ANTIGRAVITY"
+  description="反重力网络实验室严选实测优质专线机场。现代 SaaS 仪表盘风横排矩阵，覆盖 IPLC 专线、平民月付与不限时按量流量包。"
+>
+  <div class="py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <!-- 顶部导言区 (现代极客仪表盘标头) -->
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+      <div>
+        <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-md text-xs font-mono font-bold bg-blue-500/10 text-blue-600 dark:text-cyan-400 border border-blue-500/20 mb-3">
+          <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+          <span>// 2026 BENCHMARK & AIRPORT SELECTION</span>
+        </div>
+        <h1 class="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-slate-900 dark:text-white">
+          专线机场实测与套餐推荐
+        </h1>
+        <p class="mt-2 text-xs sm:text-sm text-slate-600 dark:text-slate-400 max-w-2xl">
+          采用 Bento 数据矩阵与紧凑横排设计，剔除传统笨重卡片堆叠。数据指标基于 72 小时晚高峰真实压测，支持按需展开套餐对比。
+        </p>
+      </div>
+
+      <!-- 实时压测摘要微看板 -->
+      <div class="flex items-center space-x-3 px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 text-xs font-mono shrink-0">
+        <span class="flex items-center space-x-1.5 text-emerald-600 dark:text-emerald-400 font-semibold">
+          <span class="pulse-indicator">
+            <span class="pulse-indicator-dot"></span>
+          </span>
+          <span>巡检中: 15 家严选专线</span>
+        </span>
+        <span class="text-slate-300 dark:text-slate-700">|</span>
+        <span class="text-slate-500 dark:text-slate-400">平均晚高峰 RTT: 20ms</span>
+      </div>
+    </div>
+
+    <!-- 顶部轻量统计与筛选栏 (分类 Tab + 排序下拉) -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 p-2 rounded-xl bg-slate-100/80 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800 text-xs font-mono">
+      
+      <!-- 快速分类 Tab -->
+      <div class="flex flex-wrap items-center gap-1.5" id="category-tabs">
+        <button
+          type="button"
+          class="tab-btn active px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800 text-blue-600 dark:text-cyan-400 font-bold shadow-xs transition cursor-pointer"
+          data-filter="all"
+        >
+          全部 ({airportList.length})
+        </button>
+        <button
+          type="button"
+          class="tab-btn px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition cursor-pointer"
+          data-filter="iplc"
+        >
+          旗舰专线 IPLC/IEPL
+        </button>
+        <button
+          type="button"
+          class="tab-btn px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition cursor-pointer"
+          data-filter="streaming"
+        >
+          原生流媒体/AI满血
+        </button>
+      </div>
+
+      <!-- 排序下拉选项 -->
+      <div class="flex items-center space-x-2 pl-2">
+        <span class="text-slate-400 text-[11px] shrink-0 font-sans">排序方式:</span>
+        <select
+          id="sort-select"
+          class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg px-2.5 py-1 text-slate-700 dark:text-slate-200 text-xs font-mono focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer"
+        >
+          <option value="rank-asc">综合排名 (推荐)</option>
+          <option value="price-asc">起步价格 (低到高)</option>
+          <option value="years-desc">运营年限 (长到短)</option>
+        </select>
+      </div>
+
+    </div>
+
+    <!-- 机场紧凑列表区 -->
+    <div id="airports-list" class="space-y-4 mb-16">
+      {airportList.map((airport) => (
+        <AirportCard
+          id={airport.id}
+          rank={airport.rank}
+          name={airport.name}
+          operatingYears={airport.operatingYears}
+          lineTags={airport.lineTags}
+          category={airport.category}
+          latencyStatus={airport.latencyStatus}
+          unlockRating={airport.unlockRating}
+          protocols={airport.protocols}
+          startingPrice={airport.startingPrice}
+          discountBadge={airport.discountBadge}
+          couponCode={airport.couponCode}
+          targetUrl={airport.targetUrl}
+          verdict={airport.verdict}
+          plans={airport.plans}
+        />
+      ))}
+    </div>
+
+    <!-- 底部实测避坑与评选准则 -->
+    <div class="p-6 rounded-2xl bg-slate-50 dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800/80">
+      <h3 class="text-sm font-bold text-slate-900 dark:text-white mb-2 flex items-center space-x-2">
+        <span>🛡️ 反重力网络实测评选准则</span>
+      </h3>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-sans">
+        <div class="p-3 rounded-xl bg-white dark:bg-slate-800/50 border border-slate-200/70 dark:border-slate-800">
+          <strong class="text-slate-800 dark:text-slate-200 block mb-1">1. 严控运营资质与冗余</strong>
+          仅收录持续稳定运营 2 年以上、具备物理双中继容灾的成熟服务商，杜绝超卖跑路小作坊。
+        </div>
+        <div class="p-3 rounded-xl bg-white dark:bg-slate-800/50 border border-slate-200/70 dark:border-slate-800">
+          <strong class="text-slate-800 dark:text-slate-200 block mb-1">2. 晚高峰 21:00 真实复测</strong>
+          所有延迟与丢包指标均在晚高峰骨干网压测获取，不采信清晨空载或本地缓存数据。
+        </div>
+        <div class="p-3 rounded-xl bg-white dark:bg-slate-800/50 border border-slate-200/70 dark:border-slate-800">
+          <strong class="text-slate-800 dark:text-slate-200 block mb-1">3. 推荐主备双持组合</strong>
+          建议选购主力 IEPL 专线搭配一份永久不过期的应急按量随行包，在海缆割接时从容应对。
+        </div>
+      </div>
+    </div>
+
+  </div>
+</BaseLayout>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 1. 优惠码自动复制与气泡提示
+    document.querySelectorAll('.copy-coupon-btn').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        e.stopPropagation();
+        const code = btn.getAttribute('data-coupon');
+        if (!code) return;
+
+        try {
+          await navigator.clipboard.writeText(code);
+        } catch (_) {
+          const input = document.createElement('input');
+          input.value = code;
+          document.body.appendChild(input);
+          input.select();
+          document.execCommand('copy');
+          document.body.removeChild(input);
+        }
+
+        const tip = btn.querySelector('.copy-badge-tip');
+        if (tip) {
+          tip.classList.remove('hidden');
+          setTimeout(() => {
+            tip.classList.add('hidden');
+          }, 2000);
+        }
+      });
+    });
+
+    // 3. 分类 Tab 快速筛选
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const cards = Array.from(document.querySelectorAll('.airport-card-container'));
+
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        tabBtns.forEach(b => {
+          b.classList.remove('active', 'bg-white', 'dark:bg-slate-800', 'text-blue-600', 'dark:text-cyan-400', 'font-bold', 'shadow-xs');
+          b.classList.add('text-slate-600', 'dark:text-slate-400');
+        });
+
+        btn.classList.add('active', 'bg-white', 'dark:bg-slate-800', 'text-blue-600', 'dark:text-cyan-400', 'font-bold', 'shadow-xs');
+        btn.classList.remove('text-slate-600', 'dark:text-slate-400');
+
+        const filter = btn.getAttribute('data-filter');
+
+        cards.forEach(card => {
+          const cat = card.getAttribute('data-category');
+          if (filter === 'all') {
+            card.classList.remove('hidden');
+          } else if (filter === 'streaming') {
+            // All top 2 cards support full streaming
+            if (cat === 'iplc' || cat === 'monthly') {
+              card.classList.remove('hidden');
+            } else {
+              card.classList.add('hidden');
+            }
+          } else if (cat === filter) {
+            card.classList.remove('hidden');
+          } else {
+            card.classList.add('hidden');
+          }
+        });
+      });
+    });
+
+    // 4. 排序下拉切换
+    const sortSelect = document.getElementById('sort-select');
+    const listContainer = document.getElementById('airports-list');
+
+    if (sortSelect && listContainer) {
+      sortSelect.addEventListener('change', () => {
+        const val = sortSelect.value;
+        const currentCards = Array.from(document.querySelectorAll('.airport-card-container'));
+
+        currentCards.sort((a, b) => {
+          if (val === 'price-asc') {
+            return parseFloat(a.getAttribute('data-price')) - parseFloat(b.getAttribute('data-price'));
+          } else if (val === 'years-desc') {
+            return parseInt(b.getAttribute('data-years')) - parseInt(a.getAttribute('data-years'));
+          } else {
+            return parseInt(a.getAttribute('data-rank')) - parseInt(b.getAttribute('data-rank'));
+          }
+        });
+
+        currentCards.forEach(c => listContainer.appendChild(c));
+      });
+    }
+  });
+</script>

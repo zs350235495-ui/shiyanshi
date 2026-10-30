@@ -1,0 +1,376 @@
+---
+// src/pages/radar/index.astro
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+// 常见技术与营销陷阱
+const pitfalls = [
+  {
+    id: 'PIT-01',
+    title: '套壳伪 IPLC 陷阱：公网二次打包谎称端内专线',
+    severity: '极高危 (Critical)',
+    impact: '晚高峰丢包骤增至 30%，国际断纤时业务全部阻断',
+    detection: '使用 `mtr -r -c 100 <目标节点>` 检查中继跳数。若跳数中出现 202.97 等公网骨干路由跳点，实为单线普通 VPS 隧道套壳，并非端内内网。',
+    solution: '要求供应商提供正规运营商波分专线 CIR 独享合同，并通过内部私网保留 IP（10.0.0.0/8）进行端到端直连测试。首推物理内网专线 #1 环球梯。',
+  },
+  {
+    id: 'PIT-02',
+    title: '广播欺诈型“假原生 IP”：机房 IP 伪造家庭宽带',
+    severity: '高危 (High)',
+    impact: '遭遇 Cloudflare 5秒盾拦截、ChatGPT 封号与矩阵账号被风控',
+    detection: '通过 `curl ipinfo.io/<IP>/json` 与 `whois` 探测。检查 `asn.type` 字段，若为 `hosting` 或 `business` 则是数据中心机房 IP，真正的原生宽带必须为 `isp`。',
+    solution: '严格采购持有当地电信主干运营商（如 AT&T, Verizon, HKT）正规本地 AS 的原生双 ISP 住宅出口。',
+  },
+  {
+    id: 'PIT-03',
+    title: '恶性绕路陷阱：亚太节点经由美国中转 (绕美延迟 260ms)',
+    severity: '中高危 (Moderate)',
+    impact: '香港到日本物理直连原本仅 45ms，绕经洛杉矶后延迟突增至 280ms',
+    detection: '运行 `traceroute -A <目标IP>` 查看自治系统号路径。若发现路由途径 Hurricane Electric (AS6939) 圣何塞等节点，说明亚太本地互联（HKIX/JPIX）缺失。',
+    solution: '强制在路由器或网关侧制定静态 BGP Community 策略，禁用 Tier-1 骨干网的非就近多跳重选。',
+  },
+  {
+    id: 'PIT-04',
+    title: '晚高峰 QoS 扼杀：长生命周期 TCP 连接被运营商精准限速',
+    severity: '高危 (High)',
+    impact: '单线程传输速度被压制在 500KB/s 以下，长连接频发 RST 强制断开',
+    detection: '通过 iPerf3 分别进行单线程 TCP 与并发多流 UDP 测试，对比晚高峰 20:00 与清晨 06:00 的带宽保留比。',
+    solution: '传输层切换至 Hysteria2 / QUIC，开启多端口动态跳跃并部署 BBRv3 拥塞控制算法。',
+  },
+  {
+    id: 'PIT-05',
+    title: '虚假 99.99% SLA 承诺：超卖比 1:100 的流控队列崩溃',
+    severity: '高危 (High)',
+    impact: '邻居租户进行大文件下载或被攻击时，整个母机网卡缓存区塞满丢包',
+    detection: '连续 72 小时监控 RTT 抖动标准差。若抖动幅度随特定整点呈现周期性脉冲突增，表明处于拥挤超卖宿主机内。',
+    solution: '签约独享带宽保证，认准像 #1 环球梯、#2 大佬云等全节点严格 1.0x 真实倍率的服务商。',
+  },
+];
+
+// 真实历史跑路机场黑名单与警示档案 (10 家典型暴雷跑路样本库)
+const rugPullAirports = [
+  {
+    id: 'RUG-01',
+    name: '速蛙云 (FastFrog)',
+    time: '2022 年底暴雷',
+    scamType: '行业巨头高调跑路',
+    trick: '曾是圈内最大机场之一，年终大促“充值送iPhone、买两年送三年”大肆吸纳资金后，突然全线拔线，TG频道全部禁言清空。',
+    lossLevel: '涉案资金数千万元，数万用户直接失联',
+    lesson: '知名度再高也不能盲目长期趸交大额费用，绝不一次性充值数千元。',
+  },
+  {
+    id: 'RUG-02',
+    name: '喵帕斯 (NekoPas)',
+    time: '2020 年跑路',
+    scamType: '老牌知名机场崩塌',
+    trick: '老牌著名中转机场，因团队内讧与资金链断裂，创始人直接关闭官网入口与面板，全站节点一夜蒸发。',
+    lossLevel: '老用户存量订阅全部作废，行业早期最大暴雷事件',
+    lesson: '任何机场哪怕运营数年，也必须坚持月付或者使用小额按量包防守。',
+  },
+  {
+    id: 'RUG-03',
+    name: '布丁网络 (Pudding Cloud)',
+    time: '2023 年暴雷',
+    scamType: '低价倾销年付杀猪盘',
+    trick: '在各大论坛海量投放“¥39包年1000G”广告，迅速累积上万注册量，运营不到三个月突然整站 404 销声匿迹。',
+    lossLevel: '超万名新手贪便宜被骗取年费',
+    lesson: '违背物理专线带宽成本定价的超低价年付，99% 是为了卷款跑路。',
+  },
+  {
+    id: 'RUG-04',
+    name: '跑路云 (PaoLu Cloud)',
+    time: '2023 年关停',
+    scamType: '自嘲式圈钱讽刺盘',
+    trick: '利用反讽心理营销，声称“跑路云绝不跑路”，通过高额 AFF 返利诱导推广，收取年费后直接更名失联。',
+    lossLevel: '推广者与被推广者双双被坑',
+    lesson: '拒绝噱头营销与非正常品牌名，务必检验真实物理专线资质。',
+  },
+  {
+    id: 'RUG-05',
+    name: '极速云 (SpeedyCloud)',
+    time: '2024 年暴雷',
+    scamType: '节点频瘫借口拖延',
+    trick: '日常节点频繁红标，官方公告长期谎称“遭国家级 DDoS 攻击”或“光缆被挖断”，拖延数周后悄无声息解散 TG 群。',
+    lossLevel: '订阅用户剩余时长均未获任何退款',
+    lesson: '节点大面积飘红超过 3 天且无实质备用容灾方案的，应立刻止损换乘。',
+  },
+  {
+    id: 'RUG-06',
+    name: '星链加速 (StarLink Cloud)',
+    time: '2024 年跑路',
+    scamType: '概念包装虚假宣传',
+    trick: '碰瓷马斯克 Starlink 概念，声称拥有卫星独享出口，定价虚高收割小白，后因欠费被机房直接拔线封机。',
+    lossLevel: '数百名小白用户人均损失超 300 元',
+    lesson: '跨境翻墙只有陆缆与海缆，不存在所谓“卫星专线穿透”，切勿被科技黑话蒙蔽。',
+  },
+  {
+    id: 'RUG-07',
+    name: '云上自由 (FreeCloud)',
+    time: '2023 年关停',
+    scamType: '“永久不限时”陷阱盘',
+    trick: '主打“¥99 永久买断 10TB 流量”，诱导用户以为可以终生使用，圈钱达预期后不到两周域名解析直接清空。',
+    lossLevel: '买断制虚假承诺受害者众多',
+    lesson: '真正的按量不限时（如环球梯随行包）是有合理流量计价的，绝不会有百元无限或买断骗局。',
+  },
+  {
+    id: 'RUG-08',
+    name: '天翼互联 (Fake TianYi)',
+    time: '2023 年查封',
+    scamType: '冒充国企权威背书',
+    trick: '盗用中国电信“天翼”品牌与 Logo，声称有特批国企跨境专网资质，极具欺骗性，最终因侵权涉案被联合封禁。',
+    lossLevel: '大批企事业单位员工误以为官方服务受损',
+    lesson: '三大运营商从不面向个人公开零售翻墙机场，凡是冒用国企名字的必是诈骗。',
+  },
+  {
+    id: 'RUG-09',
+    name: '量子专线 (Quantum Speed)',
+    time: '2024 年暴雷',
+    scamType: '支付网关跑路暴雷',
+    trick: '频繁更换第四方黑产免签支付通道，充值跳转至海外菠菜平台，最终资金链被冻结，运营团队直接弃站跑路。',
+    lossLevel: '用户账户余额与订阅直接归零',
+    lesson: '警惕支付页面跳转至可疑个人二维码或境外博彩商户的平台。',
+  },
+  {
+    id: 'RUG-10',
+    name: '蓝天云 (BlueSky VPN)',
+    time: '2024 年跑路',
+    scamType: '临终大促经典套路',
+    trick: '跑路前三天连发 5 条紧急打折公告，“全场 1 折仅限 24 小时”，大捞最后一笔后直接关闭服务器清库。',
+    lossLevel: '大量冲着“1折捡漏”的用户被精准收割',
+    lesson: '任何机场一旦毫无征兆地推出“骨折级非理性大促”，往往是跑路的前奏。',
+  },
+];
+
+// 跑路前夕 6 大高危预警信号
+const warningSignals = [
+  {
+    icon: '🚨',
+    title: '骨折级大促，强制推年付',
+    desc: '平时几十元/月，突然推出“20元包年、三年付送路由器”的非理性大促，且强制关停月付通道。',
+  },
+  {
+    icon: '🤐',
+    title: '官方 Telegram 群开启禁言',
+    desc: '交流群突然关闭发言、开启慢速模式，或大量删除质问节点卡顿的正常用户。',
+  },
+  {
+    icon: '🛑',
+    title: '节点飘红，借口层出不穷',
+    desc: '长期大面积断网，客服持续以“机房被黑客攻击、机房装修、海底光缆断裂”为由无限期拖延。',
+  },
+  {
+    icon: '💸',
+    title: '频繁切换异常支付渠道',
+    desc: '正规扫码支付失效，频繁切换至可疑个人微信赞赏码、第四方充值卡或强制要求 USDT 虚拟币。',
+  },
+  {
+    icon: '📈',
+    title: '节点倍率偷偷暗调 5x-10x',
+    desc: '标价看似没变，但后台将节点消耗倍率悄悄改为 3.0x、5.0x 甚至 10.0x，恶意加速用户存量扣费。',
+  },
+  {
+    icon: '🌐',
+    title: '主域名频繁跳转与更换',
+    desc: '原官方主站打不开，频繁通过临时邮件要求用户切换到不知名新域名面板，缺乏长久运营根基。',
+  },
+];
+---
+
+<BaseLayout
+  title="避坑雷达 // 跨境专线防踩雷与跑路机场暴雷黑名单档案 · ANTIGRAVITY"
+  description="全网首发 10 家典型跑路机场暴雷套路复盘。深度披露伪IPLC套壳、假原生IP广播欺诈、晚高峰QoS限速与跑路前夕6大危险信号。"
+>
+  <div class="py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <!-- 头部警报导言 -->
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
+      <div>
+        <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-md text-xs font-mono font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 mb-3">
+          <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+          <span>// REAL-TIME PITFALL RADAR & SCAM ARCHIVES</span>
+        </div>
+        <h1 class="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-slate-900 dark:text-white flex items-center space-x-3">
+          <span>⚠️ 网络选型避坑雷达 · 跑路机场黑榜</span>
+        </h1>
+        <p class="mt-2 text-xs sm:text-sm text-slate-600 dark:text-slate-400 max-w-2xl leading-relaxed">
+          科学上网领域充斥着虚假包装、超卖断流与卷款跑路。反重力实验室建立常态化雷达追踪系统，系统解剖 10 家典型跑路案例与 5 大致命工程陷阱。
+        </p>
+      </div>
+
+      <!-- 实时雷达微看板 -->
+      <div class="flex items-center space-x-3 px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 text-xs font-mono shrink-0">
+        <span class="flex items-center space-x-1.5 text-amber-600 dark:text-amber-400 font-semibold">
+          <span class="pulse-indicator">
+            <span class="pulse-indicator-dot bg-amber-500"></span>
+          </span>
+          <span>高危跑路样本库已更新</span>
+        </span>
+        <span class="text-slate-300 dark:text-slate-700">|</span>
+        <span class="text-slate-500 dark:text-slate-400">监测周期: 7×24h 常态化巡检</span>
+      </div>
+    </div>
+
+    <!-- 跑路前夕 6 大高危预警信号看板 -->
+    <div class="mb-14">
+      <div class="mb-6">
+        <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white flex items-center space-x-2">
+          <span>🚨 机场跑路前夕的 6 大高危异动信号</span>
+        </h2>
+        <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+          若您当前使用的机场出现以下任一迹象，请立刻停止充值续费并准备备用专线
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {warningSignals.map((sig, sIdx) => (
+          <div class="p-5 rounded-2xl border border-rose-200/80 dark:border-rose-900/40 bg-white/90 dark:bg-slate-900/60 shadow-xs hover:border-rose-400 transition flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-2xl">{sig.icon}</span>
+                <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-rose-100 dark:bg-rose-950 text-rose-600 dark:text-rose-400">
+                  预警等级 #{sIdx + 1}
+                </span>
+              </div>
+              <h3 class="text-sm font-bold text-slate-900 dark:text-white">
+                {sig.title}
+              </h3>
+              <p class="text-xs text-slate-600 dark:text-slate-400 mt-2 leading-relaxed">
+                {sig.desc}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- 10 家典型跑路机场暴雷黑名单档案 -->
+    <div class="mb-14 rounded-2xl border border-slate-200/90 dark:border-slate-800 bg-white/90 dark:bg-slate-900/80 backdrop-blur-md shadow-sm overflow-hidden">
+      <div class="p-5 sm:p-6 border-b border-slate-200/80 dark:border-slate-800/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div>
+          <h2 class="text-lg font-bold text-slate-900 dark:text-white flex items-center space-x-2">
+            <span class="text-rose-500">💀</span>
+            <span>真实历史跑路机场黑名单档案（10家暴雷样本库）</span>
+          </h2>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+            收录行业轰动一时的重大暴雷机场，拆解其套路手法与警示教训，以史为鉴
+          </p>
+        </div>
+        <div class="shrink-0 text-xs font-mono text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/60 px-3 py-1.5 rounded-lg border border-rose-200 dark:border-rose-800">
+          <span>● 状态：全员注销 / 永久失效</span>
+        </div>
+      </div>
+
+      <!-- 跑路黑名单表格 -->
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs font-mono">
+          <thead class="bg-slate-50 dark:bg-slate-950/60 border-b border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 uppercase">
+            <tr>
+              <th scope="col" class="py-3.5 px-4 font-bold">编号</th>
+              <th scope="col" class="py-3.5 px-4 font-bold">跑路机场名称</th>
+              <th scope="col" class="py-3.5 px-4 font-bold">暴雷时间</th>
+              <th scope="col" class="py-3.5 px-4 font-bold">收割类型</th>
+              <th scope="col" class="py-3.5 px-4 font-bold">核心卷款手法</th>
+              <th scope="col" class="py-3.5 px-4 font-bold">防范教训</th>
+              <th scope="col" class="py-3.5 px-4 text-center font-bold">状态</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100 dark:divide-slate-800/80">
+            {rugPullAirports.map((item) => (
+              <tr class="hover:bg-rose-50/30 dark:hover:bg-slate-800/50 transition">
+                <td class="py-3.5 px-4 font-bold text-slate-400">
+                  {item.id}
+                </td>
+                <td class="py-3.5 px-4 font-bold text-rose-600 dark:text-rose-400">
+                  {item.name}
+                </td>
+                <td class="py-3.5 px-4 text-slate-500 dark:text-slate-400">
+                  {item.time}
+                </td>
+                <td class="py-3.5 px-4">
+                  <span class="px-2 py-0.5 rounded bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 border border-amber-200/60 dark:border-amber-800/40 text-[11px]">
+                    {item.scamType}
+                  </span>
+                </td>
+                <td class="py-3.5 px-4 text-slate-600 dark:text-slate-300 max-w-xs font-sans text-xs">
+                  {item.trick}
+                </td>
+                <td class="py-3.5 px-4 text-emerald-600 dark:text-emerald-400 max-w-xs font-sans text-xs font-medium">
+                  {item.lesson}
+                </td>
+                <td class="py-3.5 px-4 text-center">
+                  <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-rose-100 dark:bg-rose-950 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-800">
+                    已跑路
+                  </span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 5 大技术底层陷阱手记 -->
+    <div class="mb-14">
+      <div class="mb-6">
+        <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white flex items-center space-x-2">
+          <span>🛠️ 5 大核心网络工程陷阱与排雷手记</span>
+        </h2>
+        <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+          面对虚假 IPLC、假原生住宅 IP、恶性绕美等技术欺诈，附带即时可执行的检测命令行
+        </p>
+      </div>
+
+      <div class="space-y-4">
+        {pitfalls.map((pit) => (
+          <div class="p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/90 dark:bg-slate-900/60 shadow-xs hover:border-amber-400/80 transition-all">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+              <div class="flex items-center space-x-3">
+                <span class="px-2.5 py-1 text-xs font-mono font-bold rounded-md bg-amber-500 text-slate-950">
+                  {pit.id}
+                </span>
+                <h3 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
+                  {pit.title}
+                </h3>
+              </div>
+              <span class="text-xs font-mono px-2.5 py-1 rounded-md bg-rose-100 dark:bg-rose-950/80 text-rose-700 dark:text-rose-300 font-semibold border border-rose-200 dark:border-rose-900">
+                {pit.severity}
+              </span>
+            </div>
+
+            <!-- 破坏后果 -->
+            <div class="mt-2 text-xs sm:text-sm text-slate-700 dark:text-slate-300 flex items-start space-x-2">
+              <span class="font-bold text-rose-600 dark:text-rose-400 shrink-0">【破坏后果】</span>
+              <span>{pit.impact}</span>
+            </div>
+
+            <!-- 排查命令 -->
+            <div class="mt-3 p-3.5 rounded-xl bg-slate-900 text-slate-200 font-mono text-xs border border-slate-800">
+              <div class="text-slate-400 font-bold mb-1">// 排查检测命令：</div>
+              <div class="text-cyan-300 leading-relaxed font-mono">
+                {pit.detection}
+              </div>
+            </div>
+
+            <!-- 解决方案 -->
+            <div class="mt-3 text-xs sm:text-sm text-slate-600 dark:text-slate-400 flex items-start space-x-2">
+              <span class="font-bold text-emerald-600 dark:text-emerald-400 shrink-0">【反重力解法】</span>
+              <span>{pit.solution}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- 底部实战避坑三原则 -->
+    <div class="p-6 rounded-2xl bg-slate-100/80 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 text-center max-w-3xl mx-auto font-mono text-xs text-slate-600 dark:text-slate-400">
+      <div class="font-bold text-slate-900 dark:text-white mb-1.5 text-sm flex items-center justify-center space-x-2">
+        <span>🛡️ 架构师总结：防踩雷跑路三大铁律</span>
+      </div>
+      <p>
+        1. 绝不盲目购买不知名小机场的年付或多年付套餐；<br />
+        2. 坚持选用如 <strong>#1 环球梯 (¥8.40起)</strong> 这类 4 年以上沉淀、支持月付且倍率透明的老牌正规专线；<br />
+        3. 客户端常备一个不限时永久按量包，建立金刚双轮驱动防灾闭环。
+      </p>
+    </div>
+
+  </div>
+</BaseLayout>

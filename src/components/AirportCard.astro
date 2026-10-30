@@ -1,0 +1,227 @@
+---
+// src/components/AirportCard.astro
+export interface Plan {
+  name: string;
+  badge?: string;
+  price: string;
+  discountedPrice?: string;
+  cycle: string;
+  data: string;
+  devices: string;
+  features: string[];
+  featured?: boolean;
+}
+
+export interface Props {
+  id: string;
+  rank: number;
+  name: string;
+  operatingYears: string;
+  lineTags: string[];
+  category: string;
+  latencyStatus: {
+    ping: string;
+    stability: string;
+  };
+  unlockRating: string;
+  protocols: string[];
+  startingPrice: {
+    discountedAmount: string;
+    originalAmount?: string;
+    amount?: string;
+    unit: string;
+  };
+  discountBadge: string;
+  couponCode: string;
+  targetUrl: string;
+  verdict?: {
+    targetAudience: string;
+    nightPeakNotes: string;
+  };
+  plans?: Plan[];
+}
+
+const {
+  id,
+  rank,
+  name,
+  operatingYears,
+  lineTags,
+  category,
+  latencyStatus,
+  unlockRating,
+  protocols,
+  startingPrice,
+  discountBadge,
+  couponCode,
+  targetUrl,
+  verdict,
+  plans,
+} = Astro.props;
+
+const rankStyles: Record<number, string> = {
+  1: 'bg-gradient-to-br from-amber-300 via-amber-500 to-amber-700 text-slate-950 shadow-sm shadow-amber-500/30',
+  2: 'bg-gradient-to-br from-slate-300 via-slate-400 to-slate-600 text-slate-950 shadow-sm',
+  3: 'bg-gradient-to-br from-amber-600 via-orange-600 to-amber-800 text-white shadow-sm',
+  4: 'bg-gradient-to-br from-blue-600 via-indigo-600 to-cyan-700 text-white shadow-sm',
+  5: 'bg-gradient-to-br from-purple-500 via-fuchsia-600 to-pink-600 text-white shadow-sm',
+  6: 'bg-gradient-to-br from-emerald-500 via-teal-600 to-cyan-700 text-white shadow-sm',
+  7: 'bg-gradient-to-br from-indigo-500 via-blue-600 to-sky-600 text-white shadow-sm',
+  8: 'bg-gradient-to-br from-rose-500 via-pink-600 to-red-600 text-white shadow-sm',
+  9: 'bg-gradient-to-br from-teal-500 via-emerald-600 to-green-700 text-white shadow-sm',
+  10: 'bg-gradient-to-br from-violet-600 via-purple-700 to-indigo-800 text-white shadow-sm',
+  11: 'bg-gradient-to-br from-amber-500 via-yellow-600 to-orange-700 text-slate-950 shadow-sm',
+  12: 'bg-gradient-to-br from-cyan-600 via-teal-700 to-blue-800 text-white shadow-sm',
+  13: 'bg-gradient-to-br from-sky-500 via-indigo-600 to-purple-700 text-white shadow-sm',
+  14: 'bg-gradient-to-br from-fuchsia-600 via-pink-700 to-rose-800 text-white shadow-sm',
+  15: 'bg-gradient-to-br from-slate-600 via-slate-700 to-slate-900 text-white shadow-sm',
+};
+const rankBadgeClass = rankStyles[rank] || 'bg-slate-700 text-slate-200';
+const activePrice = startingPrice.discountedAmount || startingPrice.amount || '0.00';
+---
+
+<div
+  class="airport-card-container group rounded-2xl border border-slate-200/90 dark:border-slate-800/90 bg-white/90 dark:bg-slate-900/80 backdrop-blur-md shadow-xs hover:shadow-md hover:border-blue-400/50 dark:hover:border-cyan-500/40 transition-all duration-200 overflow-hidden"
+  data-category={category}
+  data-price={activePrice}
+  data-rank={rank}
+  data-years={parseInt(operatingYears)}
+>
+  
+  <!-- 1. 主干常驻展示条 (信息一眼到底，紧凑高密度) -->
+  <div class="p-4 sm:p-5 flex flex-col xl:flex-row xl:items-center justify-between gap-4">
+    
+    <!-- 左侧：品牌区 + 线路属性 -->
+    <div class="flex items-start sm:items-center space-x-3.5 xl:w-[28%] shrink-0">
+      <div class={`w-9 h-9 rounded-xl flex items-center justify-center font-black text-xs font-mono shrink-0 ${rankBadgeClass}`}>
+        #{rank}
+      </div>
+
+      <div class="min-w-0">
+        <div class="flex items-center space-x-2">
+          <h3 class="text-base sm:text-lg font-black tracking-tight text-slate-900 dark:text-white truncate">
+            {name}
+          </h3>
+          <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-slate-700 shrink-0">
+            {operatingYears}
+          </span>
+        </div>
+
+        <div class="flex flex-wrap gap-1 mt-1.5">
+          {lineTags.map((tag) => (
+            <span class="text-[10px] font-mono px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800/90 text-slate-600 dark:text-slate-300 border border-slate-200/70 dark:border-slate-700/60">
+              {tag}
+            </span>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <!-- 中间：核心实测数据矩阵 (4 列扁平微指标看板) -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 xl:gap-4 xl:flex-1 py-3 px-3.5 rounded-xl bg-slate-50/80 dark:bg-slate-950/50 border border-slate-100 dark:border-slate-800/60 font-mono text-xs">
+      
+      <!-- 指标 1: 延迟与稳定性 -->
+      <div class="space-y-0.5">
+        <div class="text-[10px] text-slate-600 dark:text-slate-300 uppercase flex items-center space-x-1.5 font-medium">
+          <span class="pulse-indicator">
+            <span class="pulse-indicator-dot"></span>
+          </span>
+          <span>测速与抖动</span>
+        </div>
+        <div class="font-bold text-slate-800 dark:text-slate-200 text-xs truncate" title={latencyStatus.ping}>
+          {latencyStatus.ping}
+        </div>
+        <div class="text-[10px] text-emerald-600 dark:text-emerald-400 font-semibold truncate">
+          {latencyStatus.stability}
+        </div>
+      </div>
+
+      <!-- 指标 2: 解锁表现 -->
+      <div class="space-y-0.5 border-l border-slate-200/70 dark:border-slate-800/80 pl-3">
+        <div class="text-[10px] text-slate-600 dark:text-slate-300 uppercase font-medium">解锁与原生性</div>
+        <div class="font-bold text-purple-600 dark:text-purple-300 text-xs truncate">
+          {unlockRating}
+        </div>
+        <div class="text-[10px] text-slate-600 dark:text-slate-300 font-semibold truncate">
+          ChatGPT · Claude · 4K流媒体
+        </div>
+      </div>
+
+      <!-- 指标 3: 协议兼容 -->
+      <div class="space-y-0.5 sm:border-l border-slate-200/70 dark:border-slate-800/80 pl-3">
+        <div class="text-[10px] text-slate-600 dark:text-slate-300 uppercase font-medium">支持协议栈</div>
+        <div class="font-bold text-cyan-600 dark:text-cyan-400 text-xs truncate">
+          {protocols.join(' / ')}
+        </div>
+        <div class="text-[10px] text-slate-600 dark:text-slate-300 font-semibold truncate">
+          全平台内核直连
+        </div>
+      </div>
+
+      <!-- 指标 4: 价格门槛 (显示打折后的价格 + 原价划线) -->
+      <div class="space-y-0.5 border-l border-slate-200/70 dark:border-slate-800/80 pl-3">
+        <div class="text-[10px] text-slate-600 dark:text-slate-300 uppercase font-medium flex items-center space-x-1">
+          <span>券后起步门槛</span>
+          <span class="text-[9px] px-1 py-0.2 rounded bg-rose-100 dark:bg-rose-950/80 text-rose-600 dark:text-rose-300 border border-rose-200 dark:border-rose-900 font-sans font-bold">
+            {discountBadge}
+          </span>
+        </div>
+        <div class="flex items-baseline space-x-1.5">
+          <span class="text-xs font-bold text-rose-500">¥</span>
+          <span class="text-base sm:text-lg font-black text-rose-600 dark:text-rose-400 font-mono tracking-tight">
+            {activePrice}
+          </span>
+          {startingPrice.originalAmount && (
+            <span class="line-through text-[11px] text-slate-400 font-mono">
+              ¥{startingPrice.originalAmount}
+            </span>
+          )}
+        </div>
+        <div class="text-[10px] text-slate-500 dark:text-slate-400 font-medium">
+          券后实付 {startingPrice.unit}
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 右侧：优惠码胶囊 + 直达官网 + 展开抽屉触发 -->
+    <div class="flex items-center justify-between sm:justify-end space-x-2.5 xl:w-[26%] shrink-0">
+      
+      <!-- 优惠码轻量胶囊 -->
+      <button
+        type="button"
+        class="copy-coupon-btn relative px-2.5 py-1.5 rounded-lg bg-amber-50 dark:bg-amber-950/50 hover:bg-amber-100 dark:hover:bg-amber-900/60 border border-amber-300/80 dark:border-amber-700/70 text-amber-800 dark:text-amber-300 text-xs font-mono transition-all flex items-center space-x-1.5 active:scale-95 cursor-pointer"
+        data-coupon={couponCode}
+        title="点击复制优惠码"
+      >
+        <span class="text-[10px] px-1 py-0.2 rounded bg-amber-200/70 dark:bg-amber-800 text-amber-900 dark:text-amber-100 font-bold font-sans">
+          {discountBadge}
+        </span>
+        <span class="font-black tracking-wide text-xs">{couponCode}</span>
+        <svg class="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke-width="2"></rect>
+          <path stroke-width="2" d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path>
+        </svg>
+        <span class="copy-badge-tip absolute -top-7 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded text-[10px] font-sans font-bold bg-slate-900 text-white border border-slate-700 shadow-md hidden whitespace-nowrap z-20">
+          已复制!
+        </span>
+      </button>
+
+      <!-- 直达官网操作按钮 -->
+      <a
+        href={targetUrl}
+        target="_blank"
+        rel="nofollow sponsored noopener noreferrer"
+        class="px-4 py-2 rounded-xl text-xs font-bold text-white bg-slate-900 hover:bg-slate-800 dark:bg-blue-600 dark:hover:bg-blue-500 shadow-xs hover:shadow-md transition-all flex items-center space-x-1.5 shrink-0"
+      >
+        <span>直达官网</span>
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+        </svg>
+      </a>
+
+    </div>
+
+  </div>
+
+</div>

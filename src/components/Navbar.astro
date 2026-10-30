@@ -1,0 +1,230 @@
+---
+// src/components/Navbar.astro
+const { pathname } = Astro.url;
+const normalizedPath = pathname.length > 1 && pathname.endsWith('/') ? pathname.slice(0, -1) : pathname;
+
+const isHome = normalizedPath === '' || normalizedPath === '/';
+const isSelection = normalizedPath.startsWith('/selection');
+const isAirports = normalizedPath.startsWith('/airports');
+const isRadar = normalizedPath.startsWith('/radar');
+const isArchitecture = normalizedPath.startsWith('/architecture');
+const isPosts = normalizedPath.startsWith('/posts');
+const isBlog = normalizedPath.startsWith('/blog');
+
+const navItems = [
+  { label: '全景观测', href: '/', active: isHome, isRadar: false, isAirports: false },
+  { label: '专线机场', href: '/airports', active: isAirports, isRadar: false, isAirports: true, tag: 'HOT' },
+  { label: '机场评测', href: '/posts', active: isPosts, isRadar: false, isAirports: false, tag: 'NEW' },
+  { label: '选型智库', href: '/selection', active: isSelection, isRadar: false, isAirports: false },
+  { label: '避坑雷达', href: '/radar', active: isRadar, isRadar: true, isAirports: false },
+  { label: '金刚架构', href: '/architecture', active: isArchitecture, isRadar: false, isAirports: false },
+  { label: '博客', href: '/blog', active: isBlog, isRadar: false, isAirports: false },
+];
+---
+
+<header class="sticky top-0 z-50 w-full glass-nav border-b border-slate-200/80 dark:border-slate-800/80 transition-colors duration-200">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      
+      <!-- 3D 立体 Logo 区域 -->
+      <a href="/" class="flex items-center space-x-3 group shrink-0">
+        <img
+          src="/logo.png"
+          alt="VPN网络实验中心 LOGO"
+          class="w-9 h-9 rounded-xl shadow-md border border-cyan-500/40 object-cover transform group-hover:scale-105 transition-all duration-300"
+        />
+        <div class="flex flex-col">
+          <span class="text-base font-black tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-cyan-500 to-indigo-600 dark:from-blue-400 dark:via-cyan-300 dark:to-indigo-400">
+            VPN网络实验中心
+          </span>
+          <span class="text-[10px] -mt-0.5 font-mono tracking-wider text-slate-500 dark:text-slate-400 uppercase font-semibold">
+            VPN NETWORK LAB
+          </span>
+        </div>
+      </a>
+
+      <!-- 桌面端 6 大独立路由菜单（带竖线分隔符与动态激活高亮） -->
+      <nav class="hidden md:flex items-center space-x-1 text-sm font-medium">
+        {navItems.map((item, index) => (
+          <>
+            {index > 0 && <div class="h-3.5 w-[1px] bg-slate-200 dark:bg-slate-700 mx-1"></div>}
+            
+            <a
+              href={item.href}
+              class={`px-3 py-1.5 rounded-lg transition-all flex items-center space-x-1.5 ${
+                item.isAirports
+                  ? item.active
+                    ? 'font-bold text-cyan-600 dark:text-cyan-300 bg-cyan-50 dark:bg-cyan-950/70 border border-cyan-300/80 dark:border-cyan-700/80 shadow-sm'
+                    : 'text-cyan-600 dark:text-cyan-400 hover:text-cyan-500 hover:bg-cyan-50/60 dark:hover:bg-cyan-950/40 font-semibold'
+                  : item.isRadar
+                  ? item.active
+                    ? 'font-bold text-amber-600 dark:text-amber-300 bg-amber-50 dark:bg-amber-950/70 border border-amber-200/80 dark:border-amber-800/80 shadow-sm'
+                    : 'text-amber-600/90 dark:text-amber-400 hover:text-amber-600 hover:bg-amber-50/80 dark:hover:bg-amber-950/40'
+                  : item.active
+                  ? 'font-bold text-blue-600 dark:text-cyan-400 bg-blue-50/90 dark:bg-blue-950/60 border border-blue-200/60 dark:border-blue-800/60 shadow-sm'
+                  : 'text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-100/70 dark:hover:bg-slate-800/60'
+              }`}
+            >
+              {item.isRadar && (
+                <span class="relative flex h-2 w-2">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+                </span>
+              )}
+
+              <span>{item.label}</span>
+
+              {item.tag && (
+                <span class="px-1.5 py-0.2 rounded text-[9px] font-mono font-bold bg-gradient-to-r from-cyan-500 to-fuchsia-500 text-white shadow-xs animate-pulse">
+                  {item.tag}
+                </span>
+              )}
+            </a>
+          </>
+        ))}
+      </nav>
+
+      <!-- 右侧控制区 (BGP状态 + 暗黑模式 + 移动端抽屉开关) -->
+      <div class="flex items-center space-x-2.5 sm:space-x-3">
+        
+        <!-- 节点健康度脉冲指示器 -->
+        <div class="hidden sm:flex items-center space-x-2 px-2.5 py-1 rounded-full text-xs font-mono font-medium bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-400 dark:border-emerald-800/60">
+          <span class="pulse-indicator">
+            <span class="pulse-indicator-dot"></span>
+          </span>
+          <span>BGP 0-RTT</span>
+        </div>
+
+        <!-- 官方客服点击直达 (不显示号码) -->
+        <a
+          href="https://t.me/huanqiuti8899"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="hidden sm:inline-flex items-center space-x-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold bg-blue-600 hover:bg-blue-500 text-white shadow-xs hover:shadow-md transition-all duration-200 transform hover:-translate-y-0.5"
+          title="点击联系 Telegram 官方在线客服"
+        >
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
+          </svg>
+          <span>官方客服</span>
+        </a>
+
+        <!-- 暗黑模式切换按钮 -->
+        <button
+          id="theme-toggle"
+          aria-label="切换主题模式"
+          class="p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800 focus:outline-none transition-colors border border-transparent hover:border-slate-200 dark:hover:border-slate-700"
+        >
+          <svg id="theme-sun" class="w-4 h-4 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="5" stroke-width="2"></circle>
+            <path stroke-width="2" stroke-linecap="round" d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path>
+          </svg>
+          <svg id="theme-moon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+          </svg>
+        </button>
+
+        <!-- 移动端汉堡菜单折叠按钮 -->
+        <button
+          id="mobile-menu-btn"
+          aria-label="打开菜单"
+          class="md:hidden p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-none"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 移动端折叠抽屉菜单（含 6 路由动态高亮） -->
+  <div id="mobile-drawer" class="hidden md:hidden border-t border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl px-4 pt-3 pb-5 space-y-1.5">
+    {navItems.map((item) => (
+      <a
+        href={item.href}
+        class={`block px-3.5 py-2.5 rounded-xl text-sm font-medium transition-colors flex items-center justify-between ${
+          item.isAirports
+            ? item.active
+              ? 'font-bold text-cyan-600 dark:text-cyan-300 bg-cyan-50 dark:bg-cyan-950/70 border border-cyan-300 dark:border-cyan-700'
+              : 'text-cyan-600 dark:text-cyan-400 hover:bg-cyan-50/60 dark:hover:bg-cyan-950/40 font-semibold'
+            : item.isRadar
+            ? item.active
+              ? 'font-bold text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-950/70 border border-amber-200 dark:border-amber-800'
+              : 'text-amber-600 dark:text-amber-400 hover:bg-amber-50/60 dark:hover:bg-amber-950/40'
+            : item.active
+            ? 'font-bold text-blue-600 dark:text-cyan-400 bg-blue-50 dark:bg-blue-950/60 border border-blue-200/80 dark:border-blue-800/80'
+            : 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
+        }`}
+      >
+        <span class="flex items-center space-x-2">
+          {item.isRadar && <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>}
+          <span>{item.label}</span>
+          {item.tag && (
+            <span class="px-1.5 py-0.2 rounded text-[9px] font-mono font-bold bg-gradient-to-r from-cyan-500 to-fuchsia-500 text-white">
+              {item.tag}
+            </span>
+          )}
+        </span>
+        {item.active && <span class="text-xs font-mono text-blue-500 dark:text-cyan-400 font-bold">● 当前</span>}
+      </a>
+    ))}
+
+    <!-- 移动端官方客服直达按钮 (不显示号码) -->
+    <a
+      href="https://t.me/huanqiuti8899"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="mt-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold bg-blue-600 hover:bg-blue-500 text-white text-center flex items-center justify-center space-x-2 shadow-sm"
+    >
+      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
+      </svg>
+      <span>联系官方在线客服</span>
+    </a>
+  </div>
+</header>
+
+<script is:inline>
+  (function() {
+    const updateIcons = (theme) => {
+      const sun = document.getElementById('theme-sun');
+      const moon = document.getElementById('theme-moon');
+      if (!sun || !moon) return;
+      if (theme === 'dark') {
+        sun.classList.remove('hidden');
+        moon.classList.add('hidden');
+      } else {
+        sun.classList.add('hidden');
+        moon.classList.remove('hidden');
+      }
+    };
+
+    const isDark = document.documentElement.classList.contains('dark');
+    updateIcons(isDark ? 'dark' : 'light');
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const isDarkNow = document.documentElement.classList.contains('dark');
+      updateIcons(isDarkNow ? 'dark' : 'light');
+
+      const toggle = document.getElementById('theme-toggle');
+      if (toggle) {
+        toggle.addEventListener('click', () => {
+          const dark = document.documentElement.classList.toggle('dark');
+          const nextTheme = dark ? 'dark' : 'light';
+          localStorage.setItem('theme', nextTheme);
+          updateIcons(nextTheme);
+        });
+      }
+
+      const menuBtn = document.getElementById('mobile-menu-btn');
+      const drawer = document.getElementById('mobile-drawer');
+      if (menuBtn && drawer) {
+        menuBtn.addEventListener('click', () => {
+          drawer.classList.toggle('hidden');
+        });
+      }
+    });
+  })();
+</script>

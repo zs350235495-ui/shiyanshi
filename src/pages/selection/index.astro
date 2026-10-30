@@ -1,0 +1,557 @@
+---
+// src/pages/selection/index.astro
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+// 4 种底层线路/方案横向参数对比
+const lineComparisons = [
+  {
+    type: 'IPLC / IEPL 端内专线',
+    category: '顶级专线',
+    jitter: '< 0.8ms',
+    peakDropRate: '0.00%',
+    pricing: '¥¥¥¥',
+    scenarios: '海外高频金融量化、跨国核心 API 同步、4K超清杜比视界、企业实时协作',
+    features: ['纯物理内网波分光纤', '不过公网审查与 QoS 干扰', 'SLA 99.99% 承诺独享速率', '真实 1.0x 节点倍率'],
+    recommended: true,
+  },
+  {
+    type: '电信 CN2 GIA (AS4809)',
+    category: '精品骨干',
+    jitter: '2.5 ~ 8.0ms',
+    peakDropRate: '1.2% ~ 3.5%',
+    pricing: '¥¥¥',
+    scenarios: '跨国电商运营、出海独立站、北美/欧洲大流量中继回源',
+    features: ['双向 GIA 专属路由', '晚高峰稳定性高', '大带宽冗余池'],
+    recommended: false,
+  },
+  {
+    type: '联通 9929 / CMIN2 新骨干',
+    category: '新代骨干',
+    jitter: '3.0 ~ 10.2ms',
+    peakDropRate: '2.0% ~ 4.8%',
+    pricing: '¥¥',
+    scenarios: '欧洲与亚太研发节点、分布式微服务拉取、开发者镜像同步',
+    features: ['负载轻且轻度超卖', '性价比优于 GIA', '低延时穿透'],
+    recommended: false,
+  },
+  {
+    type: '双 ISP 原生住宅 IP (Residential)',
+    category: '纯净家宽',
+    jitter: '12.0 ~ 35.0ms',
+    peakDropRate: '3.5% ~ 8.0%',
+    pricing: '¥¥¥',
+    scenarios: '跨国账号矩阵风控合规、社媒多店铺运营、防机房欺诈风控、ChatGPT防封',
+    features: ['真实海外电信运营商分配', 'IP 欺诈库得分 0', '双 ISP 原生广播属性', '流媒体全绿通过'],
+    recommended: true,
+  },
+];
+
+// 5 大精准场景选型智库方案 (联动15家专线机场)
+const scenarioSolutions = [
+  {
+    id: 'streaming',
+    name: '追剧看影与软路由分流',
+    tag: '影音发烧友',
+    icon: '🎬',
+    description: '追求 4K 60fps / 8K HDR 杜比视界秒开，支持 Apple TV、Infuse 蓝光原盘及软路由全屋设备挂载。',
+    coreNeed: '单节点带宽 ≥ 2.5Gbps · 海量流量储备 · 不限并发设备',
+    topPicks: [
+      { name: '环球梯 (#1)', highlight: '👑 官方全能首推！广港/沪日纯专线，4K/8K 杜比视界秒开无缓冲', price: '¥8.40 / 月起', coupon: 'HQ66 (7折)', link: '/go.html?id=hq' },
+      { name: '神行加速 (#5)', highlight: '单节点最高 2.5G，HDR 原生画质无损', price: '¥16.10 / 月起', coupon: 'sx0077 (7折)', link: '/go.html?id=sx' },
+      { name: '榴莲云 (#6)', highlight: '阶梯超大盘，榴莲王 750GB 霸榜', price: '¥16.80 / 月起', coupon: 'll88 (7折)', link: '/go.html?id=lly' },
+    ],
+  },
+  {
+    id: 'business',
+    name: '跨境电商与外贸办公',
+    tag: '外贸/网银/合规',
+    icon: '💼',
+    description: '亚马逊、eBay、Shopee 店铺运营，PayPal、Stripe 资金结算，坚决杜绝机房跳 IP 与风控关店。',
+    coreNeed: '0 欺诈分原生双 ISP · 纯专线固定出口 · 金融级隔离',
+    topPicks: [
+      { name: '环球梯 (#1)', highlight: '👑 4年+稳健王者！原生双 ISP 住宅出口纯净度100%，跨境外贸首选', price: '¥8.40 / 月起', coupon: 'HQ66 (7折)', link: '/go.html?id=hq' },
+      { name: '可信云 (#8)', highlight: '金融级专线隔离，欺诈度0原生住宅IP', price: '¥16.00 / 月起', coupon: 'kxy80 (8折)', link: '/go.html?id=kxy' },
+      { name: '极连云 (#7)', highlight: '全 IEPL 纯内网直通，跨境传输极稳', price: '¥19.20 / 月起', coupon: 'JLY888 (8折)', link: '/go.html?id=jly' },
+    ],
+  },
+  {
+    id: 'developer',
+    name: 'AI 协同与极速交互',
+    tag: '开发者/工程师',
+    icon: '⚡',
+    description: '调用 OpenAI ChatGPT、Claude 3.5、Midjourney 及 GitHub/Cursor 智能编程，要求毫秒级低延迟回包与零丢包。',
+    coreNeed: '流式响应首字延迟 < 250ms · 晚高峰 0.00% 丢包 · 支持长连接',
+    topPicks: [
+      { name: '环球梯 (#1)', highlight: '👑 毫秒级回包！广港18ms/美西135ms，ChatGPT/Claude流式对话极速顺滑', price: '¥8.40 / 月起', coupon: 'HQ66 (7折)', link: '/go.html?id=hq' },
+      { name: '极连云 (#7)', highlight: '针对大模型流式吐字专项调优，回包无卡顿', price: '¥19.20 / 月起', coupon: 'JLY888 (8折)', link: '/go.html?id=jly' },
+      { name: '光年梯 (#11)', highlight: '沪日广港直连实测仅 20ms，超低时延', price: '¥18.40 / 月起', coupon: 'GNT80 (8折)', link: '/go.html?id=gnt' },
+    ],
+  },
+  {
+    id: 'budget',
+    name: '学生平价与新手入门',
+    tag: '极致性价比',
+    icon: '💰',
+    description: '日常查阅学术论文、Google 文档、社交通讯及轻量刷剧，注重花最少的钱享受真正的物理专线体验。',
+    coreNeed: '折后起步月费 < 17 元 · 真实 1.0x 倍率 · 配置简单易用',
+    topPicks: [
+      { name: '环球梯 (#1)', highlight: '👑 全网性价比封顶！7折券 HQ66 仅需 ¥8.40/月起，物理专线白菜价', price: '¥8.40 / 月起', coupon: 'HQ66 (7折)', link: '/go.html?id=hq' },
+      { name: '快狸快狸 (#12)', highlight: '新手友好一键导入，每月 130G 实用容量', price: '¥16.80 / 月起', coupon: 'kl888 (8折)', link: '/go.html?id=kuaili' },
+      { name: '云界线 (#3)', highlight: '年付特惠版折合仅需 ¥5.60/月，性价比拉满', price: '¥15.40 / 月起', coupon: 'yjx888 (7折)', link: '/go.html?id=yjx' },
+    ],
+  },
+  {
+    id: 'ha-backup',
+    name: '高可用冷备与长期防失联',
+    tag: '金刚双保险',
+    icon: '🛡️',
+    description: '核心工作与业务离不开跨境网络，需要配备不限时流量包或自动双通道容灾，应对主线临时割接。',
+    coreNeed: '永久不过期按量付费 OR 具备冷热双线路自动旁路切换',
+    topPicks: [
+      { name: '环球梯按量包 (#1)', highlight: '👑 永久不过期！80G/200G 纯储备池用完即止，零月租防失联第一神器', price: '¥69.30 / 永久起', coupon: 'HQ66 (7折)', link: '/go.html?id=hq' },
+      { name: '云图机场 (#14)', highlight: '每节点主专线+备用IEPL双通道自动热切', price: '¥17.50 / 月起', coupon: '官方立减', link: '/go.html?id=yuntu' },
+      { name: '云界线随心包 (#3)', highlight: '80GB/200GB 长期储备池，永久不过期', price: '¥99.00 / 永久起', coupon: 'yjx888 (7折)', link: '/go.html?id=yjx' },
+    ],
+  },
+];
+
+// 选型避坑常见问题
+const selectionFaqs = [
+  {
+    q: '问：为什么很多标榜千兆带宽的机场，晚高峰连 4K 都看不了？',
+    a: '答：绝大多数廉价机场采用的是公网中转甚至普通直连。晚上 8 点至 11 点是跨国公网骨干的高峰期，公网国际出口丢包率常达 15%~30%，导致 TCP 窗口崩溃。而真正的 IPLC/IEPL 端内专线通过物理陆缆内网互联，不过公网 GFW，晚高峰丢包率为 0.00%，才能真正实现 4K 秒开。',
+  },
+  {
+    q: '问：什么是“阴阳倍率”？选型时该如何避坑？',
+    a: '答：部分不良机场标价看似极低，但后台将常用节点设置为 2.0x、3.0x 甚至 5.0x 倍率，100G 流量实际用 20G 就扣光了。在反重力评测智库中，我们严选的 15 家专线机场（如环球梯、大佬云、神行加速等）均保证全部常规节点均为 1.0x 真实倍率，且高峰期绝不限速。',
+  },
+  {
+    q: '问：为什么同一个节点看 YouTube 很顺，访问 ChatGPT 或 Netflix 却经常报错？',
+    a: '答：YouTube 只看带宽和网络丢包；而 ChatGPT、Netflix、TikTok 等平台对 IP 类型极其苛刻。如果是机房 IP（Datacenter），会被直接拦截或要求频繁人机验证。必须选型具备“原生双 ISP 住宅（Residential）属性”的专线（如可信云、极连云、环球梯）。',
+  },
+  {
+    q: '问：月付常规套餐和不限时按量流量包应该怎么选？',
+    a: '答：建议采用“金刚双轮驱动法则”：主力设备采用日常月付/年付专线（如环球梯 ¥8.40/月 或 神行加速 ¥16.10/月）；同时在客户端中配入一个环球梯或云界线的不限时按量储备包（永久有效、不用不扣费），彻底杜绝月底断流或突发网络维护。',
+  },
+];
+---
+
+<BaseLayout
+  title="选型智库 // 2026 专线机场、物理线路与原生住宅IP科学决策指南 · ANTIGRAVITY"
+  description="拒绝盲目试错。反重力实验室基于 15 家主流专线机场实测数据，提供追剧影音、外贸电商、AI 协同与学生平价全场景选型智库矩阵。"
+>
+  <div class="py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <!-- 头部导言 -->
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
+      <div>
+        <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-md text-xs font-mono font-bold bg-blue-500/10 text-blue-600 dark:text-cyan-400 border border-blue-500/20 mb-3">
+          <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+          <span>// DECISION INTELLIGENCE & SELECTION MATRIX</span>
+        </div>
+        <h1 class="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-slate-900 dark:text-white">
+          选型智库 · 专线机场与底层架构决策指南
+        </h1>
+        <p class="mt-2 text-xs sm:text-sm text-slate-600 dark:text-slate-400 max-w-2xl leading-relaxed">
+          结合晚高峰 RTT 抖动要求、原生住宅 IP 纯净度与真实预算门槛，在 15 家主流专线机场中快速定位最符合您业务场景的专属解决方案。
+        </p>
+      </div>
+
+      <!-- 快捷标签微看板 -->
+      <div class="flex items-center space-x-3 px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 text-xs font-mono shrink-0">
+        <span class="flex items-center space-x-1.5 text-blue-600 dark:text-cyan-400 font-semibold">
+          <span class="pulse-indicator">
+            <span class="pulse-indicator-dot"></span>
+          </span>
+          <span>5 大业务场景对标库</span>
+        </span>
+        <span class="text-slate-300 dark:text-slate-700">|</span>
+        <span class="text-slate-500 dark:text-slate-400">100% 实测闭环校验</span>
+      </div>
+    </div>
+
+    <!-- 👑 实验室全景第一主推：环球梯 (HuanQiuTi) 专属黄金王者展示位 -->
+    <div class="mb-10 rounded-2xl border-2 border-amber-400/80 dark:border-amber-500/80 bg-gradient-to-br from-amber-50/80 via-white to-amber-100/40 dark:from-slate-900 dark:via-amber-950/20 dark:to-slate-900 p-6 sm:p-8 shadow-xl shadow-amber-500/10 backdrop-blur-md relative overflow-hidden">
+      <!-- 装饰背景渐变光晕 -->
+      <div class="absolute -right-16 -top-16 w-64 h-64 bg-amber-400/20 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
+        <div class="max-w-2xl">
+          <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full text-xs font-mono font-black bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 mb-3 shadow-xs">
+            <span>👑 实验室全景第一首选推荐 · 综合实力总冠军</span>
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white flex items-center space-x-3">
+            <span>#1 环球梯 (HuanQiuTi)</span>
+            <span class="text-xs font-mono px-2 py-0.5 rounded bg-amber-400 text-slate-950 font-bold">闭眼买主力梯</span>
+          </h2>
+          <p class="mt-2 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+            4年+老牌稳健运营，纯物理 IPLC/IEPL 端内专线直连。无论日常追剧看 4K、外贸店铺资金合规，还是 AI 大模型毫秒级回包，环球梯都是全网表现最极致、门槛最低的绝对首选！
+          </p>
+          
+          <!-- 核心特性微徽标 -->
+          <div class="mt-4 flex flex-wrap gap-2 text-[11px] font-mono">
+            <span class="px-2.5 py-1 rounded-md bg-white dark:bg-slate-800 text-emerald-600 dark:text-emerald-400 font-bold border border-emerald-200 dark:border-emerald-800/60 flex items-center space-x-1">
+              <span>● 晚高峰 0.00% 丢包</span>
+            </span>
+            <span class="px-2.5 py-1 rounded-md bg-white dark:bg-slate-800 text-blue-600 dark:text-cyan-400 font-bold border border-blue-200 dark:border-blue-800/60">
+              原生双 ISP 住宅出口 (100%纯净)
+            </span>
+            <span class="px-2.5 py-1 rounded-md bg-white dark:bg-slate-800 text-purple-600 dark:text-purple-400 font-bold border border-purple-200 dark:border-purple-800/60">
+              不限设备数并发在线
+            </span>
+            <span class="px-2.5 py-1 rounded-md bg-white dark:bg-slate-800 text-amber-600 dark:text-amber-400 font-bold border border-amber-200 dark:border-amber-800/60">
+              支持按量不限时永久备用
+            </span>
+          </div>
+        </div>
+
+        <!-- 价格与立即直达购买卡片 -->
+        <div class="shrink-0 p-5 sm:p-6 rounded-2xl bg-white/95 dark:bg-slate-800/95 border border-amber-300/80 dark:border-amber-500/40 shadow-lg flex flex-col justify-between min-w-[280px]">
+          <div>
+            <div class="flex items-center justify-between text-xs font-mono text-slate-500 dark:text-slate-400 mb-1">
+              <span>专属 7 折券代码</span>
+              <span class="text-amber-600 dark:text-amber-400 font-bold">立减 30%</span>
+            </div>
+            <div class="px-3 py-2 rounded-xl bg-amber-500/10 border border-amber-400/40 text-center font-mono font-black text-lg text-amber-600 dark:text-amber-400 tracking-wider mb-3">
+              HQ66
+            </div>
+            <div class="flex items-baseline space-x-2">
+              <span class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">¥8.40</span>
+              <span class="text-xs text-slate-400 line-through">¥12.00</span>
+              <span class="text-xs font-mono text-slate-500 dark:text-slate-400">/ 月起</span>
+            </div>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1">
+              日均低至 ¥0.28，超低尝鲜门槛
+            </p>
+          </div>
+
+          <div class="mt-4 space-y-2">
+            <a
+              href="/go.html?id=hq"
+              target="_blank"
+              rel="nofollow sponsored noopener noreferrer"
+              class="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-slate-950 font-black text-xs font-mono hover:brightness-110 transition shadow-md shadow-amber-500/20 flex items-center justify-center space-x-1.5"
+            >
+              <span>⚡ 立即 7 折直达订购环球梯</span>
+              <span>→</span>
+            </a>
+            <a
+              href="/posts/iplc-tier1-flagship-review"
+              class="w-full py-1.5 text-center block text-[11px] font-mono text-slate-500 dark:text-slate-400 hover:text-amber-600 dark:hover:text-amber-400 transition"
+            >
+              查阅环球梯 72 小时晚高峰压测实录 →
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 交互式场景选型推荐器 (Interactive Scenario Matcher) -->
+    <div class="mb-14 rounded-2xl border border-blue-200/90 dark:border-blue-900/60 bg-gradient-to-br from-blue-50/50 via-white to-cyan-50/30 dark:from-slate-900 dark:via-slate-900/90 dark:to-blue-950/40 p-6 sm:p-8 shadow-sm backdrop-blur-md">
+      <div class="max-w-3xl mb-6">
+        <div class="inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded text-[11px] font-mono font-bold bg-blue-600 text-white mb-2">
+          <span>INTERACTIVE MATCHER</span>
+        </div>
+        <h2 class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">
+          交互式场景选型罗盘：点击您的核心业务诉求
+        </h2>
+        <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-1">
+          点击下方不同场景标签，系统将实时计算并高亮推荐最匹配的专线机场组合方案
+        </p>
+      </div>
+
+      <!-- 场景选择 Tab 按钮 -->
+      <div class="flex flex-wrap gap-2.5 mb-8" id="scenario-selector">
+        {scenarioSolutions.map((sc, idx) => (
+          <button
+            type="button"
+            class={`scenario-btn px-4 py-2.5 rounded-xl border font-mono text-xs font-bold transition-all flex items-center space-x-2 cursor-pointer ${
+              idx === 0
+                ? 'active bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-500/20'
+                : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-700 hover:border-blue-400'
+            }`}
+            data-target={sc.id}
+          >
+            <span class="text-base">{sc.icon}</span>
+            <span>{sc.name}</span>
+            <span class="text-[10px] opacity-80 font-normal px-1.5 py-0.2 rounded bg-black/10 dark:bg-white/10">
+              {sc.tag}
+            </span>
+          </button>
+        ))}
+      </div>
+
+      <!-- 场景匹配卡片展示区 -->
+      <div id="scenario-cards-container">
+        {scenarioSolutions.map((sc, idx) => (
+          <div
+            id={`scenario-card-${sc.id}`}
+            class={`scenario-card flex-col gap-6 ${idx === 0 ? 'flex' : 'hidden'}`}
+          >
+            <div class="p-5 rounded-xl bg-white/80 dark:bg-slate-800/80 border border-slate-200/80 dark:border-slate-700 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <span class="text-xs font-mono font-semibold text-blue-600 dark:text-cyan-400">
+                  // SCENARIO SPECIFICATION
+                </span>
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white mt-0.5">
+                  {sc.icon} {sc.name} · 选型技术门槛
+                </h3>
+                <p class="text-xs text-slate-600 dark:text-slate-400 mt-1 max-w-xl">
+                  {sc.description}
+                </p>
+              </div>
+              <div class="shrink-0 p-3 rounded-lg bg-blue-50 dark:bg-slate-900/90 border border-blue-200/60 dark:border-slate-700 text-xs font-mono text-slate-700 dark:text-slate-300">
+                <span class="text-[10px] text-slate-400 block mb-0.5">核心技术硬指标：</span>
+                <span class="font-bold text-blue-600 dark:text-cyan-400">{sc.coreNeed}</span>
+              </div>
+            </div>
+
+            <!-- 推荐机场三剑客网格 -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {sc.topPicks.map((pick, pIdx) => (
+                <div class="p-5 rounded-xl bg-white dark:bg-slate-800/90 border border-slate-200/90 dark:border-slate-700 hover:border-blue-500/60 dark:hover:border-cyan-500/50 shadow-xs hover:shadow-md transition flex flex-col justify-between">
+                  <div>
+                    <div class="flex items-center justify-between text-xs font-mono mb-2">
+                      <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/30">
+                        {pIdx === 0 ? '首选推荐' : pIdx === 1 ? '备选利器' : '超值搭档'}
+                      </span>
+                      <span class="text-slate-400">折扣价</span>
+                    </div>
+                    <h4 class="text-base font-bold text-slate-900 dark:text-white">
+                      {pick.name}
+                    </h4>
+                    <p class="text-xs text-slate-600 dark:text-slate-400 mt-2 leading-relaxed">
+                      {pick.highlight}
+                    </p>
+                    <div class="mt-3 text-xs font-mono text-slate-500 dark:text-slate-400">
+                      优惠券: <code class="font-bold text-amber-600 dark:text-amber-400">{pick.coupon}</code>
+                    </div>
+                  </div>
+
+                  <div class="mt-5 pt-4 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between">
+                    <div>
+                      <span class="text-sm font-black text-slate-900 dark:text-white">{pick.price}</span>
+                    </div>
+                    <a
+                      href={pick.link}
+                      target="_blank"
+                      rel="nofollow sponsored noopener noreferrer"
+                      class="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold font-mono transition shadow-xs flex items-center space-x-1"
+                    >
+                      <span>直达订购</span>
+                      <span>→</span>
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- 4 象限网络决策模型 -->
+    <div class="mb-14">
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
+            4 象限网络底层决策模型
+          </h2>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+            基于 RTT 敏感度 × 吞吐量要求的工程落地指引
+          </p>
+        </div>
+        <span class="hidden sm:inline-block text-xs font-mono text-slate-400 bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-lg">
+          物理层 / 传输层 / 出口层
+        </span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- 象限 1 -->
+        <div class="p-6 rounded-2xl border border-blue-200 dark:border-blue-900/60 bg-blue-50/40 dark:bg-blue-950/20">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-mono px-2.5 py-1 rounded bg-blue-600 text-white font-bold">象限 I · 极致低时延物理直连</span>
+            <span class="text-xs font-mono text-blue-600 dark:text-cyan-400 font-semibold">抖动 &lt; 0.8ms</span>
+          </div>
+          <h3 class="text-base font-bold text-slate-900 dark:text-white">IPLC / IEPL 端内独享专线</h3>
+          <p class="mt-2 text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+            核心物理端内专线，不经过公网 GFW 审查与 QoS，端到端往返耗时恒定，专为实时金融下单、跨境远程开发与核心骨干微服务设计。
+          </p>
+          <div class="mt-4 flex flex-wrap gap-1.5 text-[11px] font-mono">
+            <span class="px-2 py-0.5 rounded bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300">首选地域：深港 / 沪日</span>
+            <span class="px-2 py-0.5 rounded bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300">0% 晚高峰丢包</span>
+            <span class="px-2 py-0.5 rounded bg-white dark:bg-slate-800 text-blue-600 dark:text-cyan-400">代表：环球梯、大佬云</span>
+          </div>
+        </div>
+
+        <!-- 象限 2 -->
+        <div class="p-6 rounded-2xl border border-cyan-200 dark:border-cyan-900/60 bg-cyan-50/40 dark:bg-cyan-950/20">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-mono px-2.5 py-1 rounded bg-cyan-600 text-white font-bold">象限 II · 全球动态收敛容灾</span>
+            <span class="text-xs font-mono text-cyan-600 dark:text-cyan-400 font-semibold">可用率 99.99%</span>
+          </div>
+          <h3 class="text-base font-bold text-slate-900 dark:text-white">Anycast BGP 动态智能调度</h3>
+          <p class="mt-2 text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+            全网多线自治系统（ASN）广播，单 IP 覆盖全球数十个 PoP 接入点。单条跨国中继海缆中断时，底层网络可在毫秒内完成自动收敛切流。
+          </p>
+          <div class="mt-4 flex flex-wrap gap-1.5 text-[11px] font-mono">
+            <span class="px-2 py-0.5 rounded bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300">抗 DDoS 韧性</span>
+            <span class="px-2 py-0.5 rounded bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300">Geo-DNS 权重分流</span>
+            <span class="px-2 py-0.5 rounded bg-white dark:bg-slate-800 text-blue-600 dark:text-cyan-400">代表：边缘节点、云图</span>
+          </div>
+        </div>
+
+        <!-- 象限 3 -->
+        <div class="p-6 rounded-2xl border border-indigo-200 dark:border-indigo-900/60 bg-indigo-50/40 dark:bg-indigo-950/20">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-mono px-2.5 py-1 rounded bg-indigo-600 text-white font-bold">象限 III · 恶劣弱网与高突发</span>
+            <span class="text-xs font-mono text-indigo-600 dark:text-indigo-400 font-semibold">突发吞吐 2.5Gbps</span>
+          </div>
+          <h3 class="text-base font-bold text-slate-900 dark:text-white">大管道专线 + BBRv3 / VLESS 协议</h3>
+          <p class="mt-2 text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+            基于单节点 2.5Gbps 超大带宽储备与现代轻量协议栈，绕过传统 Cubic 算法的腰斩式回退，在多路 4K 串流下持续跑满物理接入。
+          </p>
+          <div class="mt-4 flex flex-wrap gap-1.5 text-[11px] font-mono">
+            <span class="px-2 py-0.5 rounded bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300">Apple TV / Infuse 友好</span>
+            <span class="px-2 py-0.5 rounded bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300">软路由无缝接管</span>
+            <span class="px-2 py-0.5 rounded bg-white dark:bg-slate-800 text-blue-600 dark:text-cyan-400">代表：神行加速、榴莲云</span>
+          </div>
+        </div>
+
+        <!-- 象限 4 -->
+        <div class="p-6 rounded-2xl border border-emerald-200 dark:border-emerald-900/60 bg-emerald-50/40 dark:bg-emerald-950/20">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-mono px-2.5 py-1 rounded bg-emerald-600 text-white font-bold">象限 IV · 零风控住宅矩阵</span>
+            <span class="text-xs font-mono text-emerald-600 dark:text-emerald-400 font-semibold">欺诈度 0 (Scamalytics)</span>
+          </div>
+          <h3 class="text-base font-bold text-slate-900 dark:text-white">双 ISP 原生住宅 IP (Residential)</h3>
+          <p class="mt-2 text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+            非机房（Datacenter）托管属性，IP 类型为本地电信运营商 Residential 真实家庭宽带分配，通过 MaxMind / IP2Location 100% 原生认证。
+          </p>
+          <div class="mt-4 flex flex-wrap gap-1.5 text-[11px] font-mono">
+            <span class="px-2 py-0.5 rounded bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300">防 Cloudflare 强盾挑战</span>
+            <span class="px-2 py-0.5 rounded bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300">跨境网银免二验</span>
+            <span class="px-2 py-0.5 rounded bg-white dark:bg-slate-800 text-blue-600 dark:text-cyan-400">代表：可信云、极连云</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 线路类型参数横向对比总表 -->
+    <div class="mb-14">
+      <div class="mb-4">
+        <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
+          核心线路与 IP 类型横向参数对比
+        </h2>
+        <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+          物理专线、精品公网与原生住宅 IP 的物理指标实测对比
+        </p>
+      </div>
+
+      <div class="overflow-x-auto rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/60 shadow-xs">
+        <table class="w-full text-left text-xs font-mono">
+          <thead class="bg-slate-50 dark:bg-slate-800/60 border-b border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 uppercase">
+            <tr>
+              <th class="px-6 py-4 font-bold">线路方案</th>
+              <th class="px-6 py-4 font-bold">分类定位</th>
+              <th class="px-6 py-4 font-bold">晚高峰端内抖动</th>
+              <th class="px-6 py-4 font-bold">极端丢包率</th>
+              <th class="px-6 py-4 font-bold">成本档次</th>
+              <th class="px-6 py-4 font-bold">核心适配场景</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100 dark:divide-slate-800 text-slate-700 dark:text-slate-300">
+            {lineComparisons.map((item) => (
+              <tr class="hover:bg-slate-50/60 dark:hover:bg-slate-800/40 transition-colors">
+                <td class="px-6 py-4">
+                  <div class="font-bold text-slate-900 dark:text-white flex items-center space-x-2">
+                    <span>{item.type}</span>
+                    {item.recommended && (
+                      <span class="px-1.5 py-0.5 text-[10px] font-mono rounded bg-blue-100 dark:bg-blue-950 text-blue-600 dark:text-cyan-400">
+                        实验室推荐
+                      </span>
+                    )}
+                  </div>
+                </td>
+                <td class="px-6 py-4 text-slate-500">{item.category}</td>
+                <td class="px-6 py-4 font-bold text-emerald-600 dark:text-emerald-400">{item.jitter}</td>
+                <td class="px-6 py-4">{item.peakDropRate}</td>
+                <td class="px-6 py-4 font-bold text-amber-600 dark:text-amber-400">{item.pricing}</td>
+                <td class="px-6 py-4 text-slate-600 dark:text-slate-400 max-w-xs">{item.scenarios}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 选型避坑 FAQ 对照问答区 -->
+    <div class="mb-14">
+      <div class="mb-6">
+        <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white flex items-center space-x-2">
+          <span>💡 专线机场选型避坑 FAQ 对照指南</span>
+        </h2>
+        <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+          解答新手与进阶架构师在实际挑选机场时最容易踩入的营销陷阱
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {selectionFaqs.map((faq) => (
+          <div class="p-5 rounded-xl border border-slate-200/90 dark:border-slate-800 bg-white dark:bg-slate-900/60 shadow-xs">
+            <h3 class="text-sm font-bold text-slate-900 dark:text-white mb-2 leading-snug">
+              {faq.q}
+            </h3>
+            <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+              {faq.a}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- 选型诊断指引小建议 (金刚法则) -->
+    <div class="p-6 rounded-2xl bg-gradient-to-r from-blue-500/10 via-cyan-500/10 to-indigo-500/10 border border-blue-500/20 dark:border-cyan-500/20">
+      <h3 class="text-base font-bold text-slate-900 dark:text-white mb-2 flex items-center space-x-2">
+        <span>⚡ 架构师实战选型金刚三法则</span>
+      </h3>
+      <ul class="space-y-2 text-xs text-slate-700 dark:text-slate-300 leading-relaxed list-disc list-inside">
+        <li><strong>双轮驱动，绝不单点依赖</strong>：建议日常使用优质月付专线（如 <strong>环球梯、神行加速、大佬云</strong>），同时在客户端中备用一个不限时永久按量包（如 <strong>环球梯按量包、云界线随心包</strong>），即使运营商线路突发施工也能零秒无缝切换。</li>
+        <li><strong>认准真实 1.0x 倍率</strong>：警惕宣传百元无限流量却在晚高峰暗调 3x 倍率的不良商家。严格选择全节点明码标价 1.0x、无隐性降速策略的严选专线。</li>
+        <li><strong>分清机房 IP 与原生双 ISP 住宅 IP</strong>：追剧、AI 对话及外贸店铺登录，优先选型 <strong>可信云、极连云、环球梯</strong> 等具备原生住宅 IP 的服务商，彻底远离人机验证与安全风控。</li>
+      </ul>
+    </div>
+
+  </div>
+</BaseLayout>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    const buttons = document.querySelectorAll('.scenario-btn');
+    const cards = document.querySelectorAll('.scenario-card');
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const targetId = btn.getAttribute('data-target');
+
+        buttons.forEach(b => {
+          b.classList.remove('active', 'bg-blue-600', 'text-white', 'border-blue-600', 'shadow-md', 'shadow-blue-500/20');
+          b.classList.add('bg-white', 'dark:bg-slate-800', 'text-slate-700', 'dark:text-slate-200', 'border-slate-200', 'dark:border-slate-700');
+        });
+
+        btn.classList.add('active', 'bg-blue-600', 'text-white', 'border-blue-600', 'shadow-md', 'shadow-blue-500/20');
+        btn.classList.remove('bg-white', 'dark:bg-slate-800', 'text-slate-700', 'dark:text-slate-200', 'border-slate-200', 'dark:border-slate-700');
+
+        cards.forEach(card => {
+          if (card.id === `scenario-card-${targetId}`) {
+            card.classList.remove('hidden');
+            card.classList.add('flex');
+          } else {
+            card.classList.add('hidden');
+            card.classList.remove('flex');
+          }
+        });
+      });
+    });
+  });
+</script>

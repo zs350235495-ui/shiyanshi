@@ -1,0 +1,470 @@
+---
+// src/pages/index.astro
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="VPN网络实验中心 // 全景观测大厅 · 零阻力悬浮拓扑调度"
+  description="VPN网络实验中心：高性能跨域网络工程基准实测、BGP Anycast 全景拓扑监控与自动化内核调优指南。"
+>
+  
+  <!-- 1. 深蓝科技 Hero 标语区 -->
+  <section class="relative overflow-hidden bg-gradient-to-b from-blue-950 via-[#0a1226] to-slate-900 dark:to-[#060a12] text-white pt-20 pb-28 border-b border-slate-800">
+    <div class="absolute inset-0 bg-[radial-gradient(#38bdf8_1px,transparent_1px)] [background-size:24px_24px] opacity-10 pointer-events-none"></div>
+    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-gradient-to-r from-blue-600/30 to-cyan-500/20 blur-[120px] rounded-full pointer-events-none"></div>
+
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      
+      <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full text-xs font-mono font-medium bg-blue-500/10 text-cyan-300 border border-cyan-500/30 backdrop-blur-md mb-8">
+        <span class="inline-block w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+        <span>VPN NETWORK LAB // NEXT-GEN TOPOLOGY & OBSERVABILITY</span>
+      </div>
+
+      <h1 class="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-tight max-w-4xl mx-auto">
+        穿透网络迷雾 <br class="hidden sm:inline" />
+        <span class="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-blue-400 to-indigo-300">
+          零阻力悬浮拓扑调度
+        </span>
+      </h1>
+
+      <p class="mt-6 text-base sm:text-lg md:text-xl text-slate-300 max-w-2xl mx-auto leading-relaxed font-normal">
+        全景式观测跨境专线抖动、BGP 路由自愈与传输层协议效率。各大独立频道覆盖从科学选型、专线实测、避坑雷达到核心架构落地的完整链路。
+      </p>
+
+      <!-- 快速导航按钮 -->
+      <div class="mt-9 flex flex-wrap items-center justify-center gap-4">
+        <a href="/airports" class="px-7 py-3.5 rounded-xl font-semibold text-sm bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white shadow-lg shadow-cyan-500/25 transition-all transform hover:-translate-y-0.5">
+          🚀 专线机场评测
+        </a>
+        <a href="/selection" class="px-7 py-3.5 rounded-xl font-semibold text-sm bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white shadow-lg shadow-blue-500/25 transition-all transform hover:-translate-y-0.5">
+          🎯 进入选型智库
+        </a>
+        <a href="/radar" class="px-7 py-3.5 rounded-xl font-semibold text-sm bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 backdrop-blur-md transition-all transform hover:-translate-y-0.5 flex items-center space-x-1.5">
+          <span>⚠️ 查阅避坑雷达</span>
+        </a>
+        <a href="/architecture" class="px-7 py-3.5 rounded-xl font-semibold text-sm bg-slate-800/80 hover:bg-slate-700/80 text-slate-200 border border-slate-700 backdrop-blur-md transition-all transform hover:-translate-y-0.5">
+          💎 金刚底层架构
+        </a>
+      </div>
+
+      <!-- 全局指标实时监控条 -->
+      <div class="mt-14 max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4 p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-xl">
+        <div class="text-center p-2">
+          <div class="text-2xl font-bold font-mono text-cyan-400">48+</div>
+          <div class="text-xs text-slate-400 mt-0.5 font-sans">全球端内直测 PoP</div>
+        </div>
+        <div class="text-center p-2 border-l border-white/10">
+          <div class="text-2xl font-bold font-mono text-emerald-400">&lt; 0.4ms</div>
+          <div class="text-xs text-slate-400 mt-0.5 font-sans">物理专线内部抖动</div>
+        </div>
+        <div class="text-center p-2 border-l border-white/10">
+          <div class="text-2xl font-bold font-mono text-blue-400">99.98%</div>
+          <div class="text-xs text-slate-400 mt-0.5 font-sans">晚高峰保活吞吐率</div>
+        </div>
+        <div class="text-center p-2 border-l border-white/10">
+          <div class="text-2xl font-bold font-mono text-indigo-400">0-RTT</div>
+          <div class="text-xs text-slate-400 mt-0.5 font-sans">自适应故障转移</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 2. 全球骨干链路实时测绘与监控矩阵 (Live Telemetry Matrix) -->
+  <section class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+      <div>
+        <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-md text-xs font-mono font-bold bg-blue-500/10 text-blue-600 dark:text-cyan-400 border border-blue-500/20 mb-3">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span>// REAL-TIME BACKBONE TELEMETRY</span>
+        </div>
+        <h2 class="text-2xl sm:text-3xl font-black tracking-tight text-slate-900 dark:text-white">
+          全球核心骨干节点观测矩阵
+        </h2>
+        <p class="mt-2 text-sm sm:text-base text-slate-700 dark:text-slate-300 font-normal">
+          基于反重力自动化探测探针，7×24 小时对全球关键 PoP 进行晚高峰物理 RTT、丢包率与抖动连续测绘。
+        </p>
+      </div>
+
+      <div class="flex items-center space-x-2 text-xs font-mono text-slate-600 dark:text-slate-300 font-medium">
+        <span class="inline-block w-2 h-2 rounded-full bg-emerald-500"></span>
+        <span>探针在线率: 100% · 采样周期: 10s</span>
+      </div>
+    </div>
+
+    <!-- 6 列高密度骨干节点监控卡片 -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      
+      <!-- 节点 1: 香港 HKG -->
+      <div class="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm hover:border-blue-500 hover:shadow-md transition-all">
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center space-x-2.5">
+            <span class="text-xl">🇭🇰</span>
+            <div>
+              <div class="text-sm font-black text-slate-900 dark:text-white font-mono">HKG-IEPL · 01</div>
+              <div class="text-xs text-slate-600 dark:text-slate-300 font-medium">香港核心 · 纯物理波分专线</div>
+            </div>
+          </div>
+          <span class="px-2.5 py-1 rounded text-xs font-mono font-bold bg-emerald-50 text-emerald-700 dark:bg-emerald-950/80 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-700">
+            ● 极优
+          </span>
+        </div>
+        <div class="grid grid-cols-3 gap-2 py-3 px-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800 text-center font-mono">
+          <div>
+            <div class="text-xs font-semibold text-slate-600 dark:text-slate-400">实测延迟</div>
+            <div class="text-base font-bold text-slate-900 dark:text-white mt-0.5">18.2ms</div>
+          </div>
+          <div class="border-x border-slate-200 dark:border-slate-800">
+            <div class="text-xs font-semibold text-slate-600 dark:text-slate-400">高峰丢包</div>
+            <div class="text-base font-bold text-emerald-600 dark:text-emerald-400 mt-0.5">0.00%</div>
+          </div>
+          <div>
+            <div class="text-xs font-semibold text-slate-600 dark:text-slate-400">网络抖动</div>
+            <div class="text-base font-bold text-blue-600 dark:text-cyan-400 mt-0.5">±0.2ms</div>
+          </div>
+        </div>
+        <div class="mt-3 flex items-center justify-between text-xs text-slate-600 dark:text-slate-300 font-medium font-mono">
+          <span>承载: 100G 骨干内网</span>
+          <span class="text-purple-600 dark:text-purple-400 font-bold">ChatGPT/4K 满血</span>
+        </div>
+      </div>
+
+      <!-- 节点 2: 东京 TYO -->
+      <div class="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm hover:border-blue-500 hover:shadow-md transition-all">
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center space-x-2.5">
+            <span class="text-xl">🇯🇵</span>
+            <div>
+              <div class="text-sm font-black text-slate-900 dark:text-white font-mono">TYO-BGP · 02</div>
+              <div class="text-xs text-slate-600 dark:text-slate-300 font-medium">东京核心 · NTT/BGP 智能多线</div>
+            </div>
+          </div>
+          <span class="px-2.5 py-1 rounded text-xs font-mono font-bold bg-emerald-50 text-emerald-700 dark:bg-emerald-950/80 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-700">
+            ● 极优
+          </span>
+        </div>
+        <div class="grid grid-cols-3 gap-2 py-3 px-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800 text-center font-mono">
+          <div>
+            <div class="text-xs font-semibold text-slate-600 dark:text-slate-400">实测延迟</div>
+            <div class="text-base font-bold text-slate-900 dark:text-white mt-0.5">34.5ms</div>
+          </div>
+          <div class="border-x border-slate-200 dark:border-slate-800">
+            <div class="text-xs font-semibold text-slate-600 dark:text-slate-400">高峰丢包</div>
+            <div class="text-base font-bold text-emerald-600 dark:text-emerald-400 mt-0.5">0.02%</div>
+          </div>
+          <div>
+            <div class="text-xs font-semibold text-slate-600 dark:text-slate-400">网络抖动</div>
+            <div class="text-base font-bold text-blue-600 dark:text-cyan-400 mt-0.5">±0.4ms</div>
+          </div>
+        </div>
+        <div class="mt-3 flex items-center justify-between text-xs text-slate-600 dark:text-slate-300 font-medium font-mono">
+          <span>承载: 40G 双向专线</span>
+          <span class="text-purple-600 dark:text-purple-400 font-bold">Abema/Netflix 原生</span>
+        </div>
+      </div>
+
+      <!-- 节点 3: 新加坡 SIN -->
+      <div class="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm hover:border-blue-500 hover:shadow-md transition-all">
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center space-x-2.5">
+            <span class="text-xl">🇸🇬</span>
+            <div>
+              <div class="text-sm font-black text-slate-900 dark:text-white font-mono">SIN-OPT · 01</div>
+              <div class="text-xs text-slate-600 dark:text-slate-300 font-medium">新加坡 · 东南亚低延迟枢纽</div>
+            </div>
+          </div>
+          <span class="px-2.5 py-1 rounded text-xs font-mono font-bold bg-blue-50 text-blue-700 dark:bg-blue-950/80 dark:text-blue-300 border border-blue-200 dark:border-blue-700">
+            ● 平稳
+          </span>
+        </div>
+        <div class="grid grid-cols-3 gap-2 py-3 px-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800 text-center font-mono">
+          <div>
+            <div class="text-xs font-semibold text-slate-600 dark:text-slate-400">实测延迟</div>
+            <div class="text-base font-bold text-slate-900 dark:text-white mt-0.5">42.8ms</div>
+          </div>
+          <div class="border-x border-slate-200 dark:border-slate-800">
+            <div class="text-xs font-semibold text-slate-600 dark:text-slate-400">高峰丢包</div>
+            <div class="text-base font-bold text-emerald-600 dark:text-emerald-400 mt-0.5">0.05%</div>
+          </div>
+          <div>
+            <div class="text-xs font-semibold text-slate-600 dark:text-slate-400">网络抖动</div>
+            <div class="text-base font-bold text-blue-600 dark:text-cyan-400 mt-0.5">±0.6ms</div>
+          </div>
+        </div>
+        <div class="mt-3 flex items-center justify-between text-xs text-slate-600 dark:text-slate-300 font-medium font-mono">
+          <span>承载: Telstra 直达海缆</span>
+          <span class="text-purple-600 dark:text-purple-400 font-bold">Claude 满速双向</span>
+        </div>
+      </div>
+
+      <!-- 节点 4: 洛杉矶 LAX -->
+      <div class="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm hover:border-blue-500 hover:shadow-md transition-all">
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center space-x-2.5">
+            <span class="text-xl">🇺🇸</span>
+            <div>
+              <div class="text-sm font-black text-slate-900 dark:text-white font-mono">LAX-CMIN2 · 03</div>
+              <div class="text-xs text-slate-600 dark:text-slate-300 font-medium">美西洛杉矶 · 优质直连回程</div>
+            </div>
+          </div>
+          <span class="px-2.5 py-1 rounded text-xs font-mono font-bold bg-emerald-50 text-emerald-700 dark:bg-emerald-950/80 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-700">
+            ● 极优
+          </span>
+        </div>
+        <div class="grid grid-cols-3 gap-2 py-3 px-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800 text-center font-mono">
+          <div>
+            <div class="text-xs font-semibold text-slate-600 dark:text-slate-400">实测延迟</div>
+            <div class="text-base font-bold text-slate-900 dark:text-white mt-0.5">132.8ms</div>
+          </div>
+          <div class="border-x border-slate-200 dark:border-slate-800">
+            <div class="text-xs font-semibold text-slate-600 dark:text-slate-400">高峰丢包</div>
+            <div class="text-base font-bold text-emerald-600 dark:text-emerald-400 mt-0.5">0.08%</div>
+          </div>
+          <div>
+            <div class="text-xs font-semibold text-slate-600 dark:text-slate-400">网络抖动</div>
+            <div class="text-base font-bold text-blue-600 dark:text-cyan-400 mt-0.5">±1.2ms</div>
+          </div>
+        </div>
+        <div class="mt-3 flex items-center justify-between text-xs text-slate-600 dark:text-slate-300 font-medium font-mono">
+          <span>承载: 跨太平洋 NCP 海缆</span>
+          <span class="text-purple-600 dark:text-purple-400 font-bold">原生住宅 IP 纯净</span>
+        </div>
+      </div>
+
+      <!-- 节点 5: 圣何塞 SJC -->
+      <div class="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm hover:border-blue-500 hover:shadow-md transition-all">
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center space-x-2.5">
+            <span class="text-xl">🇺🇸</span>
+            <div>
+              <div class="text-sm font-black text-slate-900 dark:text-white font-mono">SJC-AI · 01</div>
+              <div class="text-xs text-slate-600 dark:text-slate-300 font-medium">硅谷直连 · 原生双 ISP 出口</div>
+            </div>
+          </div>
+          <span class="px-2.5 py-1 rounded text-xs font-mono font-bold bg-emerald-50 text-emerald-700 dark:bg-emerald-950/80 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-700">
+            ● 极优
+          </span>
+        </div>
+        <div class="grid grid-cols-3 gap-2 py-3 px-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800 text-center font-mono">
+          <div>
+            <div class="text-xs font-semibold text-slate-600 dark:text-slate-400">实测延迟</div>
+            <div class="text-base font-bold text-slate-900 dark:text-white mt-0.5">138.4ms</div>
+          </div>
+          <div class="border-x border-slate-200 dark:border-slate-800">
+            <div class="text-xs font-semibold text-slate-600 dark:text-slate-400">高峰丢包</div>
+            <div class="text-base font-bold text-emerald-600 dark:text-emerald-400 mt-0.5">0.04%</div>
+          </div>
+          <div>
+            <div class="text-xs font-semibold text-slate-600 dark:text-slate-400">网络抖动</div>
+            <div class="text-base font-bold text-blue-600 dark:text-cyan-400 mt-0.5">±0.9ms</div>
+          </div>
+        </div>
+        <div class="mt-3 flex items-center justify-between text-xs text-slate-600 dark:text-slate-300 font-medium font-mono">
+          <span>承载: 40G 硅谷直连</span>
+          <span class="text-purple-600 dark:text-purple-400 font-bold">OpenAI 原生直通</span>
+        </div>
+      </div>
+
+      <!-- 节点 6: 法兰克福 FRA -->
+      <div class="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm hover:border-blue-500 hover:shadow-md transition-all">
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center space-x-2.5">
+            <span class="text-xl">🇩🇪</span>
+            <div>
+              <div class="text-sm font-black text-slate-900 dark:text-white font-mono">FRA-DECIX · 01</div>
+              <div class="text-xs text-slate-600 dark:text-slate-300 font-medium">欧洲核心 · DE-CIX 交换中心</div>
+            </div>
+          </div>
+          <span class="px-2.5 py-1 rounded text-xs font-mono font-bold bg-blue-50 text-blue-700 dark:bg-blue-950/80 dark:text-blue-300 border border-blue-200 dark:border-blue-700">
+            ● 平稳
+          </span>
+        </div>
+        <div class="grid grid-cols-3 gap-2 py-3 px-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800 text-center font-mono">
+          <div>
+            <div class="text-xs font-semibold text-slate-600 dark:text-slate-400">实测延迟</div>
+            <div class="text-base font-bold text-slate-900 dark:text-white mt-0.5">148.6ms</div>
+          </div>
+          <div class="border-x border-slate-200 dark:border-slate-800">
+            <div class="text-xs font-semibold text-slate-600 dark:text-slate-400">高峰丢包</div>
+            <div class="text-base font-bold text-emerald-600 dark:text-emerald-400 mt-0.5">0.11%</div>
+          </div>
+          <div>
+            <div class="text-xs font-semibold text-slate-600 dark:text-slate-400">网络抖动</div>
+            <div class="text-base font-bold text-blue-600 dark:text-cyan-400 mt-0.5">±1.8ms</div>
+          </div>
+        </div>
+        <div class="mt-3 flex items-center justify-between text-xs text-slate-600 dark:text-slate-300 font-medium font-mono">
+          <span>承载: 欧亚陆缆直连</span>
+          <span class="text-purple-600 dark:text-purple-400 font-bold">欧洲全区低延迟</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 3. 今日海缆态势与传输层协议效率微看板 (Backbone Health & Protocol Efficiency) -->
+  <section class="py-12 bg-slate-100 dark:bg-slate-900/60 border-y border-slate-200 dark:border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 font-sans">
+        
+        <!-- 态势 1: 国际海缆负荷 -->
+        <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm flex items-start space-x-4">
+          <div class="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-950/80 text-blue-600 dark:text-cyan-400 flex items-center justify-center text-xl shrink-0 font-mono font-bold">
+            🌊
+          </div>
+          <div>
+            <div class="text-xs font-mono font-bold text-blue-600 dark:text-cyan-400 uppercase tracking-wider">
+              国际海缆通路监控
+            </div>
+            <div class="text-base font-bold text-slate-900 dark:text-white mt-1">
+              跨太平洋海缆：99.98% 通畅
+            </div>
+            <p class="text-sm text-slate-600 dark:text-slate-300 mt-1.5 leading-relaxed font-normal">
+              NCP / FASTER 物理信道无断纤，晚高峰跨洋信道潮汐流量利用率约 74.2%，骨干链路无绕路异常。
+            </p>
+          </div>
+        </div>
+
+        <!-- 态势 2: 传输层吞吐增益 -->
+        <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm flex items-start space-x-4">
+          <div class="w-12 h-12 rounded-xl bg-purple-50 dark:bg-purple-950/80 text-purple-600 dark:text-purple-400 flex items-center justify-center text-xl shrink-0 font-mono font-bold">
+            ⚡
+          </div>
+          <div>
+            <div class="text-xs font-mono font-bold text-purple-600 dark:text-purple-400 uppercase tracking-wider">
+              协议栈实测增益
+            </div>
+            <div class="text-base font-bold text-slate-900 dark:text-white mt-1">
+              BBRv3 + Hysteria2: 提升 380%
+            </div>
+            <p class="text-sm text-slate-600 dark:text-slate-300 mt-1.5 leading-relaxed font-normal">
+              在高丢包长肥管道（BDP）场景下，BBRv3 调优结合魔改 UDP 协议可显著抵消拥塞惩罚，实现 0-RTT 瞬时恢复。
+            </p>
+          </div>
+        </div>
+
+        <!-- 态势 3: AI 双向原生解锁 -->
+        <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm flex items-start space-x-4">
+          <div class="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-950/80 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xl shrink-0 font-mono font-bold">
+            🛡️
+          </div>
+          <div>
+            <div class="text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">
+              大模型 API 访问原生性
+            </div>
+            <div class="text-base font-bold text-slate-900 dark:text-white mt-1">
+              ChatGPT / Claude: 100% 满血
+            </div>
+            <p class="text-sm text-slate-600 dark:text-slate-300 mt-1.5 leading-relaxed font-normal">
+              纯净原生双 ISP 出口，机房欺诈风险评分小于 5，零 Cloudflare 5秒盾拦截，支持高并发开发协作。
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 4. 实验室首选旗舰直通看板 (Featured Flagship Spotlight) -->
+  <section class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 text-white p-6 sm:p-10 border border-blue-500/30 shadow-2xl">
+      <div class="absolute -right-20 -top-20 w-80 h-80 bg-blue-500/20 blur-3xl rounded-full pointer-events-none"></div>
+      
+      <div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+        
+        <div class="max-w-2xl space-y-3">
+          <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full text-xs font-mono font-bold bg-amber-400/20 text-amber-300 border border-amber-400/30">
+            <span>★ 2026 年度实验室官方压测力荐</span>
+          </div>
+          
+          <h3 class="text-2xl sm:text-3xl font-black tracking-tight text-white flex items-center space-x-3">
+            <span>环球梯 (HuanQiuTi)</span>
+            <span class="text-xs font-mono px-2 py-0.5 rounded bg-blue-500/20 text-cyan-300 border border-blue-400/30">
+              4年+ 稳定运营
+            </span>
+          </h3>
+
+          <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+            纯物理波分内网 IEPL 专线，骨干高压时段晚高峰丢包恒定 0.00%。配备原生双 ISP 出口，全流媒体 4K 秒开与 OpenAI / Claude 秒级回包。
+          </p>
+
+          <div class="flex flex-wrap gap-2 pt-1 font-mono text-xs">
+            <span class="px-2.5 py-1 rounded-lg bg-white/10 text-cyan-200 border border-white/10">港 18ms / 美 135ms</span>
+            <span class="px-2.5 py-1 rounded-lg bg-white/10 text-emerald-300 border border-white/10">晚高峰 0 丢包</span>
+            <span class="px-2.5 py-1 rounded-lg bg-white/10 text-purple-300 border border-white/10">100% 满血双向</span>
+            <span class="px-2.5 py-1 rounded-lg bg-white/10 text-amber-300 border border-white/10">Shadowsocks · Trojan · Hysteria2</span>
+          </div>
+        </div>
+
+        <div class="shrink-0 flex flex-col sm:flex-row lg:flex-col items-start lg:items-end gap-4 p-5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md">
+          <div class="text-left lg:text-right">
+            <div class="text-xs text-slate-400 font-mono">专属 7 折优惠码：HQ66</div>
+            <div class="flex items-baseline space-x-2 mt-1">
+              <span class="text-xs font-bold text-rose-400">券后实付 ¥</span>
+              <span class="text-3xl font-black font-mono text-rose-400 tracking-tight">8.40</span>
+              <span class="line-through text-xs text-slate-400 font-mono">¥12.00</span>
+              <span class="text-xs text-slate-400 font-mono">/ 月起</span>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-2.5 w-full sm:w-auto">
+            <button
+              type="button"
+              class="copy-home-coupon px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs font-mono transition-all flex items-center space-x-1.5 shadow-md active:scale-95 cursor-pointer"
+              data-coupon="HQ66"
+            >
+              <span>复制 7 折券 HQ66</span>
+            </button>
+            <a
+              href="/go.html?id=hq"
+              target="_blank"
+              rel="nofollow sponsored noopener noreferrer"
+              class="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs transition-all flex items-center space-x-1.5 shadow-md active:scale-95"
+            >
+              <span>直达官网开通 →</span>
+            </a>
+            <a
+              href="/airports"
+              class="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs font-mono transition-all border border-white/20"
+            >
+              完整实测报告
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    const copyBtn = document.querySelector('.copy-home-coupon');
+    if (copyBtn) {
+      copyBtn.addEventListener('click', async () => {
+        const code = copyBtn.getAttribute('data-coupon') || 'HQ66';
+        try {
+          await navigator.clipboard.writeText(code);
+        } catch (_) {
+          const input = document.createElement('input');
+          input.value = code;
+          document.body.appendChild(input);
+          input.select();
+          document.execCommand('copy');
+          document.body.removeChild(input);
+        }
+
+        const originalText = copyBtn.innerText;
+        copyBtn.innerText = '✓ 已复制 HQ66!';
+        copyBtn.classList.add('bg-emerald-400', 'text-slate-950');
+        setTimeout(() => {
+          copyBtn.innerText = originalText;
+          copyBtn.classList.remove('bg-emerald-400');
+        }, 2000);
+      });
+    }
+  });
+</script>

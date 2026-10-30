@@ -1,0 +1,155 @@
+---
+// src/layouts/BaseLayout.astro
+import Navbar from '../components/Navbar.astro';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'VPN网络实验中心 // 高性能网络架构与专线选型智库',
+  description = 'VPN网络实验中心：高性能网络架构评测、跨境专线拓扑基准、BBRv3参数调优与现代网络工程实测导航站。',
+} = Astro.props;
+const canonicalURL = new URL(Astro.url.pathname, 'https://netlabvpn.vip');
+---
+
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+    <link rel="icon" type="image/png" href="/logo.png" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <!-- Open Graph / SEO Social Cards -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content="https://netlabvpn.vip/logo.png" />
+    <meta property="og:site_name" content="VPN网络实验中心" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content="https://netlabvpn.vip/logo.png" />
+    
+    <!-- 立即执行暗黑模式预检脚本，防止闪烁 (FOUC) -->
+    <script is:inline>
+      (function() {
+        try {
+          const stored = localStorage.getItem('theme');
+          const isDark = stored === 'dark' || (!stored && window.matchMedia('(prefers-color-scheme: dark)').matches);
+          if (isDark) {
+            document.documentElement.classList.add('dark');
+          } else {
+            document.documentElement.classList.remove('dark');
+          }
+        } catch (_) {}
+      })();
+    </script>
+  </head>
+  <body class="min-h-screen flex flex-col bg-slate-50 dark:bg-[#060a12] text-slate-900 dark:text-slate-100 selection:bg-blue-500 selection:text-white transition-colors duration-200">
+    
+    <!-- 统一磨砂玻璃导航栏 -->
+    <Navbar />
+
+    <!-- 页面核心插槽内容 -->
+    <main class="flex-grow">
+      <slot />
+    </main>
+
+    <!-- 统一极客深色页脚 -->
+    <footer class="bg-slate-950 text-slate-400 border-t border-slate-800/80 pt-16 pb-12">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+          
+          <div class="md:col-span-2">
+            <div class="flex items-center space-x-3 mb-4">
+              <img src="/logo.png" alt="VPN网络实验中心 LOGO" class="w-10 h-10 rounded-xl border border-cyan-500/40 object-cover shadow-md" />
+              <div class="flex flex-col">
+                <span class="text-lg font-black tracking-wider text-white">VPN网络实验中心</span>
+                <span class="text-[10px] font-mono tracking-widest text-cyan-400">VPN NETWORK LAB</span>
+              </div>
+            </div>
+            <p class="text-sm text-slate-400 max-w-sm leading-relaxed">
+              聚焦高性能跨域网络工程实测、底层协议栈调优与纯净拓扑指南。坚持真实数据，拒绝商业超卖充水。
+            </p>
+          </div>
+
+          <div>
+            <h4 class="text-xs font-mono font-bold uppercase tracking-wider text-slate-200 mb-4">
+              独立架构频道
+            </h4>
+            <ul class="space-y-2 text-xs font-mono">
+              <li><a href="/" class="text-slate-400 hover:text-blue-400 transition">/ 全景观测大厅</a></li>
+              <li><a href="/selection" class="text-slate-400 hover:text-blue-400 transition">/ 选型决策智库</a></li>
+              <li><a href="/airports" class="text-cyan-400/90 hover:text-cyan-300 transition">/ 专线机场推荐 (HOT)</a></li>
+              <li><a href="/radar" class="text-amber-400/90 hover:text-amber-300 transition">/ 避坑雷达专区</a></li>
+              <li><a href="/architecture" class="text-slate-400 hover:text-blue-400 transition">/ 五大金刚架构</a></li>
+              <li><a href="/posts" class="text-slate-400 hover:text-blue-400 transition">/ 实测深度长文</a></li>
+              <li><a href="/blog" class="text-purple-400/90 hover:text-purple-300 transition">/ 博客技术手记</a></li>
+              <li><a href="/sitemap-index.xml" target="_blank" class="text-emerald-400/90 hover:text-emerald-300 transition">/ XML 网站地图 (Sitemap)</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 class="text-xs font-mono font-bold uppercase tracking-wider text-slate-200 mb-4">
+              客服与技术支持
+            </h4>
+            <p class="text-xs text-slate-400 leading-relaxed mb-3">
+              遇到专线接入、客户端配置或大额优惠疑问，可随时联系官方专属技术顾问获得 1 对 1 支持。
+            </p>
+            <a
+              href="https://t.me/huanqiuti8899"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-mono font-semibold bg-blue-950/80 hover:bg-blue-900 text-cyan-300 border border-blue-800/80 transition"
+            >
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
+              </svg>
+              <span>联系官方客服 →</span>
+            </a>
+          </div>
+
+        </div>
+
+        <div class="pt-8 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400">
+          <div>
+            © {new Date().getFullYear()} ANTIGRAVITY NETWORK LABS. ALL RIGHTS RESERVED.
+          </div>
+          <div class="mt-4 sm:mt-0 font-mono flex items-center space-x-4">
+            <span class="flex items-center space-x-1.5">
+              <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              <span>BGP Anycast Status: Optimal</span>
+            </span>
+            <span>RTT: 0.8ms</span>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- 全站右下角悬浮在线客服胶囊 (点击直达 TG，不显示号码) -->
+    <aside class="fixed bottom-6 right-6 z-40">
+      <a
+        href="https://t.me/huanqiuti8899"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="flex items-center space-x-2 px-4 py-2.5 rounded-full bg-gradient-to-r from-blue-600 via-cyan-600 to-blue-500 text-white font-mono text-xs font-bold shadow-xl shadow-blue-500/30 hover:shadow-2xl hover:shadow-cyan-500/50 hover:scale-105 active:scale-95 transition-all duration-200 border border-white/20 group"
+        title="点击联系 Telegram 官方在线客服"
+      >
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <svg class="w-4 h-4 transition-transform group-hover:rotate-12" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
+        </svg>
+        <span>在线客服</span>
+      </a>
+    </aside>
+
+  </body>
+</html>

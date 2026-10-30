@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>安全通道中转中 · VPN网络实验中心</title>
+  <!-- 严格声明无索引、无追踪，杜绝搜索引擎蜘蛛抓取与建索 -->
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+  <meta name="referrer" content="no-referrer">
+  <style>
+    :root {
+      --bg: #060a12;
+      --card-bg: rgba(15, 23, 42, 0.85);
+      --border: rgba(56, 189, 248, 0.25);
+      --primary: #38bdf8;
+      --accent: #6366f1;
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      overflow: hidden;
+      position: relative;
+    }
+    /* 动态光晕背景 */
+    .glow {
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, rgba(99, 102, 241, 0.05) 50%, transparent 70%);
+      border-radius: 50%;
+      filter: blur(40px);
+      animation: pulse 4s ease-in-out infinite alternate;
+      z-index: 1;
+    }
+    @keyframes pulse {
+      0% { transform: scale(0.9); opacity: 0.6; }
+      100% { transform: scale(1.1); opacity: 0.9; }
+    }
+    .card {
+      position: relative;
+      z-index: 2;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 20px;
+      padding: 40px 32px;
+      max-width: 460px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6), 0 0 30px rgba(56, 189, 248, 0.1);
+    }
+    .radar-spinner {
+      position: relative;
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 24px;
+    }
+    .radar-spinner::before, .radar-spinner::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 2px solid transparent;
+    }
+    .radar-spinner::before {
+      border-top-color: var(--primary);
+      border-right-color: var(--primary);
+      animation: spin 1s linear infinite;
+    }
+    .radar-spinner::after {
+      border-bottom-color: var(--accent);
+      border-left-color: var(--accent);
+      animation: spin 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite reverse;
+    }
+    .radar-center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 12px;
+      height: 12px;
+      background: #38bdf8;
+      border-radius: 50%;
+      box-shadow: 0 0 12px #38bdf8;
+    }
+    @keyframes spin {
+      100% { transform: rotate(360deg); }
+    }
+    h1 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      letter-spacing: 0.5px;
+      background: linear-gradient(135deg, #38bdf8, #818cf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    p {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+    .badge-bar {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      border-radius: 9999px;
+      font-size: 12px;
+      color: #38bdf8;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      margin-bottom: 20px;
+    }
+    .btn {
+      display: inline-block;
+      width: 100%;
+      padding: 12px 24px;
+      background: linear-gradient(135deg, #0284c7, #2563eb);
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      border-radius: 12px;
+      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35);
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background: linear-gradient(135deg, #0369a1, #1d4ed8);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(2, 132, 199, 0.45);
+    }
+    .footer-note {
+      margin-top: 20px;
+      font-size: 11px;
+      color: #64748b;
+    }
+  </style>
+  <script>
+    // 301 聚合转发路由表 (支持短代码和全拼代码)
+    var AFF_MAP = {
+      // 1. 环球梯 (HuanQiuTi) - 官方旗舰 #1
+      'hq': 'https://123pps01.huanqiutiaff.com/#/?code=j5VBUvw0',
+      'huanqiu': 'https://123pps01.huanqiutiaff.com/#/?code=j5VBUvw0',
+      'huanqiuti': 'https://123pps01.huanqiutiaff.com/#/?code=j5VBUvw0',
+      '1': 'https://123pps01.huanqiutiaff.com/#/?code=j5VBUvw0',
+
+      // 2. 大佬云 (DaLaoYun)
+      'dly': 'https://ppsvip01.dalaoyunaff.com/#/?code=Iz1GlCVa',
+      'dalaoyun': 'https://ppsvip01.dalaoyunaff.com/#/?code=Iz1GlCVa',
+      '2': 'https://ppsvip01.dalaoyunaff.com/#/?code=Iz1GlCVa',
+
+      // 3. 云界线 (YunJieXian)
+      'yjx': 'https://pp01.yunjiexianaff.com/#/?code=bp0ZSKBV',
+      'yunjiexian': 'https://pp01.yunjiexianaff.com/#/?code=bp0ZSKBV',
+      '3': 'https://pp01.yunjiexianaff.com/#/?code=bp0ZSKBV',
+
+      // 4. 闪电鼠 (ShanDianShu)
+      'sds': 'https://ppsvip01.shandianshuaff.com/#/?code=QbLF8tjB',
+      'shandianshu': 'https://ppsvip01.shandianshuaff.com/#/?code=QbLF8tjB',
+      '4': 'https://ppsvip01.shandianshuaff.com/#/?code=QbLF8tjB',
+
+      // 5. 神行加速 (ShenXing)
+      'sx': 'https://pps123.shenxingaff.com/#/?code=6tQ7zHUc',
+      'shenxing': 'https://pps123.shenxingaff.com/#/?code=6tQ7zHUc',
+      '5': 'https://pps123.shenxingaff.com/#/?code=6tQ7zHUc',
+
+      // 6. 榴莲云 (LiuLianYun)
+      'lly': 'https://123pp01.liulianyunaff.com/#/?code=MsZP3u7G',
+      'liulianyun': 'https://123pp01.liulianyunaff.com/#/?code=MsZP3u7G',
+      '6': 'https://123pp01.liulianyunaff.com/#/?code=MsZP3u7G',
+
+      // 7. 极连云 (JiLianYun)
+      'jly': 'https://haozevpn.jlyvipaff.com/#/?code=jwCMOvQO' ,
+      'jilianyun': 'https://haozevpn.jlyvipaff.com/#/?code=jwCMOvQO',
+      '7': 'https://haozevpn.jlyvipaff.com/#/?code=jwCMOvQO',
+
+      // 8. 可信云 (KeXinYun)
+      'kxy': 'https://everett7623.kosingaff.com/#/?code=sFKkfeYs',
+      'kexinyun': 'https://everett7623.kosingaff.com/#/?code=sFKkfeYs',
+      '8': 'https://everett7623.kosingaff.com/#/?code=sFKkfeYs',
+
+      // 9. 边缘节点 (EdgeNova)
+      'edgenova': 'https://wep.edgenovaaff.com/#/?code=mLLL6h6F',
+      '9': 'https://wep.edgenovaaff.com/#/?code=mLLL6h6F',
+
+      // 10. 速界 (SpeedWorld)
+      'speedworld': 'https://pygllc.speedworldaff.cc/#/?code=kcoensXG',
+      'sujie': 'https://pygllc.speedworldaff.cc/#/?code=kcoensXG',
+      '10': 'https://pygllc.speedworldaff.cc/#/?code=kcoensXG',
+
+      // 11. 光年梯 (GuangNianTi)
+      'gnt': 'https://gnt001.gntvipaff.cc/#/?code=PQhPFDhO',
+      'guangnianti': 'https://gnt001.gntvipaff.cc/#/?code=PQhPFDhO',
+      '11': 'https://gnt001.gntvipaff.cc/#/?code=PQhPFDhO',
+
+      // 12. 快狸快狸 (KuaiLi)
+      'kuaili': 'https://fanxiaobin.kuailiaff.com/#/?code=e0cAmK7F',
+      '12': 'https://fanxiaobin.kuailiaff.com/#/?code=e0cAmK7F',
+
+      // 13. 鲲鹏加速 (KunPeng)
+      'kunpeng': 'https://kunpengjiasu.com/#/register?code=WPugVZUe',
+      '13': 'https://kunpengjiasu.com/#/register?code=WPugVZUe',
+
+      // 14. 云图机场 (YunTu)
+      'yuntu': 'https://super.ytjcok.org/#/register?code=poKwFVtv',
+      '14': 'https://super.ytjcok.org/#/register?code=poKwFVtv',
+
+      // 15. 瞬云 (ShunYun)
+      'shunyun': 'https://ddd.jichang.best/#/register?code=nldUZaYc',
+      '15': 'https://ddd.jichang.best/#/register?code=nldUZaYc'
+    };
+
+    function getTargetUrl() {
+      try {
+        var params = new URLSearchParams(window.location.search);
+        var targetId = (params.get('id') || params.get('to') || params.get('target') || '').toLowerCase().trim();
+        
+        // 允许从 hash 获取 (例如 /go.html#hq)
+        if (!targetId && window.location.hash) {
+          targetId = window.location.hash.replace('#', '').toLowerCase().trim();
+        }
+        
+        if (targetId && AFF_MAP[targetId]) {
+          return AFF_MAP[targetId];
+        }
+      } catch (e) {}
+      // 默认兜底跳转至首推 #1 环球梯
+      return AFF_MAP['hq'];
+    }
+
+    var targetUrl = getTargetUrl();
+
+    // 优先毫秒级无缝客户端 301 替换
+    if (typeof window !== 'undefined' && targetUrl) {
+      try {
+        window.location.replace(targetUrl);
+      } catch (err) {
+        window.location.href = targetUrl;
+      }
+    }
+  </script>
+</head>
+<body>
+  <div class="glow"></div>
+  <div class="card">
+    <div class="radar-spinner">
+      <div class="radar-center"></div>
+    </div>
+    <div class="badge-bar">
+      <span>●</span>
+      <span>SAFE REDIRECT // 301 隔离承接</span>
+    </div>
+    <h1>正在前往授权节点</h1>
+    <p>VPN网络实验中心正在为您校验网络安全凭据，将立即无感转接至专属官方入口...</p>
+    
+    <a id="redirect-link" href="#" rel="nofollow sponsored noopener noreferrer" class="btn">
+      点击立即前往
+    </a>
+
+    <div class="footer-note">
+      安全合规链路 · 不记录任何隐私凭据
+    </div>
+  </div>
+
+  <script>
+    // 渲染直达按钮兜底
+    document.addEventListener('DOMContentLoaded', function() {
+      var link = document.getElementById('redirect-link');
+      if (link && targetUrl) {
+        link.href = targetUrl;
+      }
+    });
+    // 超时二次兜底
+    setTimeout(function() {
+      if (targetUrl) {
+        window.location.href = targetUrl;
+      }
+    }, 1200);
+  </script>
+</body>
+</html>

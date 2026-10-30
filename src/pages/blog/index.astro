@@ -1,0 +1,213 @@
+---
+// src/pages/blog/index.astro
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const allPosts = await getCollection('posts');
+const sortedPosts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+// 动态提取文章分类
+const rawCategories = Array.from(new Set(allPosts.map((p) => p.data.category)));
+const categories = ['全部文章', ...rawCategories];
+---
+
+<BaseLayout
+  title="VPN网络实验中心 // 跨境专线技术博客与出海配置手记 · VPN NETWORK LAB"
+  description="VPN网络实验中心技术博客专栏。涵盖 Clash Verge Rev、Sing-box、Surge 全平台保姆级配置教程、BBRv3 内核优化、住宅IP原理解析与环球梯专线实操指南。"
+>
+  <div class="py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <!-- 头部导言 -->
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
+      <div>
+        <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-md text-xs font-mono font-bold bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20 mb-3">
+          <span class="w-2 h-2 rounded-full bg-purple-400 animate-pulse"></span>
+          <span>// VPN NETWORK LAB & KNOWLEDGE BASE</span>
+        </div>
+        <h1 class="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-slate-900 dark:text-white">
+          VPN网络实验中心 · 技术手记与出海配置宝典
+        </h1>
+        <p class="mt-2 text-xs sm:text-sm text-slate-600 dark:text-slate-400 max-w-2xl leading-relaxed">
+          汇集 VPN 网络实验中心工程师团队的硬核实战经验。从 Clash / Sing-box 客户端零基础上手，到 BBRv3 内核加速、软路由分流与防封住宅 IP 深度剖析。
+        </p>
+      </div>
+
+      <!-- 实时博客微看板 -->
+      <div class="flex items-center space-x-3 px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs font-mono shrink-0">
+        <span class="flex items-center space-x-1.5 text-purple-600 dark:text-purple-400 font-semibold">
+          <span class="pulse-indicator">
+            <span class="pulse-indicator-dot bg-purple-500"></span>
+          </span>
+          <span>已收录: {sortedPosts.length} 篇技术手记</span>
+        </span>
+        <span class="text-slate-300 dark:text-slate-700">|</span>
+        <span class="text-slate-600 dark:text-slate-300 font-medium">推荐专线: #1 环球梯</span>
+      </div>
+    </div>
+
+    <!-- 顶部置顶重磅教程卡片 (Featured Tutorial Hero) -->
+    <div class="mb-12 rounded-2xl border-2 border-purple-400/60 dark:border-purple-500/60 bg-gradient-to-br from-purple-50/60 via-white to-indigo-50/40 dark:from-slate-900 dark:via-purple-950/20 dark:to-slate-900 p-6 sm:p-8 shadow-lg shadow-purple-500/5 backdrop-blur-md relative overflow-hidden">
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+        <div class="max-w-3xl">
+          <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full text-xs font-mono font-bold bg-purple-600 text-white mb-3 shadow-xs">
+            <span>⭐ 本月重磅置顶教程</span>
+          </div>
+          <h2 class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white leading-snug">
+            2026 全平台科学上网新手保姆级指南：从环球梯订阅一键导入到 Clash Verge Rev / Sing-box 智能分流
+          </h2>
+          <p class="mt-3 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+            无论您使用 Windows、macOS、Android 还是 iOS，本文带您 5 分钟内完成现代代理工具的安装配置。配合全网第一主力专线 <strong>环球梯 (HuanQiuTi)</strong> 独家 7 折码 <code>HQ66</code>，轻松实现国内直连加速、国外 4K 毫秒级秒开的无感翻墙体验。
+          </p>
+          <div class="mt-4 flex flex-wrap gap-2 text-xs font-mono">
+            <span class="px-2.5 py-1 rounded-md bg-white dark:bg-slate-800 text-purple-600 dark:text-purple-300 font-semibold border border-purple-200 dark:border-purple-800">
+              #客户端全平台配置
+            </span>
+            <span class="px-2.5 py-1 rounded-md bg-white dark:bg-slate-800 text-emerald-600 dark:text-emerald-400 font-semibold border border-emerald-200 dark:border-emerald-800">
+              #首选环球梯 (¥8.40起)
+            </span>
+            <span class="px-2.5 py-1 rounded-md bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+              #规则集自动更新
+            </span>
+          </div>
+        </div>
+
+        <div class="shrink-0 flex flex-col sm:flex-row lg:flex-col gap-3 min-w-[220px]">
+          <a
+            href="/go.html?id=hq"
+            target="_blank"
+            rel="nofollow sponsored noopener noreferrer"
+            class="px-5 py-3 rounded-xl bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-slate-950 font-black text-xs font-mono hover:brightness-110 transition shadow-md shadow-amber-500/20 text-center flex items-center justify-center space-x-1.5"
+          >
+            <span>⚡ 7折领取环球梯订阅 (HQ66)</span>
+            <span>→</span>
+          </a>
+          <a
+            href="/posts/iplc-tier1-flagship-review"
+            class="px-5 py-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:text-purple-600 dark:hover:text-purple-400 font-bold text-xs font-mono transition text-center shadow-xs"
+          >
+            阅读专线压测实测报告
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 分类过滤器 -->
+    <div class="mb-8 flex flex-wrap items-center gap-2 pb-4 border-b border-slate-200 dark:border-slate-800 text-xs font-mono" id="blog-category-filter">
+      {categories.map((cat, idx) => (
+        <button
+          type="button"
+          class={`blog-filter-btn px-3 py-1.5 rounded-lg transition-all cursor-pointer font-semibold ${
+            idx === 0
+              ? 'active bg-purple-600 text-white shadow-xs'
+              : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-purple-600 dark:hover:text-purple-400'
+          }`}
+          data-category={cat === '全部文章' ? 'all' : cat}
+        >
+          {cat}
+        </button>
+      ))}
+    </div>
+
+    <!-- 博客文章列表网格 -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16" id="blog-posts-grid">
+      {sortedPosts.map((post) => (
+        <article
+          class="blog-card flex flex-col justify-between rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-purple-500/60 dark:hover:border-purple-400/50 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group shadow-sm"
+          data-category={post.data.category}
+        >
+          <div class="p-6">
+            <!-- 头部元信息 -->
+            <div class="flex items-center justify-between text-xs font-mono mb-3.5">
+              <span class="px-2.5 py-1 rounded-md bg-purple-50 dark:bg-purple-950/80 text-purple-600 dark:text-purple-300 font-semibold border border-purple-200/60 dark:border-purple-800/40">
+                {post.data.category}
+              </span>
+              {post.data.badge && (
+                <span class="px-2.5 py-0.5 rounded text-xs font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/30">
+                  {post.data.badge}
+                </span>
+              )}
+            </div>
+
+            <!-- 标题 -->
+            <h3 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors leading-snug">
+              <a href={`/posts/${post.slug}`} class="hover:underline">
+                {post.data.title}
+              </a>
+            </h3>
+
+            <!-- 摘要 -->
+            <p class="mt-3 text-sm text-slate-700 dark:text-slate-300 line-clamp-3 leading-relaxed font-normal">
+              {post.data.description}
+            </p>
+
+            <!-- 标签 -->
+            <div class="mt-4 flex flex-wrap gap-1.5">
+              {post.data.tags.map((t) => (
+                <span class="text-xs font-mono px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-medium">
+                  #{t}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <!-- 底部操作与阅读时长 -->
+          <div class="p-6 pt-0 mt-2 flex items-center justify-between border-t border-slate-100 dark:border-slate-800/80 text-xs font-mono">
+            <span class="text-slate-400 flex items-center space-x-1">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10" stroke-width="2"></circle>
+                <polyline points="12 6 12 12 16 14" stroke-width="2"></polyline>
+              </svg>
+              <span>{post.data.readTime}</span>
+            </span>
+            <a
+              href={`/posts/${post.slug}`}
+              class="text-purple-600 dark:text-purple-400 font-bold group-hover:translate-x-1 transition-transform flex items-center space-x-1"
+            >
+              <span>查阅手记</span>
+              <span>→</span>
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <!-- 底部实战贴士 -->
+    <div class="p-6 rounded-2xl bg-gradient-to-r from-purple-500/10 via-indigo-500/10 to-blue-500/10 border border-purple-500/20 text-center max-w-3xl mx-auto font-mono text-xs text-slate-600 dark:text-slate-400">
+      <div class="font-bold text-slate-900 dark:text-white mb-1.5 text-sm flex items-center justify-center space-x-2">
+        <span>💡 VPN网络实验中心出海选型手记</span>
+      </div>
+      <p>
+        好工具配合好线路才能发挥极致效果。强烈建议新手在配置 Clash / Sing-box 等现代客户端时，优先选用晚高峰持续 0 丢包的 <strong>#1 环球梯 (HuanQiuTi)</strong> 纯物理专线，杜绝频繁卡顿转圈。
+      </p>
+    </div>
+
+  </div>
+</BaseLayout>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    const filterButtons = document.querySelectorAll('.blog-filter-btn');
+    const blogCards = document.querySelectorAll('.blog-card');
+
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterButtons.forEach(b => {
+          b.classList.remove('active', 'bg-purple-600', 'text-white', 'shadow-xs');
+          b.classList.add('bg-slate-100', 'dark:bg-slate-800', 'text-slate-600', 'dark:text-slate-300');
+        });
+        btn.classList.add('active', 'bg-purple-600', 'text-white', 'shadow-xs');
+        btn.classList.remove('bg-slate-100', 'dark:bg-slate-800', 'text-slate-600', 'dark:text-slate-300');
+
+        const category = btn.getAttribute('data-category');
+
+        blogCards.forEach(card => {
+          if (category === 'all' || card.getAttribute('data-category') === category) {
+            card.style.display = 'flex';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+  });
+</script>
