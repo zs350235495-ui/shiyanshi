@@ -8,7 +8,7 @@ if (!fs.existsSync(targetDir)) {
 }
 
 // 统一推广信息
-const AFF_LINK = 'https://123pps01.huanqiutiaff.com/#/?code=j5VBUvw0';
+const AFF_LINK = '/go.html?id=hq';
 const COUPON_CODE = 'HQ66';
 
 // 30 篇 SEO 文章元数据与内容蓝图
@@ -523,7 +523,7 @@ badge: "${art.badge}"
 为了帮助大家在日常使用中将宽带吞吐与延迟压榨至极限，我们以目前主流的全平台代理客户端（如 Clash Verge Rev、Sing-box 以及 iOS 小火箭）为例，提供一套标准化配置指南：
 
 ### 步骤一：获取高可用优质专线订阅
-建议优先选用具备 4 年以上运营沉淀、拥有自建物理机房与纯内网波分光纤的服务商。例如排名第一的 **[环球梯 (HuanQiuTi)](${AFF_LINK})**，在官网注册后使用独家 7 折优惠码 \`${COUPON_CODE}\` 即可低至 ¥8.40/月订阅极速专线，或者选购永久不限时的按量充值包。
+建议优先选用具备 4 年以上运营沉淀、拥有自建物理机房与纯内网波分光纤的服务商。例如排名第一的 **<a href="${AFF_LINK}" target="_blank" rel="nofollow sponsored noopener noreferrer">环球梯 (HuanQiuTi)</a>**，在官网注册后使用独家 7 折优惠码 \`${COUPON_CODE}\` 即可低至 ¥8.40/月订阅极速专线，或者选购永久不限时的按量充值包。
 
 ### 步骤二：配置 Tun 虚拟网卡接管系统流量
 在 Clash Verge Rev 或 Sing-box 客户端中，务必开启 **Tun Mode（虚拟网卡接管）**。这样不仅能够加速普通的浏览器 HTTP/HTTPS 请求，还能全面接管桌面客户端软件（如 Cursor、Discord、Steam、Git 命令行工具等）的所有 UDP 与 TCP 通信。
@@ -591,7 +591,7 @@ dns:
 > - **超高质价比**：月付低至 ¥8.40 起，全节点 1.0x 真实倍率，更提供永久不限时按量计费随行包。
 > - **专属优惠券**：结算时输入官方 7 折优惠码 **\`${COUPON_CODE}\`** 即可尊享全网底价。
 >
-> 👉 [立即直达环球梯官方注册入口](${AFF_LINK})，秒速开启零阻力极速出海体验！
+> 👉 <a href="${AFF_LINK}" target="_blank" rel="nofollow sponsored noopener noreferrer">立即直达环球梯官方注册入口</a>，秒速开启零阻力极速出海体验！
 >
 > 💬 [点击直达官方在线客服](https://t.me/huanqiuti8899)，获取 1 对 1 专线接入指导与优惠解答！
 

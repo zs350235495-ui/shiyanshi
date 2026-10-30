@@ -11,6 +11,7 @@ const affMap = [
   { raw: 'https://pps123.shenxingaff.com/#/?code=6tQ7zHUc', id: 'sx' },
   { raw: 'https://123pp01.liulianyunaff.com/#/?code=MsZP3u7G', id: 'lly' },
   { raw: 'https://haozevpn.jlyvipaff.com/#/?code=jwCMOvQO', id: 'jly' },
+  { raw: 'https://everett7623.kosingaff.com/#/?code=sFKkfEYs', id: 'kxy' },
   { raw: 'https://everett7623.kosingaff.com/#/?code=sFKkfeYs', id: 'kxy' },
   { raw: 'https://wep.edgenovaaff.com/#/?code=mLLL6h6F', id: 'edgenova' },
   { raw: 'https://pygllc.speedworldaff.cc/#/?code=kcoensXG', id: 'speedworld' },

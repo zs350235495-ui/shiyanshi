@@ -30,6 +30,7 @@ const affPatterns = [
   'https://pps123.shenxingaff.com/#/?code=6tQ7zHUc',
   'https://123pp01.liulianyunaff.com/#/?code=MsZP3u7G',
   'https://haozevpn.jlyvipaff.com/#/?code=jwCMOvQO',
+  'https://everett7623.kosingaff.com/#/?code=sFKkfEYs',
   'https://everett7623.kosingaff.com/#/?code=sFKkfeYs',
   'https://wep.edgenovaaff.com/#/?code=mLLL6h6F',
   'https://pygllc.speedworldaff.cc/#/?code=kcoensXG',
