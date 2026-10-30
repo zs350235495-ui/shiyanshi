@@ -116,18 +116,86 @@ const clientRouter = `
     });
   }
 
-  document.addEventListener('DOMContentLoaded', () => {
-    document.body.addEventListener('click', (e) => {
-      const link = e.target.closest('a');
-      if (!link) return;
-      const href = link.getAttribute('href');
-      if (href && (href.startsWith('/') || href === '')) {
-        e.preventDefault();
-        navigateTo(href);
-      }
+    const affMap = {
+      'hq': 'https://123pps01.huanqiutiaff.com/#/?code=j5VBUvw0',
+      'huanqiu': 'https://123pps01.huanqiutiaff.com/#/?code=j5VBUvw0',
+      'huanqiuti': 'https://123pps01.huanqiutiaff.com/#/?code=j5VBUvw0',
+      '1': 'https://123pps01.huanqiutiaff.com/#/?code=j5VBUvw0',
+      'dly': 'https://ppsvip01.dalaoyunaff.com/#/?code=Iz1GlCVa',
+      'dalaoyun': 'https://ppsvip01.dalaoyunaff.com/#/?code=Iz1GlCVa',
+      '2': 'https://ppsvip01.dalaoyunaff.com/#/?code=Iz1GlCVa',
+      'yjx': 'https://pp01.yunjiexianaff.com/#/?code=bp0ZSKBV',
+      'yunjiexian': 'https://pp01.yunjiexianaff.com/#/?code=bp0ZSKBV',
+      '3': 'https://pp01.yunjiexianaff.com/#/?code=bp0ZSKBV',
+      'sds': 'https://ppsvip01.shandianshuaff.com/#/?code=QbLF8tjB',
+      'shandianshu': 'https://ppsvip01.shandianshuaff.com/#/?code=QbLF8tjB',
+      '4': 'https://ppsvip01.shandianshuaff.com/#/?code=QbLF8tjB',
+      'sx': 'https://pps123.shenxingaff.com/#/?code=6tQ7zHUc',
+      'shenxing': 'https://pps123.shenxingaff.com/#/?code=6tQ7zHUc',
+      '5': 'https://pps123.shenxingaff.com/#/?code=6tQ7zHUc',
+      'lly': 'https://123pp01.liulianyunaff.com/#/?code=MsZP3u7G',
+      'liulianyun': 'https://123pp01.liulianyunaff.com/#/?code=MsZP3u7G',
+      '6': 'https://123pp01.liulianyunaff.com/#/?code=MsZP3u7G',
+      'jly': 'https://haozevpn.jlyvipaff.com/#/?code=jwCMOvQO',
+      'jilianyun': 'https://haozevpn.jlyvipaff.com/#/?code=jwCMOvQO',
+      '7': 'https://haozevpn.jlyvipaff.com/#/?code=jwCMOvQO',
+      'kxy': 'https://everett7623.kosingaff.com/#/?code=sFKkfEYs',
+      'kexinyun': 'https://everett7623.kosingaff.com/#/?code=sFKkfEYs',
+      '8': 'https://everett7623.kosingaff.com/#/?code=sFKkfEYs',
+      'edgenova': 'https://wep.edgenovaaff.com/#/?code=mLLL6h6F',
+      '9': 'https://wep.edgenovaaff.com/#/?code=mLLL6h6F',
+      'speedworld': 'https://pygllc.speedworldaff.cc/#/?code=kcoensXG',
+      'sujie': 'https://pygllc.speedworldaff.cc/#/?code=kcoensXG',
+      '10': 'https://pygllc.speedworldaff.cc/#/?code=kcoensXG',
+      'gnt': 'https://gnt001.gntvipaff.cc/#/?code=PQhPFDhO',
+      'guangnianti': 'https://gnt001.gntvipaff.cc/#/?code=PQhPFDhO',
+      '11': 'https://gnt001.gntvipaff.cc/#/?code=PQhPFDhO',
+      'kuaili': 'https://fanxiaobin.kuailiaff.com/#/?code=e0cAmK7F',
+      '12': 'https://fanxiaobin.kuailiaff.com/#/?code=e0cAmK7F',
+      'kunpeng': 'https://kunpengjiasu.com/#/register?code=WPugVZUe',
+      '13': 'https://kunpengjiasu.com/#/register?code=WPugVZUe',
+      'yuntu': 'https://super.ytjcok.org/#/register?code=poKwFVtv',
+      '14': 'https://super.ytjcok.org/#/register?code=poKwFVtv',
+      'shunyun': 'https://ddd.jichang.best/#/register?code=nldUZaYc',
+      '15': 'https://ddd.jichang.best/#/register?code=nldUZaYc'
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.body.addEventListener('click', (e) => {
+        const link = e.target.closest('a');
+        if (!link) return;
+        const href = link.getAttribute('href');
+        if (!href) return;
+
+        // 1. 严格处理推广外链 (/go.html?id=xxx 或 /go/xxx) - 绝不阻断，直接瞬时新窗口唤起
+        if (href.startsWith('/go.html') || href.startsWith('/go/') || href.includes('go.html?')) {
+          e.preventDefault();
+          let id = '';
+          if (href.includes('?id=')) {
+            id = href.split('?id=')[1].split('&')[0];
+          } else if (href.includes('?to=')) {
+            id = href.split('?to=')[1].split('&')[0];
+          } else if (href.startsWith('/go/')) {
+            id = href.replace('/go/', '').split('?')[0];
+          }
+          const targetUrl = affMap[(id || '').toLowerCase().trim()] || affMap['hq'];
+          window.open(targetUrl, '_blank', 'noopener,noreferrer');
+          return;
+        }
+
+        // 2. target="_blank" 的普通外部链接直接放行
+        if (link.getAttribute('target') === '_blank') {
+          return;
+        }
+
+        // 3. 站内单页虚拟路由切换
+        if (href.startsWith('/') || href === '') {
+          e.preventDefault();
+          navigateTo(href);
+        }
+      });
     });
-  });
-</script>
+  </script>
 `;
 
 html = html.replace('</body>', clientRouter + '</body>');

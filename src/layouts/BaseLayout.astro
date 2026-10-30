@@ -151,5 +151,26 @@ const canonicalURL = new URL(Astro.url.pathname, 'https://netlabvpn.vip');
       </a>
     </aside>
 
+    <!-- 全站推广中转与多端部署路径自适应脚本 -->
+    <script is:inline>
+      (function() {
+        var pathname = window.location.pathname || '';
+        var subpath = '';
+        if (pathname.indexOf('/shiyanshi') === 0) {
+          subpath = '/shiyanshi';
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+          if (subpath) {
+            document.querySelectorAll('a[href^="/go.html"], a[href^="/go/"]').forEach(function(link) {
+              var href = link.getAttribute('href');
+              if (href && href.indexOf(subpath) !== 0) {
+                link.setAttribute('href', subpath + href);
+              }
+            });
+          }
+        });
+      })();
+    </script>
   </body>
 </html>

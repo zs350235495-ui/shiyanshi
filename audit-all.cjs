@@ -48,8 +48,8 @@ htmlFiles.forEach(file => {
   const content = fs.readFileSync(file, 'utf8');
   const relPath = path.relative('dist', file).replace(/\\/g, '/');
 
-  // 1. 检查是否存在泄漏的直连 AFF（排除中转页 go.html）
-  if (relPath !== 'go.html') {
+  // 1. 检查是否存在泄漏的直连 AFF（排除中转页 go.html 与 404 兜底页）
+  if (relPath !== 'go.html' && relPath !== '404.html') {
     rawAffPatterns.forEach(pattern => {
       if (content.includes(pattern)) {
         console.error(`[LEAK DETECTED] in ${relPath}: found ${pattern}`);

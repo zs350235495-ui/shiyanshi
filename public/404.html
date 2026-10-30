@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>安全通道中转中 · VPN网络实验中心</title>
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+  <meta name="referrer" content="no-referrer">
+  <script>
+    // 聚合转发路由表
+    var AFF_MAP = {
+      'hq': 'https://123pps01.huanqiutiaff.com/#/?code=j5VBUvw0',
+      'huanqiu': 'https://123pps01.huanqiutiaff.com/#/?code=j5VBUvw0',
+      'huanqiuti': 'https://123pps01.huanqiutiaff.com/#/?code=j5VBUvw0',
+      '1': 'https://123pps01.huanqiutiaff.com/#/?code=j5VBUvw0',
+      'dly': 'https://ppsvip01.dalaoyunaff.com/#/?code=Iz1GlCVa',
+      'dalaoyun': 'https://ppsvip01.dalaoyunaff.com/#/?code=Iz1GlCVa',
+      '2': 'https://ppsvip01.dalaoyunaff.com/#/?code=Iz1GlCVa',
+      'yjx': 'https://pp01.yunjiexianaff.com/#/?code=bp0ZSKBV',
+      'yunjiexian': 'https://pp01.yunjiexianaff.com/#/?code=bp0ZSKBV',
+      '3': 'https://pp01.yunjiexianaff.com/#/?code=bp0ZSKBV',
+      'sds': 'https://ppsvip01.shandianshuaff.com/#/?code=QbLF8tjB',
+      'shandianshu': 'https://ppsvip01.shandianshuaff.com/#/?code=QbLF8tjB',
+      '4': 'https://ppsvip01.shandianshuaff.com/#/?code=QbLF8tjB',
+      'sx': 'https://pps123.shenxingaff.com/#/?code=6tQ7zHUc',
+      'shenxing': 'https://pps123.shenxingaff.com/#/?code=6tQ7zHUc',
+      '5': 'https://pps123.shenxingaff.com/#/?code=6tQ7zHUc',
+      'lly': 'https://123pp01.liulianyunaff.com/#/?code=MsZP3u7G',
+      'liulianyun': 'https://123pp01.liulianyunaff.com/#/?code=MsZP3u7G',
+      '6': 'https://123pp01.liulianyunaff.com/#/?code=MsZP3u7G',
+      'jly': 'https://haozevpn.jlyvipaff.com/#/?code=jwCMOvQO',
+      'jilianyun': 'https://haozevpn.jlyvipaff.com/#/?code=jwCMOvQO',
+      '7': 'https://haozevpn.jlyvipaff.com/#/?code=jwCMOvQO',
+      'kxy': 'https://everett7623.kosingaff.com/#/?code=sFKkfEYs',
+      'kexinyun': 'https://everett7623.kosingaff.com/#/?code=sFKkfEYs',
+      '8': 'https://everett7623.kosingaff.com/#/?code=sFKkfEYs',
+      'edgenova': 'https://wep.edgenovaaff.com/#/?code=mLLL6h6F',
+      '9': 'https://wep.edgenovaaff.com/#/?code=mLLL6h6F',
+      'speedworld': 'https://pygllc.speedworldaff.cc/#/?code=kcoensXG',
+      'sujie': 'https://pygllc.speedworldaff.cc/#/?code=kcoensXG',
+      '10': 'https://pygllc.speedworldaff.cc/#/?code=kcoensXG',
+      'gnt': 'https://gnt001.gntvipaff.cc/#/?code=PQhPFDhO',
+      'guangnianti': 'https://gnt001.gntvipaff.cc/#/?code=PQhPFDhO',
+      '11': 'https://gnt001.gntvipaff.cc/#/?code=PQhPFDhO',
+      'kuaili': 'https://fanxiaobin.kuailiaff.com/#/?code=e0cAmK7F',
+      '12': 'https://fanxiaobin.kuailiaff.com/#/?code=e0cAmK7F',
+      'kunpeng': 'https://kunpengjiasu.com/#/register?code=WPugVZUe',
+      '13': 'https://kunpengjiasu.com/#/register?code=WPugVZUe',
+      'yuntu': 'https://super.ytjcok.org/#/register?code=poKwFVtv',
+      '14': 'https://super.ytjcok.org/#/register?code=poKwFVtv',
+      'shunyun': 'https://ddd.jichang.best/#/register?code=nldUZaYc',
+      '15': 'https://ddd.jichang.best/#/register?code=nldUZaYc'
+    };
+
+    function resolveRedirect() {
+      var pathname = window.location.pathname || '';
+      var search = window.location.search || '';
+      var hash = window.location.hash || '';
+
+      // 1. 如果请求包含推广中转路径或参数 (例如 /go/hq, /go.html?id=hq)
+      var targetId = '';
+      if (search.indexOf('id=') !== -1) {
+        var params = new URLSearchParams(search);
+        targetId = (params.get('id') || params.get('to') || '').toLowerCase().trim();
+      } else if (pathname.indexOf('/go/') !== -1) {
+        targetId = pathname.split('/go/')[1].split('/')[0].toLowerCase().trim();
+      } else if (hash) {
+        targetId = hash.replace('#', '').toLowerCase().trim();
+      }
+
+      if (targetId && AFF_MAP[targetId]) {
+        window.location.replace(AFF_MAP[targetId]);
+        return;
+      }
+
+      // 如果是 /go.html 直接访问无参数，默认跳首推
+      if (pathname.indexOf('go.html') !== -1 || pathname.indexOf('/go') !== -1) {
+        window.location.replace(AFF_MAP['hq']);
+        return;
+      }
+
+      // 2. 否则是 GitHub Pages 普通子路径刷新兜底回首页
+      if (pathname.indexOf('/shiyanshi') === 0 && pathname !== '/shiyanshi' && pathname !== '/shiyanshi/') {
+        // 重定向回 /shiyanshi/
+        window.location.replace('/shiyanshi/');
+        return;
+      }
+      
+      // 默认回首页
+      window.location.replace('/');
+    }
+
+    resolveRedirect();
+  </script>
+</head>
+<body style="background:#060a12;color:#f1f5f9;font-family:sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;">
+  <div style="text-align:center;padding:20px;">
+    <h2>正在转接授权节点...</h2>
+    <p style="color:#94a3b8;font-size:14px;">VPN网络实验中心正在为您校验安全路由凭据</p>
+  </div>
+</body>
+</html>
