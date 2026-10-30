@@ -1,22 +1,25 @@
-name: Build and Deploy with IndexNow
+name: Deploy to GitHub Pages
 
 on:
   push:
     branches: [ main, master ]
   workflow_dispatch:
 
+# 必须声明的核心权限：读取源码、写入 Pages 部署、生成 OIDC ID 令牌
 permissions:
   contents: read
   pages: write
   id-token: write
 
+# 保证同一时间只有一个 Pages 部署任务在执行，避免并发冲突
 concurrency:
-  group: "pages"
+  group: 'pages'
   cancel-in-progress: false
 
 jobs:
+  # 任务 1：静态打包构建与上传
   build:
-    name: Build site & Submit IndexNow
+    name: Build Static Site
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -31,19 +34,21 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build static site
+      - name: Build static site with Astro
         run: npm run build
 
-      - name: Submit URLs to IndexNow API
+      - name: Submit URLs to IndexNow API (Optional)
         run: node scripts/submit-indexnow.cjs
         continue-on-error: true
 
-      - name: Upload artifact for GitHub Pages
+      - name: Upload static artifact for GitHub Pages
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./dist
+          path: './dist'
 
+  # 任务 2：执行 GitHub Pages 正式部署
   deploy:
+    name: Deploy to Pages
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
