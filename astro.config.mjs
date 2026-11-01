@@ -13,6 +13,9 @@ export default defineConfig({
       changefreq: 'daily',
       priority: 0.8,
       lastmod: new Date(),
+      customPages: [
+        'https://netlabvpn.vip/articles/tls13-ech-zero-rtt-handshake-optimization-2026.html',
+      ],
     }),
   ],
   markdown: {

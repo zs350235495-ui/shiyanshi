@@ -75,6 +75,36 @@ if (fs.existsSync(postsDistDir)) {
   }
 }
 
+// Dynamically scan dist/articles for all article slugs & ensure .html files exist
+const articlesDistDir = path.join(distDir, 'articles');
+if (fs.existsSync(articlesDistDir)) {
+  const entries = fs.readdirSync(articlesDistDir, { withFileTypes: true });
+  for (const entry of entries) {
+    if (entry.isDirectory()) {
+      const slug = entry.name;
+      const slugIndexPath = path.join(articlesDistDir, slug, 'index.html');
+      if (fs.existsSync(slugIndexPath)) {
+        const articleHtml = fs.readFileSync(slugIndexPath, 'utf-8');
+        const viewId = `view-article-${slug}`;
+        viewsHtml += `\n<div id="${viewId}" class="hidden">${extractMain(articleHtml)}</div>`;
+        routesMap[`/articles/${slug}`] = viewId;
+        routesMap[`/articles/${slug}.html`] = viewId;
+
+        // Ensure standalone .html file exists at dist/articles/${slug}.html
+        const standaloneHtmlPath = path.join(articlesDistDir, `${slug}.html`);
+        fs.writeFileSync(standaloneHtmlPath, articleHtml, 'utf-8');
+      }
+    }
+  }
+}
+
+// Ensure sitemap.xml exists alongside sitemap-0.xml and sitemap-index.xml
+const sitemap0Path = path.join(distDir, 'sitemap-0.xml');
+if (fs.existsSync(sitemap0Path)) {
+  fs.copyFileSync(sitemap0Path, path.join(distDir, 'sitemap.xml'));
+  fs.copyFileSync(sitemap0Path, path.join(__dirname, 'public', 'sitemap.xml'));
+}
+
 html = html.replace(/<main[\s\S]*?<\/main>/, viewsHtml);
 
 // Add router switcher script

@@ -6,13 +6,15 @@ import '../styles/global.css';
 interface Props {
   title?: string;
   description?: string;
+  canonical?: string;
 }
 
 const {
   title = 'VPN网络实验中心 // 高性能网络架构与专线选型智库',
   description = 'VPN网络实验中心：高性能网络架构评测、跨境专线拓扑基准、BBRv3参数调优与现代网络工程实测导航站。',
+  canonical,
 } = Astro.props;
-const canonicalURL = new URL(Astro.url.pathname, 'https://netlabvpn.vip');
+const canonicalURL = canonical ? new URL(canonical) : new URL(Astro.url.pathname, 'https://netlabvpn.vip');
 ---
 
 <!DOCTYPE html>

@@ -13,11 +13,16 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await post.render();
+
+const isSpecialPost = post.slug === 'tls13-ech-zero-rtt-handshake-optimization-2026';
+const pageTitle = isSpecialPost ? post.data.title : `${post.data.title} // 反重力网络实验室`;
+const canonical = isSpecialPost ? 'https://netlabvpn.vip/articles/tls13-ech-zero-rtt-handshake-optimization-2026.html' : undefined;
 ---
 
 <BaseLayout
-  title={`${post.data.title} // 反重力网络实验室`}
+  title={pageTitle}
   description={post.data.description}
+  canonical={canonical}
 >
   <div class="py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-4xl mx-auto">

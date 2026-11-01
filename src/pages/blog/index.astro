@@ -122,65 +122,70 @@ const categories = ['全部手记', ...rawCategories];
 
     <!-- 博客文章列表网格 -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16" id="blog-posts-grid">
-      {blogPosts.map((post) => (
-        <article
-          class="blog-card flex flex-col justify-between rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-purple-500/60 dark:hover:border-purple-400/50 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group shadow-sm"
-          data-category={post.data.category}
-        >
-          <div class="p-6">
-            <!-- 头部元信息 -->
-            <div class="flex items-center justify-between text-xs font-mono mb-3.5">
-              <span class="px-2.5 py-1 rounded-md bg-purple-50 dark:bg-purple-950/80 text-purple-600 dark:text-purple-300 font-semibold border border-purple-200/60 dark:border-purple-800/40">
-                {post.data.category}
+      {blogPosts.map((post) => {
+        const postUrl = post.slug === 'tls13-ech-zero-rtt-handshake-optimization-2026'
+          ? '/articles/tls13-ech-zero-rtt-handshake-optimization-2026.html'
+          : `/posts/${post.slug}`;
+        return (
+          <article
+            class="blog-card flex flex-col justify-between rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-purple-500/60 dark:hover:border-purple-400/50 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group shadow-sm"
+            data-category={post.data.category}
+          >
+            <div class="p-6">
+              <!-- 头部元信息 -->
+              <div class="flex items-center justify-between text-xs font-mono mb-3.5">
+                <span class="px-2.5 py-1 rounded-md bg-purple-50 dark:bg-purple-950/80 text-purple-600 dark:text-purple-300 font-semibold border border-purple-200/60 dark:border-purple-800/40">
+                  {post.data.category}
+                </span>
+                {post.data.badge && (
+                  <span class="px-2.5 py-0.5 rounded text-xs font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/30">
+                    {post.data.badge}
+                  </span>
+                )}
+              </div>
+
+              <!-- 标题 -->
+              <h3 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors leading-snug">
+                <a href={postUrl} class="hover:underline">
+                  {post.data.title}
+                </a>
+              </h3>
+
+              <!-- 摘要 -->
+              <p class="mt-3 text-sm text-slate-700 dark:text-slate-300 line-clamp-3 leading-relaxed font-normal">
+                {post.data.description}
+              </p>
+
+              <!-- 标签 -->
+              <div class="mt-4 flex flex-wrap gap-1.5">
+                {post.data.tags.map((t) => (
+                  <span class="text-xs font-mono px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-medium">
+                    #{t}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <!-- 底部操作与阅读时长 -->
+            <div class="p-6 pt-0 mt-2 flex items-center justify-between border-t border-slate-100 dark:border-slate-800/80 text-xs font-mono">
+              <span class="text-slate-400 flex items-center space-x-1">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="10" stroke-width="2"></circle>
+                  <polyline points="12 6 12 12 16 14" stroke-width="2"></polyline>
+                </svg>
+                <span>{post.data.readTime}</span>
               </span>
-              {post.data.badge && (
-                <span class="px-2.5 py-0.5 rounded text-xs font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/30">
-                  {post.data.badge}
-                </span>
-              )}
-            </div>
-
-            <!-- 标题 -->
-            <h3 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors leading-snug">
-              <a href={`/posts/${post.slug}`} class="hover:underline">
-                {post.data.title}
+              <a
+                href={postUrl}
+                class="text-purple-600 dark:text-purple-400 font-bold group-hover:translate-x-1 transition-transform flex items-center space-x-1"
+              >
+                <span>查阅手记</span>
+                <span>→</span>
               </a>
-            </h3>
-
-            <!-- 摘要 -->
-            <p class="mt-3 text-sm text-slate-700 dark:text-slate-300 line-clamp-3 leading-relaxed font-normal">
-              {post.data.description}
-            </p>
-
-            <!-- 标签 -->
-            <div class="mt-4 flex flex-wrap gap-1.5">
-              {post.data.tags.map((t) => (
-                <span class="text-xs font-mono px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-medium">
-                  #{t}
-                </span>
-              ))}
             </div>
-          </div>
-
-          <!-- 底部操作与阅读时长 -->
-          <div class="p-6 pt-0 mt-2 flex items-center justify-between border-t border-slate-100 dark:border-slate-800/80 text-xs font-mono">
-            <span class="text-slate-400 flex items-center space-x-1">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <circle cx="12" cy="12" r="10" stroke-width="2"></circle>
-                <polyline points="12 6 12 12 16 14" stroke-width="2"></polyline>
-              </svg>
-              <span>{post.data.readTime}</span>
-            </span>
-            <a
-              href={`/posts/${post.slug}`}
-              class="text-purple-600 dark:text-purple-400 font-bold group-hover:translate-x-1 transition-transform flex items-center space-x-1"
-            >
-              <span>查阅手记</span>
-              <span>→</span>
-            </a>
-          </div>
-        </article>
-      ))}
+          </article>
+        );
+      })}
     </div>
 
     <!-- 底部实战贴士 -->
