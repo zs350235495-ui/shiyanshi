@@ -9,13 +9,13 @@ const https = require('https');
 const API_KEY = 'f8cc020243767591847dbdc5a8018206';
 const HOST = 'netlabvpn.vip';
 const KEY_LOCATION = `https://${HOST}/${API_KEY}.txt`;
-const INDEXNOW_ENDPOINT = 'api.indexnow.org';
+const ENDPOINTS = ['api.indexnow.org', 'www.bing.com'];
 
 function getUrlsFromSitemaps() {
   const urls = new Set();
   const distDir = path.join(__dirname, '..', 'dist');
 
-  // 1. 尝试读取 dist/sitemap-0.xml
+  // 1. 尝试读取 dist/sitemap-0.xml, dist/sitemap.xml, dist/sitemap-index.xml
   const sitemap0 = path.join(distDir, 'sitemap-0.xml');
   const sitemapXml = path.join(distDir, 'sitemap.xml');
   const sitemapIndex = path.join(distDir, 'sitemap-index.xml');
@@ -43,7 +43,7 @@ function getUrlsFromSitemaps() {
   return Array.from(urls);
 }
 
-function submitToIndexNow(urlList) {
+function submitToEndpoint(endpoint, urlList) {
   return new Promise((resolve, reject) => {
     const payload = JSON.stringify({
       host: HOST,
@@ -53,7 +53,7 @@ function submitToIndexNow(urlList) {
     });
 
     const options = {
-      hostname: INDEXNOW_ENDPOINT,
+      hostname: endpoint,
       port: 443,
       path: '/indexnow',
       method: 'POST',
@@ -64,7 +64,7 @@ function submitToIndexNow(urlList) {
       }
     };
 
-    console.log(`[IndexNow] 正在向 https://${INDEXNOW_ENDPOINT}/indexnow 提交 ${urlList.length} 条 URL...`);
+    console.log(`[IndexNow] 正在向 https://${endpoint}/indexnow 提交 ${urlList.length} 条 URL...`);
     console.log(`[IndexNow] 站点域名: ${HOST}`);
     console.log(`[IndexNow] 密钥文件位置: ${KEY_LOCATION}`);
 
@@ -75,29 +75,38 @@ function submitToIndexNow(urlList) {
       });
 
       res.on('end', () => {
-        console.log(`[IndexNow] 服务器返回状态码: ${res.statusCode} (${res.statusMessage})`);
+        console.log(`[IndexNow (${endpoint})] 服务器返回状态码: ${res.statusCode} (${res.statusMessage})`);
         if (responseBody) {
-          console.log(`[IndexNow] 响应内容: ${responseBody}`);
+          console.log(`[IndexNow (${endpoint})] 响应内容: ${responseBody}`);
         }
 
         if (res.statusCode === 200 || res.statusCode === 202) {
-          console.log('✅ [IndexNow] 提交成功！URL 已成功分发至 Bing、Yandex、Naver、Seznam 等搜索引擎。');
-          resolve({ statusCode: res.statusCode, body: responseBody });
+          console.log(`✅ [IndexNow (${endpoint})] 提交成功！URL 已成功分发至搜索引擎。`);
+          resolve({ success: true, statusCode: res.statusCode, body: responseBody });
         } else {
-          console.warn(`⚠️ [IndexNow] 返回状态码非 200/202: ${res.statusCode}`);
-          resolve({ statusCode: res.statusCode, body: responseBody });
+          console.warn(`⚠️ [IndexNow (${endpoint})] 返回状态码非 200/202: ${res.statusCode}`);
+          resolve({ success: false, statusCode: res.statusCode, body: responseBody });
         }
       });
     });
 
     req.on('error', (err) => {
-      console.error('❌ [IndexNow] 网络请求失败:', err.message);
-      reject(err);
+      console.error(`❌ [IndexNow (${endpoint})] 网络请求失败:`, err.message);
+      resolve({ success: false, error: err });
     });
 
     req.write(payload);
     req.end();
   });
+}
+
+async function submitToIndexNow(urlList) {
+  for (const endpoint of ENDPOINTS) {
+    const res = await submitToEndpoint(endpoint, urlList);
+    if (res.success) {
+      return res;
+    }
+  }
 }
 
 async function main() {

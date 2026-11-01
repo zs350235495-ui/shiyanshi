@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://netlabvpn.vip/sitemap-index.xml
+Sitemap: https://netlabvpn.vip/sitemap-0.xml
+Sitemap: https://netlabvpn.vip/sitemap.xml

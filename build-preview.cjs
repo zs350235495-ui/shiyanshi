@@ -244,4 +244,52 @@ const outputPath = path.join(__dirname, 'preview.html');
 const rootIndexPath = path.join(__dirname, 'index.html');
 fs.writeFileSync(outputPath, html, 'utf-8');
 fs.writeFileSync(rootIndexPath, html, 'utf-8');
-console.log('index.html and preview.html generated successfully with Base64 inlined logo! File size:', html.length);
+
+// Copy verification files, robots.txt, sitemaps, and articles to root directory
+const filesToSync = [
+  'f8cc020243767591847dbdc5a8018206.txt',
+  'robots.txt',
+  'sitemap.xml',
+  '_redirects',
+  'nginx-redirects.conf'
+];
+
+filesToSync.forEach(filename => {
+  const publicFile = path.join(__dirname, 'public', filename);
+  const rootFile = path.join(__dirname, filename);
+  const distFile = path.join(distDir, filename);
+
+  if (fs.existsSync(publicFile)) {
+    fs.copyFileSync(publicFile, rootFile);
+    fs.copyFileSync(publicFile, distFile);
+  } else if (fs.existsSync(distFile)) {
+    fs.copyFileSync(distFile, rootFile);
+  }
+});
+
+// Copy sitemap-0.xml and sitemap-index.xml to root if in dist
+['sitemap-0.xml', 'sitemap-index.xml'].forEach(sitemapName => {
+  const distSitemap = path.join(distDir, sitemapName);
+  if (fs.existsSync(distSitemap)) {
+    fs.copyFileSync(distSitemap, path.join(__dirname, sitemapName));
+    fs.copyFileSync(distSitemap, path.join(__dirname, 'public', sitemapName));
+  }
+});
+
+// Sync dist/articles to root/articles
+if (fs.existsSync(articlesDistDir)) {
+  const rootArticlesDir = path.join(__dirname, 'articles');
+  if (!fs.existsSync(rootArticlesDir)) {
+    fs.mkdirSync(rootArticlesDir, { recursive: true });
+  }
+  const articleFiles = fs.readdirSync(articlesDistDir);
+  for (const f of articleFiles) {
+    const srcPath = path.join(articlesDistDir, f);
+    const destPath = path.join(rootArticlesDir, f);
+    if (fs.statSync(srcPath).isFile()) {
+      fs.copyFileSync(srcPath, destPath);
+    }
+  }
+}
+
+console.log('index.html, preview.html, sitemaps, articles and IndexNow key synced successfully! File size:', html.length);
