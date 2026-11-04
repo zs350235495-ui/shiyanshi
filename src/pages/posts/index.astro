@@ -11,11 +11,17 @@ const reviewCategories = [
   '低延迟办公',
   '流媒体/下载大户',
   '平价备用专选',
+  '免费梯子',
+  '前沿架构',
 ];
 
 const allPosts = await getCollection('posts');
 const reviewPosts = allPosts
-  .filter((p) => reviewCategories.includes(p.data.category))
+  .filter((p) => [
+    'streaming-media-4k-netflix-airport-ladder-recommendations-2026',
+    'pinghaolian-free-vpn-speedtest-review-guide-2026',
+    'tls13-ech-zero-rtt-handshake-optimization-2026',
+  ].includes(p.slug) || reviewCategories.includes(p.data.category))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
 // 提取当前评测类文章的专属分类标签

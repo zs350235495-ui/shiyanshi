@@ -16,6 +16,7 @@ export default defineConfig({
       customPages: [
         'https://netlabvpn.vip/articles/tls13-ech-zero-rtt-handshake-optimization-2026.html',
         'https://netlabvpn.vip/articles/pinghaolian-free-vpn-speedtest-review-guide-2026.html',
+        'https://netlabvpn.vip/articles/streaming-media-4k-netflix-airport-ladder-recommendations-2026.html',
       ],
     }),
   ],
