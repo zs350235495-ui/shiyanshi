@@ -123,9 +123,12 @@ const categories = ['全部手记', ...rawCategories];
     <!-- 博客文章列表网格 -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16" id="blog-posts-grid">
       {blogPosts.map((post) => {
-        const postUrl = post.slug === 'tls13-ech-zero-rtt-handshake-optimization-2026'
-          ? '/articles/tls13-ech-zero-rtt-handshake-optimization-2026.html'
-          : `/posts/${post.slug}`;
+        let postUrl = `/posts/${post.slug}`;
+        if (post.slug === 'tls13-ech-zero-rtt-handshake-optimization-2026') {
+          postUrl = '/articles/tls13-ech-zero-rtt-handshake-optimization-2026.html';
+        } else if (post.slug === 'pinghaolian-free-vpn-speedtest-review-guide-2026') {
+          postUrl = '/articles/pinghaolian-free-vpn-speedtest-review-guide-2026.html';
+        }
         return (
           <article
             class="blog-card flex flex-col justify-between rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-purple-500/60 dark:hover:border-purple-400/50 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group shadow-sm"
