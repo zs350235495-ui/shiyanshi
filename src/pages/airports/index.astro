@@ -1052,6 +1052,56 @@ const airportList = [
       },
     ],
   },
+  {
+    id: 'pinghaolian',
+    rank: 16,
+    name: '拼好连 (PingHaoLian)',
+    operatingYears: '2年+',
+    lineTags: ['免客户端一键连', '免费体验专区', '零门槛轻量首选'],
+    category: 'iplc',
+    latencyStatus: {
+      ping: '港 45ms / 美 138ms',
+      stability: '闲时秒开 / 晚高峰稳定',
+    },
+    unlockRating: '主流学术与多媒体解锁',
+    protocols: ['Shadowsocks', 'Trojan', '一键直连'],
+    startingPrice: {
+      discountedAmount: '0.00',
+      originalAmount: '0.00',
+      unit: '/ 免费体验',
+    },
+    discountBadge: '免费直连',
+    couponCode: '免配置直连',
+    targetUrl: '/go.html?id=phl',
+    verdict: {
+      targetAudience: '面向纯新手小白、学生党与临时应急用户，主打零学习成本与免客户端一键极速连接。',
+      nightPeakNotes: '支持全平台快速接入与基础学术文献查阅，适合不想繁琐配置、追求零成本出海的轻度用户。',
+    },
+    plans: [
+      {
+        name: '拼好连·零门槛免费体验',
+        badge: '免费直连',
+        price: '0.00',
+        discountedPrice: '0.00',
+        cycle: '免费',
+        data: '基础体验流量',
+        devices: '多端随身支持',
+        features: ['免客户端一键极速接入', '支持 Google 学术与网页查阅', '零学习成本无繁琐配置', '轻度应急出海首选通道'],
+        featured: true,
+      },
+      {
+        name: '拼好连·极速尊享通道',
+        badge: '进阶提速',
+        price: '15.00',
+        discountedPrice: '9.90',
+        cycle: '月',
+        data: '100 GB',
+        devices: '不限设备',
+        features: ['晚高峰专属带宽保障', '支持 1080P/4K 流畅串流', '多地区负载均衡出口', '解锁主流 AI 与跨国应用'],
+        featured: false,
+      },
+    ],
+  },
 ];
 ---
 
@@ -1082,7 +1132,7 @@ const airportList = [
           <span class="pulse-indicator">
             <span class="pulse-indicator-dot"></span>
           </span>
-          <span>巡检中: 15 家严选专线</span>
+          <span>巡检中: 16 家精选网络</span>
         </span>
         <span class="text-slate-300 dark:text-slate-700">|</span>
         <span class="text-slate-500 dark:text-slate-400">平均晚高峰 RTT: 20ms</span>

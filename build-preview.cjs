@@ -187,7 +187,10 @@ const clientRouter = `
       'yuntu': 'https://super.ytjcok.org/#/register?code=poKwFVtv',
       '14': 'https://super.ytjcok.org/#/register?code=poKwFVtv',
       'shunyun': 'https://ddd.jichang.best/#/register?code=nldUZaYc',
-      '15': 'https://ddd.jichang.best/#/register?code=nldUZaYc'
+      '15': 'https://ddd.jichang.best/#/register?code=nldUZaYc',
+      'phl': 'https://pinghaolian.cc/a/6urgqa32',
+      'pinghaolian': 'https://pinghaolian.cc/a/6urgqa32',
+      '16': 'https://pinghaolian.cc/a/6urgqa32'
     };
 
     document.addEventListener('DOMContentLoaded', () => {

@@ -74,5 +74,10 @@
 /go/shunyun         https://ddd.jichang.best/#/register?code=nldUZaYc    301!
 /go/15              https://ddd.jichang.best/#/register?code=nldUZaYc    301!
 
+# 16. 拼好连 (PingHaoLian)
+/go/phl             https://pinghaolian.cc/a/6urgqa32                    301!
+/go/pinghaolian     https://pinghaolian.cc/a/6urgqa32                    301!
+/go/16              https://pinghaolian.cc/a/6urgqa32                    301!
+
 # 兜底规则
 /go/*               https://123pps01.huanqiutiaff.com/#/?code=j5VBUvw0   302!
