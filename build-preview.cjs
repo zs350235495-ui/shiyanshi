@@ -233,68 +233,93 @@ const clientRouter = `
 
 html = html.replace('</body>', clientRouter + '</body>');
 
-// Inline logo image as Base64 so file:// protocol never gets broken images
+// Inline logo image as Base64 so file:// protocol never gets broken images (FOR PREVIEW ONLY)
+let previewHtml = html;
 const logoPath = path.join(__dirname, 'public', 'logo.png');
 if (fs.existsSync(logoPath)) {
   const logoDataUri = 'data:image/png;base64,' + fs.readFileSync(logoPath).toString('base64');
-  html = html.replaceAll('src="/logo.png"', `src="${logoDataUri}"`);
-  html = html.replaceAll('href="/logo.png"', `href="${logoDataUri}"`);
+  previewHtml = previewHtml.replaceAll('src="/logo.png"', `src="${logoDataUri}"`);
+  previewHtml = previewHtml.replaceAll('href="/logo.png"', `href="${logoDataUri}"`);
   fs.copyFileSync(logoPath, path.join(__dirname, 'logo.png'));
   fs.copyFileSync(logoPath, path.join(distDir, 'logo.png'));
 }
 
-const outputPath = path.join(__dirname, 'preview.html');
-const rootIndexPath = path.join(__dirname, 'index.html');
-fs.writeFileSync(outputPath, html, 'utf-8');
-fs.writeFileSync(rootIndexPath, html, 'utf-8');
+// 1. Output offline preview bundle
+const previewOutputPath = path.join(__dirname, 'preview.html');
+fs.writeFileSync(previewOutputPath, previewHtml, 'utf-8');
+console.log('preview.html generated successfully! File size:', previewHtml.length);
 
-// Copy verification files, robots.txt, sitemaps, and articles to root directory
+// 2. Decouple root index.html: strictly copy from clean dist/index.html (never use 3.3MB monolithic bundle)
+const rootIndexPath = path.join(__dirname, 'index.html');
+fs.copyFileSync(indexHtmlPath, rootIndexPath);
+const rootIndexSize = fs.statSync(rootIndexPath).size;
+console.log('root index.html restored from dist/index.html! Clean SEO size:', rootIndexSize);
+
+// Helper function to sync directory recursively
+function copyDirSync(src, dest) {
+  if (!fs.existsSync(src)) return;
+  if (!fs.existsSync(dest)) {
+    fs.mkdirSync(dest, { recursive: true });
+  }
+  const entries = fs.readdirSync(src, { withFileTypes: true });
+  for (const entry of entries) {
+    const srcPath = path.join(src, entry.name);
+    const destPath = path.join(dest, entry.name);
+    if (entry.isDirectory()) {
+      copyDirSync(srcPath, destPath);
+    } else {
+      fs.copyFileSync(srcPath, destPath);
+    }
+  }
+}
+
+// 3. Sync dist/_astro to root/_astro so CSS/JS resolve cleanly on GitHub Pages
+const rootAstroDir = path.join(__dirname, '_astro');
+if (fs.existsSync(rootAstroDir)) {
+  fs.rmSync(rootAstroDir, { recursive: true, force: true });
+}
+copyDirSync(astroDir, rootAstroDir);
+console.log('Synced dist/_astro to root/_astro');
+
+// 4. Sync all route directories to root for direct static hosting and crawler accessibility
+const dirsToSync = ['selection', 'airports', 'radar', 'architecture', 'posts', 'blog', 'articles'];
+dirsToSync.forEach(dirName => {
+  const src = path.join(distDir, dirName);
+  const dest = path.join(__dirname, dirName);
+  if (fs.existsSync(src)) {
+    copyDirSync(src, dest);
+  }
+});
+console.log('Synced all route directories to root:', dirsToSync.join(', '));
+
+// 5. Sync root assets, sitemaps, and verification files
 const filesToSync = [
   'CNAME',
   '.nojekyll',
   'f8cc020243767591847dbdc5a8018206.txt',
   'robots.txt',
   'sitemap.xml',
+  'sitemap-0.xml',
+  'sitemap-index.xml',
+  'go.html',
+  '404.html',
+  'logo.png',
+  'favicon.png',
+  'favicon.svg',
   '_redirects',
   'nginx-redirects.conf'
 ];
 
 filesToSync.forEach(filename => {
   const publicFile = path.join(__dirname, 'public', filename);
-  const rootFile = path.join(__dirname, filename);
   const distFile = path.join(distDir, filename);
+  const rootFile = path.join(__dirname, filename);
 
-  if (fs.existsSync(publicFile)) {
-    fs.copyFileSync(publicFile, rootFile);
-    fs.copyFileSync(publicFile, distFile);
-  } else if (fs.existsSync(distFile)) {
+  if (fs.existsSync(distFile)) {
     fs.copyFileSync(distFile, rootFile);
+  } else if (fs.existsSync(publicFile)) {
+    fs.copyFileSync(publicFile, rootFile);
   }
 });
 
-// Copy sitemap-0.xml and sitemap-index.xml to root if in dist
-['sitemap-0.xml', 'sitemap-index.xml'].forEach(sitemapName => {
-  const distSitemap = path.join(distDir, sitemapName);
-  if (fs.existsSync(distSitemap)) {
-    fs.copyFileSync(distSitemap, path.join(__dirname, sitemapName));
-    fs.copyFileSync(distSitemap, path.join(__dirname, 'public', sitemapName));
-  }
-});
-
-// Sync dist/articles to root/articles
-if (fs.existsSync(articlesDistDir)) {
-  const rootArticlesDir = path.join(__dirname, 'articles');
-  if (!fs.existsSync(rootArticlesDir)) {
-    fs.mkdirSync(rootArticlesDir, { recursive: true });
-  }
-  const articleFiles = fs.readdirSync(articlesDistDir);
-  for (const f of articleFiles) {
-    const srcPath = path.join(articlesDistDir, f);
-    const destPath = path.join(rootArticlesDir, f);
-    if (fs.statSync(srcPath).isFile()) {
-      fs.copyFileSync(srcPath, destPath);
-    }
-  }
-}
-
-console.log('index.html, preview.html, sitemaps, articles and IndexNow key synced successfully! File size:', html.length);
+console.log('Build preview and static deployment sync completed successfully!');
