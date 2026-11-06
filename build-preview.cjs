@@ -250,6 +250,7 @@ fs.writeFileSync(rootIndexPath, html, 'utf-8');
 
 // Copy verification files, robots.txt, sitemaps, and articles to root directory
 const filesToSync = [
+  'CNAME',
   'f8cc020243767591847dbdc5a8018206.txt',
   'robots.txt',
   'sitemap.xml',
