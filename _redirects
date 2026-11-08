@@ -1,83 +1,83 @@
 # ==============================================================================
-# Cloudflare Pages / Netlify 301 Affiliate Isolation & Safe Redirects
+# Cloudflare Pages / Netlify 302 Affiliate Isolation & Safe Redirects
 # VPN网络实验中心 (netlabvpn.vip) - 官方推广合规中转规则
 # ==============================================================================
 
 # 1. 环球梯 (HuanQiuTi) - 官方旗舰首推 #1
-/go/hq              https://123pps01.huanqiutiaff.com/#/?code=j5VBUvw0   301!
-/go/huanqiu         https://123pps01.huanqiutiaff.com/#/?code=j5VBUvw0   301!
-/go/huanqiuti       https://123pps01.huanqiutiaff.com/#/?code=j5VBUvw0   301!
-/go/1               https://123pps01.huanqiutiaff.com/#/?code=j5VBUvw0   301!
+/go/hq              https://123pps01.huanqiutiaff.com/#/?code=j5VBUvw0   302!
+/go/huanqiu         https://123pps01.huanqiutiaff.com/#/?code=j5VBUvw0   302!
+/go/huanqiuti       https://123pps01.huanqiutiaff.com/#/?code=j5VBUvw0   302!
+/go/1               https://123pps01.huanqiutiaff.com/#/?code=j5VBUvw0   302!
 
 # 2. 大佬云 (DaLaoYun)
-/go/dly             https://ppsvip01.dalaoyunaff.com/#/?code=Iz1GlCVa    301!
-/go/dalaoyun        https://ppsvip01.dalaoyunaff.com/#/?code=Iz1GlCVa    301!
-/go/2               https://ppsvip01.dalaoyunaff.com/#/?code=Iz1GlCVa    301!
+/go/dly             https://ppsvip01.dalaoyunaff.com/#/?code=Iz1GlCVa    302!
+/go/dalaoyun        https://ppsvip01.dalaoyunaff.com/#/?code=Iz1GlCVa    302!
+/go/2               https://ppsvip01.dalaoyunaff.com/#/?code=Iz1GlCVa    302!
 
 # 3. 云界线 (YunJieXian)
-/go/yjx             https://pp01.yunjiexianaff.com/#/?code=6Y9vSMcc      301!
-/go/yunjiexian      https://pp01.yunjiexianaff.com/#/?code=6Y9vSMcc      301!
-/go/3               https://pp01.yunjiexianaff.com/#/?code=6Y9vSMcc      301!
+/go/yjx             https://pp01.yunjiexianaff.com/#/?code=6Y9vSMcc      302!
+/go/yunjiexian      https://pp01.yunjiexianaff.com/#/?code=6Y9vSMcc      302!
+/go/3               https://pp01.yunjiexianaff.com/#/?code=6Y9vSMcc      302!
 
 # 4. 闪电鼠 (ShanDianShu)
-/go/sds             https://ppsvip01.shandianshuaff.com/#/?code=QbLF8tjB 301!
-/go/shandianshu     https://ppsvip01.shandianshuaff.com/#/?code=QbLF8tjB 301!
-/go/4               https://ppsvip01.shandianshuaff.com/#/?code=QbLF8tjB 301!
+/go/sds             https://ppsvip01.shandianshuaff.com/#/?code=QbLF8tjB 302!
+/go/shandianshu     https://ppsvip01.shandianshuaff.com/#/?code=QbLF8tjB 302!
+/go/4               https://ppsvip01.shandianshuaff.com/#/?code=QbLF8tjB 302!
 
 # 5. 神行加速 (ShenXing)
-/go/sx              https://pps123.shenxingaff.com/#/?code=6tQ7zHUc      301!
-/go/shenxing        https://pps123.shenxingaff.com/#/?code=6tQ7zHUc      301!
-/go/5               https://pps123.shenxingaff.com/#/?code=6tQ7zHUc      301!
+/go/sx              https://pps123.shenxingaff.com/#/?code=6tQ7zHUc      302!
+/go/shenxing        https://pps123.shenxingaff.com/#/?code=6tQ7zHUc      302!
+/go/5               https://pps123.shenxingaff.com/#/?code=6tQ7zHUc      302!
 
 # 6. 榴莲云 (LiuLianYun)
-/go/lly             https://123pp01.liulianyunaff.com/#/?code=MsZP3u7G   301!
-/go/liulianyun      https://123pp01.liulianyunaff.com/#/?code=MsZP3u7G   301!
-/go/6               https://123pp01.liulianyunaff.com/#/?code=MsZP3u7G   301!
+/go/lly             https://123pp01.liulianyunaff.com/#/?code=MsZP3u7G   302!
+/go/liulianyun      https://123pp01.liulianyunaff.com/#/?code=MsZP3u7G   302!
+/go/6               https://123pp01.liulianyunaff.com/#/?code=MsZP3u7G   302!
 
 # 7. 极连云 (JiLianYun)
-/go/jly             https://haozevpn.jlyvipaff.com/#/?code=jwCMOvQO      301!
-/go/jilianyun       https://haozevpn.jlyvipaff.com/#/?code=jwCMOvQO      301!
-/go/7               https://haozevpn.jlyvipaff.com/#/?code=jwCMOvQO      301!
+/go/jly             https://haozevpn.jlyvipaff.com/#/?code=jwCMOvQO      302!
+/go/jilianyun       https://haozevpn.jlyvipaff.com/#/?code=jwCMOvQO      302!
+/go/7               https://haozevpn.jlyvipaff.com/#/?code=jwCMOvQO      302!
 
 # 8. 可信云 (KeXinYun)
-/go/kxy             https://everett7623.kosingaff.com/#/?code=sFKkfEYs   301!
-/go/kexinyun        https://everett7623.kosingaff.com/#/?code=sFKkfEYs   301!
-/go/8               https://everett7623.kosingaff.com/#/?code=sFKkfEYs   301!
+/go/kxy             https://everett7623.kosingaff.com/#/?code=sFKkfEYs   302!
+/go/kexinyun        https://everett7623.kosingaff.com/#/?code=sFKkfEYs   302!
+/go/8               https://everett7623.kosingaff.com/#/?code=sFKkfEYs   302!
 
 # 9. 边缘节点 (EdgeNova)
-/go/edgenova        https://wep.edgenovaaff.com/#/?code=mLLL6h6F         301!
-/go/9               https://wep.edgenovaaff.com/#/?code=mLLL6h6F         301!
+/go/edgenova        https://wep.edgenovaaff.com/#/?code=mLLL6h6F         302!
+/go/9               https://wep.edgenovaaff.com/#/?code=mLLL6h6F         302!
 
 # 10. 速界 (SpeedWorld)
-/go/speedworld      https://pygllc.speedworldaff.cc/#/?code=kcoensXG     301!
-/go/sujie           https://pygllc.speedworldaff.cc/#/?code=kcoensXG     301!
-/go/10              https://pygllc.speedworldaff.cc/#/?code=kcoensXG     301!
+/go/speedworld      https://pygllc.speedworldaff.cc/#/?code=kcoensXG     302!
+/go/sujie           https://pygllc.speedworldaff.cc/#/?code=kcoensXG     302!
+/go/10              https://pygllc.speedworldaff.cc/#/?code=kcoensXG     302!
 
 # 11. 光年梯 (GuangNianTi)
-/go/gnt             https://gnt001.gntvipaff.cc/#/?code=PQhPFDhO         301!
-/go/guangnianti     https://gnt001.gntvipaff.cc/#/?code=PQhPFDhO         301!
-/go/11              https://gnt001.gntvipaff.cc/#/?code=PQhPFDhO         301!
+/go/gnt             https://gnt001.gntvipaff.cc/#/?code=PQhPFDhO         302!
+/go/guangnianti     https://gnt001.gntvipaff.cc/#/?code=PQhPFDhO         302!
+/go/11              https://gnt001.gntvipaff.cc/#/?code=PQhPFDhO         302!
 
 # 12. 快狸快狸 (KuaiLi)
-/go/kuaili          https://fanxiaobin.kuailiaff.com/#/?code=e0cAmK7F    301!
-/go/12              https://fanxiaobin.kuailiaff.com/#/?code=e0cAmK7F    301!
+/go/kuaili          https://fanxiaobin.kuailiaff.com/#/?code=e0cAmK7F    302!
+/go/12              https://fanxiaobin.kuailiaff.com/#/?code=e0cAmK7F    302!
 
 # 13. 鲲鹏加速 (KunPeng)
-/go/kunpeng         https://kunpengjiasu.com/#/register?code=WPugVZUe    301!
-/go/13              https://kunpengjiasu.com/#/register?code=WPugVZUe    301!
+/go/kunpeng         https://kunpengjiasu.com/#/register?code=WPugVZUe    302!
+/go/13              https://kunpengjiasu.com/#/register?code=WPugVZUe    302!
 
 # 14. 云图机场 (YunTu)
-/go/yuntu           https://super.ytjcok.org/#/register?code=poKwFVtv    301!
-/go/14              https://super.ytjcok.org/#/register?code=poKwFVtv    301!
+/go/yuntu           https://super.ytjcok.org/#/register?code=poKwFVtv    302!
+/go/14              https://super.ytjcok.org/#/register?code=poKwFVtv    302!
 
 # 15. 瞬云 (ShunYun)
-/go/shunyun         https://ddd.jichang.best/#/register?code=nldUZaYc    301!
-/go/15              https://ddd.jichang.best/#/register?code=nldUZaYc    301!
+/go/shunyun         https://ddd.jichang.best/#/register?code=nldUZaYc    302!
+/go/15              https://ddd.jichang.best/#/register?code=nldUZaYc    302!
 
 # 16. 拼好连 (PingHaoLian)
-/go/phl             https://pinghaolian.cc/a/6urgqa32                    301!
-/go/pinghaolian     https://pinghaolian.cc/a/6urgqa32                    301!
-/go/16              https://pinghaolian.cc/a/6urgqa32                    301!
+/go/phl             https://pinghaolian.cc/a/6urgqa32                    302!
+/go/pinghaolian     https://pinghaolian.cc/a/6urgqa32                    302!
+/go/16              https://pinghaolian.cc/a/6urgqa32                    302!
 
 # 兜底规则
 /go/*               https://123pps01.huanqiutiaff.com/#/?code=j5VBUvw0   302!

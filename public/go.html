@@ -157,7 +157,7 @@
     }
   </style>
   <script>
-    // 301 聚合转发路由表 (支持短代码和全拼代码)
+    // 302 聚合转发路由表 (支持短代码和全拼代码)
     var AFF_MAP = {
       // 1. 环球梯 (HuanQiuTi) - 官方旗舰 #1
       'hq': 'https://123pps01.huanqiutiaff.com/#/?code=j5VBUvw0',
@@ -256,7 +256,7 @@
 
     var targetUrl = getTargetUrl();
 
-    // 优先毫秒级无缝客户端 301 替换
+    // 优先毫秒级无缝客户端 302 替换
     if (typeof window !== 'undefined' && targetUrl) {
       try {
         window.location.replace(targetUrl);
@@ -274,7 +274,7 @@
     </div>
     <div class="badge-bar">
       <span>●</span>
-      <span>SAFE REDIRECT // 301 隔离承接</span>
+      <span>SAFE REDIRECT // 302 隔离承接</span>
     </div>
     <h1>正在前往授权节点</h1>
     <p>VPN网络实验中心正在为您校验网络安全凭据，将立即无感转接至专属官方入口...</p>
