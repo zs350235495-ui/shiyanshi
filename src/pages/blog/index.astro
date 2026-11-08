@@ -15,7 +15,7 @@ const reviewCategories = [
 
 const allPosts = await getCollection('posts');
 const blogPosts = allPosts
-  .filter((p) => p.slug === 'streaming-media-4k-netflix-airport-ladder-recommendations-2026' || !reviewCategories.includes(p.data.category))
+  .filter((p) => p.slug === 'streaming-media-4k-netflix-airport-ladder-recommendations-2026' || p.slug === 'cross-border-dns-poisoning-evasion-airport-ladder-2026' || !reviewCategories.includes(p.data.category))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
 // 动态提取博客技术文章的专属分类
@@ -130,6 +130,8 @@ const categories = ['全部手记', ...rawCategories];
           postUrl = '/articles/pinghaolian-free-vpn-speedtest-review-guide-2026.html';
         } else if (post.slug === 'streaming-media-4k-netflix-airport-ladder-recommendations-2026') {
           postUrl = '/articles/streaming-media-4k-netflix-airport-ladder-recommendations-2026.html';
+        } else if (post.slug === 'cross-border-dns-poisoning-evasion-airport-ladder-2026') {
+          postUrl = '/articles/cross-border-dns-poisoning-evasion-airport-ladder-2026.html';
         }
         return (
           <article
