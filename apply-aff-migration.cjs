@@ -6,6 +6,7 @@ const affMap = [
   { raw: 'https://123pps01.huanqiutiaff.com/#/?code=j5VBUvw0', id: 'hq' },
   { raw: 'https://123pp01.huanqiutiaff.com/#/?code=f1B0R1yM', id: 'hq' },
   { raw: 'https://ppsvip01.dalaoyunaff.com/#/?code=Iz1GlCVa', id: 'dly' },
+  { raw: 'https://pp01.yunjiexianaff.com/#/?code=6Y9vSMcc', id: 'yjx' },
   { raw: 'https://pp01.yunjiexianaff.com/#/?code=bp0ZSKBV', id: 'yjx' },
   { raw: 'https://ppsvip01.shandianshuaff.com/#/?code=QbLF8tjB', id: 'sds' },
   { raw: 'https://pps123.shenxingaff.com/#/?code=6tQ7zHUc', id: 'sx' },

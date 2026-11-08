@@ -25,6 +25,7 @@ const affPatterns = [
   'https://123pps01.huanqiutiaff.com/#/?code=j5VBUvw0',
   'https://123pp01.huanqiutiaff.com/#/?code=f1B0R1yM',
   'https://ppsvip01.dalaoyunaff.com/#/?code=Iz1GlCVa',
+  'https://pp01.yunjiexianaff.com/#/?code=6Y9vSMcc',
   'https://pp01.yunjiexianaff.com/#/?code=bp0ZSKBV',
   'https://ppsvip01.shandianshuaff.com/#/?code=QbLF8tjB',
   'https://pps123.shenxingaff.com/#/?code=6tQ7zHUc',
