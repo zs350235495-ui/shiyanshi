@@ -9,7 +9,7 @@ const https = require('https');
 const API_KEY = 'f8cc020243767591847dbdc5a8018206';
 const HOST = 'netlabvpn.vip';
 const KEY_LOCATION = `https://${HOST}/${API_KEY}.txt`;
-const ENDPOINTS = ['api.indexnow.org', 'www.bing.com'];
+const ENDPOINTS = ['api.indexnow.org', 'www.bing.com', 'yandex.com', 'search.seznam.cz'];
 
 function getUrlsFromSitemaps() {
   const urls = new Set();
@@ -108,12 +108,14 @@ function submitToEndpoint(endpoint, urlList) {
 }
 
 async function submitToIndexNow(urlList) {
+  let anySuccess = false;
   for (const endpoint of ENDPOINTS) {
     const res = await submitToEndpoint(endpoint, urlList);
     if (res.success) {
-      return res;
+      anySuccess = true;
     }
   }
+  return { success: anySuccess };
 }
 
 async function main() {
