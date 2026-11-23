@@ -13,14 +13,21 @@ const ENDPOINTS = ['api.indexnow.org', 'www.bing.com'];
 
 function getUrlsFromSitemaps() {
   const urls = new Set();
-  const distDir = path.join(__dirname, '..', 'dist');
+  const rootDir = path.join(__dirname, '..');
+  const distDir = path.join(rootDir, 'dist');
+  const publicDir = path.join(rootDir, 'public');
 
-  // 1. 尝试读取 dist/sitemap-0.xml, dist/sitemap.xml, dist/sitemap-index.xml
-  const sitemap0 = path.join(distDir, 'sitemap-0.xml');
-  const sitemapXml = path.join(distDir, 'sitemap.xml');
-  const sitemapIndex = path.join(distDir, 'sitemap-index.xml');
+  const filesToCheck = [
+    path.join(rootDir, 'sitemap.xml'),
+    path.join(rootDir, 'sitemap-0.xml'),
+    path.join(publicDir, 'sitemap.xml'),
+    path.join(publicDir, 'sitemap-0.xml'),
+    path.join(distDir, 'sitemap-0.xml'),
+    path.join(distDir, 'sitemap.xml'),
+    path.join(distDir, 'sitemap-index.xml')
+  ];
 
-  [sitemap0, sitemapXml, sitemapIndex].forEach(filePath => {
+  filesToCheck.forEach(filePath => {
     if (fs.existsSync(filePath)) {
       const content = fs.readFileSync(filePath, 'utf8');
       const locRegex = /<loc>(https?:\/\/[^<]+)<\/loc>/g;
