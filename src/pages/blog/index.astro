@@ -25,7 +25,7 @@ const categories = ['全部手记', ...rawCategories];
 
 <BaseLayout
   title="VPN网络实验中心 // 跨境专线技术博客与出海配置手记 · VPN NETWORK LAB"
-  description="VPN网络实验中心技术博客专栏。涵盖 Clash Verge Rev、Sing-box、Surge 全平台保姆级配置教程、BBRv3 内核优化、住宅IP原理解析与环球梯专线实操指南。"
+  description="VPN网络实验中心技术博客专栏。聚焦 2026 机场推荐、梯子推荐与科学上网软件推荐实战，涵盖 Clash Verge Rev、Sing-box、Shadowrocket、Surge 全平台保姆级配置教程、BBRv3 内核优化与专线机场选型指南。"
 >
   <div class="py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     
@@ -40,7 +40,7 @@ const categories = ['全部手记', ...rawCategories];
           VPN网络实验中心 · 技术手记与出海配置宝典
         </h1>
         <p class="mt-2 text-xs sm:text-sm text-slate-600 dark:text-slate-400 max-w-2xl leading-relaxed">
-          汇集 VPN 网络实验中心工程师团队的硬核实战经验。从 Clash / Sing-box 客户端零基础上手，到 BBRv3 内核加速、软路由分流与防封住宅 IP 深度剖析。
+          汇集 VPN 网络实验中心工程师团队的硬核实战经验。围绕机场推荐 2026 与 2026 梯子推荐实测体系，从 Clash / Sing-box / Shadowrocket 客户端零基础上手，到 BBRv3 内核加速、软路由分流与防封住宅 IP 深度剖析，帮助用户甄别真正靠谱的稳定机场推荐与专线机场推荐方案。
         </p>
       </div>
 
@@ -68,7 +68,7 @@ const categories = ['全部手记', ...rawCategories];
             2026 全平台科学上网新手保姆级指南：从环球梯订阅一键导入到 Clash Verge Rev / Sing-box 智能分流
           </h2>
           <p class="mt-3 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-            无论您使用 Windows、macOS、Android 还是 iOS，本文带您 5 分钟内完成现代代理工具的安装配置。配合全网第一主力专线 <strong>环球梯 (HuanQiuTi)</strong> 独家 7 折码 <code>HQ66</code>，轻松实现国内直连加速、国外 4K 毫秒级秒开的无感翻墙体验。
+            无论您使用 Windows、macOS、Android 还是 iOS，本文带您 5 分钟内完成 Clash 机场推荐配置、Shadowrocket 机场推荐规则与 sing-box 机场推荐客户端的一键导入。配合全网第一主力专线 <strong>环球梯 (HuanQiuTi)</strong> 独家 7 折机场优惠码 <code>HQ66</code>，兼顾高稳定性与便宜机场推荐的入门门槛，轻松实现国内直连加速、国外 4K 毫秒级秒开的无感翻墙体验。
           </p>
           <div class="mt-4 flex flex-wrap gap-2 text-xs font-mono">
             <span class="px-2.5 py-1 rounded-md bg-white dark:bg-slate-800 text-purple-600 dark:text-purple-300 font-semibold border border-purple-200 dark:border-purple-800">
@@ -122,6 +122,174 @@ const categories = ['全部手记', ...rawCategories];
 
     <!-- 博客文章列表网格 -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16" id="blog-posts-grid">
+      <article
+        class="blog-card flex flex-col justify-between rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-purple-500/60 dark:hover:border-purple-400/50 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group shadow-sm"
+        data-category="AI上网"
+      >
+        <div class="p-6">
+          <div class="flex items-center justify-between text-xs font-mono mb-3.5">
+            <span class="px-2.5 py-1 rounded-md bg-purple-50 dark:bg-purple-950/80 text-purple-600 dark:text-purple-300 font-semibold border border-purple-200/60 dark:border-purple-800/40">
+              AI 办公稳连
+            </span>
+            <span class="px-2.5 py-0.5 rounded text-xs font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/30">
+              实操指南
+            </span>
+          </div>
+          <h3 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors leading-snug">
+            <a href="/articles/2026-ai-bangong-diannao-wending-jichang-zhinan.html" class="hover:underline">
+              2026 稳定机场推荐与 AI 办公稳连指南：电脑梯子配置、节点固定与防风控实操
+            </a>
+          </h3>
+          <p class="mt-3 text-sm text-slate-700 dark:text-slate-300 line-clamp-3 leading-relaxed font-normal">
+            围绕“2026 机场推荐”“稳定机场推荐”“靠谱机场推荐”“AI 专用机场”“ChatGPT 机场推荐”“Claude 机场推荐”以及“电脑梯子推荐”“2026 梯子推荐”展开，解析办公断连与账号风控原因、分流隔离与防跑路自检清单。
+          </p>
+          <div class="mt-4 flex flex-wrap gap-1.5">
+            <span class="text-xs font-mono px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-medium">#2026机场推荐</span>
+            <span class="text-xs font-mono px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-medium">#稳定机场推荐</span>
+            <span class="text-xs font-mono px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-medium">#AI专用机场</span>
+            <span class="text-xs font-mono px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-medium">#电脑梯子推荐</span>
+          </div>
+        </div>
+        <div class="p-6 pt-0 mt-2 flex items-center justify-between border-t border-slate-100 dark:border-slate-800/80 text-xs font-mono">
+          <span class="text-slate-400 flex items-center space-x-1">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10" stroke-width="2"></circle>
+              <polyline points="12 6 12 12 16 14" stroke-width="2"></polyline>
+            </svg>
+            <span>8 min</span>
+          </span>
+          <a href="/articles/2026-ai-bangong-diannao-wending-jichang-zhinan.html" class="text-purple-600 dark:text-purple-400 font-bold group-hover:translate-x-1 transition-transform flex items-center space-x-1">
+            <span>查阅手记</span>
+            <span>→</span>
+          </a>
+        </div>
+      </article>
+
+      <article
+        class="blog-card flex flex-col justify-between rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-purple-500/60 dark:hover:border-purple-400/50 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group shadow-sm"
+        data-category="流媒体专线"
+      >
+        <div class="p-6">
+          <div class="flex items-center justify-between text-xs font-mono mb-3.5">
+            <span class="px-2.5 py-1 rounded-md bg-purple-50 dark:bg-purple-950/80 text-purple-600 dark:text-purple-300 font-semibold border border-purple-200/60 dark:border-purple-800/40">
+              流媒体专线
+            </span>
+            <span class="px-2.5 py-0.5 rounded text-xs font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/30">
+              方案指南
+            </span>
+          </div>
+          <h3 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors leading-snug">
+            <a href="/articles/2026-airport-ladder-streaming-guide.html" class="hover:underline">
+              2026机场推荐与梯子推荐流媒体指南：高清观影、多端切换与晚高峰稳连实战
+            </a>
+          </h3>
+          <p class="mt-3 text-sm text-slate-700 dark:text-slate-300 line-clamp-3 leading-relaxed font-normal">
+            在 2026 年，聚焦海外流媒体追剧、4K高码率视频播放与多终端跨屏切换需求，深度剖析晚高峰缓冲卡顿回落、多端节点跳变防风控、本地分流隔离配置与主备容灾自检准则。
+          </p>
+          <div class="mt-4 flex flex-wrap gap-1.5">
+            <span class="text-xs font-mono px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-medium">#2026机场推荐</span>
+            <span class="text-xs font-mono px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-medium">#梯子推荐</span>
+            <span class="text-xs font-mono px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-medium">#流媒体专线</span>
+          </div>
+        </div>
+        <div class="p-6 pt-0 mt-2 flex items-center justify-between border-t border-slate-100 dark:border-slate-800/80 text-xs font-mono">
+          <span class="text-slate-400 flex items-center space-x-1">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10" stroke-width="2"></circle>
+              <polyline points="12 6 12 12 16 14" stroke-width="2"></polyline>
+            </svg>
+            <span>10 min</span>
+          </span>
+          <a href="/articles/2026-airport-ladder-streaming-guide.html" class="text-purple-600 dark:text-purple-400 font-bold group-hover:translate-x-1 transition-transform flex items-center space-x-1">
+            <span>查阅手记</span>
+            <span>→</span>
+          </a>
+        </div>
+      </article>
+
+      <article
+        class="blog-card flex flex-col justify-between rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-purple-500/60 dark:hover:border-purple-400/50 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group shadow-sm"
+        data-category="技术上网"
+      >
+        <div class="p-6">
+          <div class="flex items-center justify-between text-xs font-mono mb-3.5">
+            <span class="px-2.5 py-1 rounded-md bg-purple-50 dark:bg-purple-950/80 text-purple-600 dark:text-purple-300 font-semibold border border-purple-200/60 dark:border-purple-800/40">
+              社媒运营
+            </span>
+            <span class="px-2.5 py-0.5 rounded text-xs font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/30">
+              方案指南
+            </span>
+          </div>
+          <h3 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors leading-snug">
+            <a href="/articles/2026-airport-ladder-social-creator-guide.html" class="hover:underline">
+              2026机场推荐与梯子推荐指南：海外社媒运营、内容创作与多账号稳定连接方案
+            </a>
+          </h3>
+          <p class="mt-3 text-sm text-slate-700 dark:text-slate-300 line-clamp-3 leading-relaxed font-normal">
+            在 2026 年，聚焦海外社交平台与自媒体内容创作的高清视频上传、多账号防关联风控与晚高峰稳定连接需求，深度剖析网络痛点、选型指标、分流规范与自检准则。
+          </p>
+          <div class="mt-4 flex flex-wrap gap-1.5">
+            <span class="text-xs font-mono px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-medium">#2026机场推荐</span>
+            <span class="text-xs font-mono px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-medium">#梯子推荐</span>
+            <span class="text-xs font-mono px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-medium">#多账号稳定</span>
+          </div>
+        </div>
+        <div class="p-6 pt-0 mt-2 flex items-center justify-between border-t border-slate-100 dark:border-slate-800/80 text-xs font-mono">
+          <span class="text-slate-400 flex items-center space-x-1">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10" stroke-width="2"></circle>
+              <polyline points="12 6 12 12 16 14" stroke-width="2"></polyline>
+            </svg>
+            <span>10 min</span>
+          </span>
+          <a href="/articles/2026-airport-ladder-social-creator-guide.html" class="text-purple-600 dark:text-purple-400 font-bold group-hover:translate-x-1 transition-transform flex items-center space-x-1">
+            <span>查阅手记</span>
+            <span>→</span>
+          </a>
+        </div>
+      </article>
+
+      <article
+        class="blog-card flex flex-col justify-between rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-purple-500/60 dark:hover:border-purple-400/50 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group shadow-sm"
+        data-category="技术上网"
+      >
+        <div class="p-6">
+          <div class="flex items-center justify-between text-xs font-mono mb-3.5">
+            <span class="px-2.5 py-1 rounded-md bg-purple-50 dark:bg-purple-950/80 text-purple-600 dark:text-purple-300 font-semibold border border-purple-200/60 dark:border-purple-800/40">
+              协议压测
+            </span>
+            <span class="px-2.5 py-0.5 rounded text-xs font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/30">
+              深度实测
+            </span>
+          </div>
+          <h3 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors leading-snug">
+            <a href="/articles/cross-border-protocol-benchmark-reality-hysteria2-tuic-2026.html" class="hover:underline">
+              2026 跨境网络传输协议底层演进与抗 QoS 调优指南：VLESS-Reality、Hysteria2 与 TUIC v5 基准压测白皮书
+            </a>
+          </h3>
+          <p class="mt-3 text-sm text-slate-700 dark:text-slate-300 line-clamp-3 leading-relaxed font-normal">
+            VPN网络实验中心2026年11月深度技术报告：在晚高峰跨境骨干网高丢包与UDP QoS限速环境下，对VLESS-XTLS-Vision-Reality、Hysteria2与TUIC v5进行首包延迟、吞吐保留率与抗主动探测全面压测。
+          </p>
+          <div class="mt-4 flex flex-wrap gap-1.5">
+            <span class="text-xs font-mono px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-medium">#VLESS</span>
+            <span class="text-xs font-mono px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-medium">#Hysteria2</span>
+            <span class="text-xs font-mono px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-medium">#TUICv5</span>
+          </div>
+        </div>
+        <div class="p-6 pt-0 mt-2 flex items-center justify-between border-t border-slate-100 dark:border-slate-800/80 text-xs font-mono">
+          <span class="text-slate-400 flex items-center space-x-1">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10" stroke-width="2"></circle>
+              <polyline points="12 6 12 12 16 14" stroke-width="2"></polyline>
+            </svg>
+            <span>18 min</span>
+          </span>
+          <a href="/articles/cross-border-protocol-benchmark-reality-hysteria2-tuic-2026.html" class="text-purple-600 dark:text-purple-400 font-bold group-hover:translate-x-1 transition-transform flex items-center space-x-1">
+            <span>查阅手记</span>
+            <span>→</span>
+          </a>
+        </div>
+      </article>
       {blogPosts.map((post) => {
         let postUrl = `/posts/${post.slug}`;
         if (post.slug === 'tls13-ech-zero-rtt-handshake-optimization-2026') {
@@ -201,7 +369,7 @@ const categories = ['全部手记', ...rawCategories];
         <span>💡 VPN网络实验中心出海选型手记</span>
       </div>
       <p>
-        好工具配合好线路才能发挥极致效果。强烈建议新手在配置 Clash / Sing-box 等现代客户端时，优先选用晚高峰持续 0 丢包的 <strong>#1 环球梯 (HuanQiuTi)</strong> 纯物理专线，杜绝频繁卡顿转圈。
+        无论是寻找晚高峰稳定机场、高性价比机场推荐还是科学上网机场推荐，好工具配合好线路才能发挥极致效果。强烈建议新手在配置 Clash / Sing-box 等现代客户端时，结合实测丢包数据优先选用晚高峰持续 0 丢包的 <strong>#1 环球梯 (HuanQiuTi)</strong> 纯物理专线，杜绝频繁卡顿转圈。
       </p>
     </div>
 

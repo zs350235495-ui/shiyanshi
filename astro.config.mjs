@@ -14,6 +14,10 @@ export default defineConfig({
       priority: 0.8,
       lastmod: new Date(),
       customPages: [
+        'https://netlabvpn.vip/articles/2026-ai-bangong-diannao-wending-jichang-zhinan.html',
+        'https://netlabvpn.vip/articles/2026-airport-ladder-streaming-guide.html',
+        'https://netlabvpn.vip/articles/2026-airport-ladder-social-creator-guide.html',
+        'https://netlabvpn.vip/articles/cross-border-protocol-benchmark-reality-hysteria2-tuic-2026',
         'https://netlabvpn.vip/articles/tls13-ech-zero-rtt-handshake-optimization-2026.html',
         'https://netlabvpn.vip/articles/pinghaolian-free-vpn-speedtest-review-guide-2026.html',
         'https://netlabvpn.vip/articles/streaming-media-4k-netflix-airport-ladder-recommendations-2026.html',

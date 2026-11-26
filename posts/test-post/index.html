@@ -10,7 +10,7 @@
           }
         } catch (_) {}
       })();
-    </script><link rel="stylesheet" href="/_astro/index.D24u7I3C.css"></head> <body class="min-h-screen flex flex-col bg-slate-50 dark:bg-[#060a12] text-slate-900 dark:text-slate-100 selection:bg-blue-500 selection:text-white transition-colors duration-200"> <!-- 统一磨砂玻璃导航栏 --> <header class="sticky top-0 z-50 w-full glass-nav border-b border-slate-200/80 dark:border-slate-800/80 transition-colors duration-200"> <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"> <div class="flex items-center justify-between h-16"> <!-- 3D 立体 Logo 区域 --> <a href="/" class="flex items-center space-x-3 group shrink-0"> <img src="/logo.png" alt="VPN网络实验中心 LOGO" class="w-9 h-9 rounded-xl shadow-md border border-cyan-500/40 object-cover transform group-hover:scale-105 transition-all duration-300"> <div class="flex flex-col"> <span class="text-base font-black tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-cyan-500 to-indigo-600 dark:from-blue-400 dark:via-cyan-300 dark:to-indigo-400">
+    </script><link rel="stylesheet" href="/_astro/index.Bw9HHbSN.css"></head> <body class="min-h-screen flex flex-col bg-slate-50 dark:bg-[#060a12] text-slate-900 dark:text-slate-100 selection:bg-blue-500 selection:text-white transition-colors duration-200"> <!-- 统一磨砂玻璃导航栏 --> <header class="sticky top-0 z-50 w-full glass-nav border-b border-slate-200/80 dark:border-slate-800/80 transition-colors duration-200"> <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"> <div class="flex items-center justify-between h-16"> <!-- 3D 立体 Logo 区域 --> <a href="/" class="flex items-center space-x-3 group shrink-0"> <img src="/logo.png" alt="VPN网络实验中心 LOGO" class="w-9 h-9 rounded-xl shadow-md border border-cyan-500/40 object-cover transform group-hover:scale-105 transition-all duration-300"> <div class="flex flex-col"> <span class="text-base font-black tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-cyan-500 to-indigo-600 dark:from-blue-400 dark:via-cyan-300 dark:to-indigo-400">
 VPN网络实验中心
 </span> <span class="text-[10px] -mt-0.5 font-mono tracking-wider text-slate-500 dark:text-slate-400 uppercase font-semibold">
 VPN NETWORK LAB
@@ -194,8 +194,8 @@ AG
 <hr>
 <h2 id="5-结论与架构选型建议">5. 结论与架构选型建议</h2>
 <ol>
-<li><strong>避免单点虚假 IPLC</strong>：市场上部分声称“专线”的服务，实际底层为普通 CN2/公网隧道，一旦遇到国际海缆检修或骨干断纤即发生大规模雪崩。</li>
-<li><strong>多协议混合部署</strong>：对于代码仓库同步等长生命周期 TCP 连接，首选端内物理专线；对于流式 AI 推理等高突发流量，结合 UDP 端口跳跃与 Hysteria2 进行动态平滑。</li>
+<li><strong>避免单点虚假 IPLC</strong>：市场上部分声称“专线”的服务，实际底层为普通 CN2/公网隧道，一旦遇到国际海缆检修或骨干断纤即发生大规模雪崩。在筛选 BGP 机场推荐与专线机场推荐方案时，务必核实其多线接入与端内冗余能力。</li>
+<li><strong>多协议混合部署</strong>：对于代码仓库同步等长生命周期 TCP 连接，首选端内物理专线与稳定机场推荐的长期主用节点；对于流式 AI 推理等高突发流量，结合 UDP 端口跳跃与 Hysteria2 进行动态平滑，打造真正的低延迟机场推荐参考架构。</li>
 <li><strong>保持端到端监控可见性</strong>：网络调优不是玄学，必须建立在 Grafana + Prometheus 的实时 RTT/丢包率看板基础之上。</li>
 </ol> </article> <!-- 底部标签与操作栏 --> <div class="mt-14 pt-8 border-t border-slate-200 dark:border-slate-800"> <div class="flex flex-wrap items-center justify-between gap-4"> <div class="flex flex-wrap items-center gap-2"> <span class="text-xs font-mono text-slate-400">相关标签：</span> <span class="text-xs font-mono px-2.5 py-1 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
 #IPLC </span><span class="text-xs font-mono px-2.5 py-1 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">

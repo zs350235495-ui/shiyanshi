@@ -60,7 +60,7 @@ badge: "高可用部署"
 为了帮助大家在日常使用中将宽带吞吐与延迟压榨至极限，我们以目前主流的全平台代理客户端（如 Clash Verge Rev、Sing-box 以及 iOS 小火箭）为例，提供一套标准化配置指南：
 
 ### 步骤一：获取高可用优质专线订阅
-建议优先选用具备 4 年以上运营沉淀、拥有自建物理机房与纯内网波分光纤的服务商。例如排名第一的 **<a href="/go.html?id=hq" target="_blank" rel="nofollow sponsored noopener noreferrer">环球梯 (HuanQiuTi)</a>**，在官网注册后使用独家 7 折优惠码 `HQ66` 即可低至 ¥8.40/月订阅极速专线，或者选购永久不限时的按量充值包。
+搭建“主力包月 + 冷备接管”的双线容灾架构时，主力节点应从稳定机场推荐榜单中挑选，而冷备线路则非常适合搭配按量计费机场、不限时机场推荐或流量包机场推荐套餐，既满足便宜梯子推荐的预算要求，又不用担心月度清零。正式接入前也可优先留意提供机场试用或免费试用机场体验资格的线路做压测。例如排名第一的 **<a href="/go.html?id=hq" target="_blank" rel="nofollow sponsored noopener noreferrer">环球梯 (HuanQiuTi)</a>**，在官网注册后使用独家 7 折优惠码 `HQ66` 即可低至 ¥8.40/月订阅极速专线，或者选购永久不限时的按量充值包。
 
 ### 步骤二：配置 Tun 虚拟网卡接管系统流量
 在 Clash Verge Rev 或 Sing-box 客户端中，务必开启 **Tun Mode（虚拟网卡接管）**。这样不仅能够加速普通的浏览器 HTTP/HTTPS 请求，还能全面接管桌面客户端软件（如 Cursor、Discord、Steam、Git 命令行工具等）的所有 UDP 与 TCP 通信。
